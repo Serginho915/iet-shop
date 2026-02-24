@@ -16,12 +16,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    "corsheaders",
     'rest_framework',
     'drf_spectacular',
     'api',
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -90,3 +92,5 @@ SPECTACULAR_SETTINGS = {
     'TITLE': 'API for "Innovational Educational Technologies',
     'DESCRIPTION': 'API documentation',
 }
+
+CORS_ALLOW_ALL_ORIGINS = True

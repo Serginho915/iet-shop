@@ -5,5 +5,6 @@ export default async function Home() {
     const products = await getProducts();
     return (
         <PageContent products={products}></PageContent>
+
     );
 }

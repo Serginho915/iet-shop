@@ -75,6 +75,7 @@ export const Hero = ({ metadata = {} }: HeroProps) => {
                     </Button>
                 </Link>
             </div>
+            <div></div>
         </section>
     );
 };

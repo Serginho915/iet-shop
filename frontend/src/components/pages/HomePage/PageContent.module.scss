@@ -6,14 +6,7 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-
-    // &>* {
-    //     margin-bottom: 154px; // Approximately 10rem or the standard spacing used
-
-    //     &:first-child {
-    //         margin-bottom: 0;
-    //     }
-    // }
+    padding-top: 6rem; // compensate for fixed header height
 }
 
 

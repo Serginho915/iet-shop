@@ -89,11 +89,11 @@ const defaultConfig: FooterConfig = {
   courses: {
     title: "Courses",
     links: [
-      { label: "Design", href: "#", translationKey: "footerCourseDesign" },
-      { label: "Marketing", href: "#", translationKey: "footerCourseMarketing" },
-      { label: "Coding", href: "#", translationKey: "footerCourseCoding" },
-      { label: "For Kids", href: "#", translationKey: "footerCourseKids" },
-      { label: "SMM", href: "#", translationKey: "footerCourseSmm" },
+      { label: "Design", href: "/#courses", translationKey: "footerCourseDesign" },
+      { label: "Marketing", href: "/#courses", translationKey: "footerCourseMarketing" },
+      { label: "Coding", href: "/#courses", translationKey: "footerCourseCoding" },
+      { label: "For Kids", href: "/#courses", translationKey: "footerCourseKids" },
+      { label: "SMM", href: "/#courses", translationKey: "footerCourseSmm" },
     ],
   },
   bottomText: "© 2026 Innovative Educational Technologies. All rights reserved.",

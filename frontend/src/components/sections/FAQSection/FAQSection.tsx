@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import styles from "./FAQSection.module.scss";
 import { useTranslate } from "@/lib/useTranslate";

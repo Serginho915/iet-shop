@@ -1,20 +1,37 @@
 "use client";
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, Suspense } from 'react';
 import styles from './BlogSection.module.scss';
 import { BlogCard } from '@/components/ui/BlogCard/BlogCard';
 import { CarouselNav } from '@/components/ui/CarouselNav/CarouselNav';
 import { useTranslate } from "@/lib/useTranslate";
-import { translations, translationsTitle } from './translations';
+import { translationsTitle } from './translations';
+import { useSearchParams } from 'next/navigation';
+import { Post } from '@/lib/api';
 
-export const BlogSection = () => {
-    const { t } = useTranslate(translations);
+interface BlogSectionProps {
+    posts?: Post[];
+}
+
+const BlogContent = ({ posts = [] }: BlogSectionProps) => {
     const { t: tTitle } = useTranslate(translationsTitle);
+    const searchParams = useSearchParams();
 
     const [activeIndex, setActiveIndex] = useState(0);
     const containerRef = useRef<HTMLDivElement>(null);
+    const [activeTagName, setActiveTagName] = useState<string>("all");
 
-    const total = t.blogs.length - 1;
+    useEffect(() => {
+        const tag = searchParams.get("blogTag");
+        setActiveTagName(tag ?? "all");
+    }, [searchParams]);
+
+
+    const displayPosts = activeTagName === "all"
+        ? posts
+        : posts.filter(p => p.tags.some(tag => tag.name === activeTagName));
+
+    const total = displayPosts.length - 1;
 
     const cardWidth = 509;
     const gap = 24;
@@ -29,13 +46,15 @@ export const BlogSection = () => {
     };
 
     const handleNext = () => {
-        const nextIndex = (activeIndex + 1) % total;
+        if (total <= 0) return;
+        const nextIndex = (activeIndex + 1) % (total);
         setActiveIndex(nextIndex);
         scrollToStep(nextIndex);
     };
 
     const handlePrev = () => {
-        const prevIndex = (activeIndex - 1 + total) % total;
+        if (total <= 0) return;
+        const prevIndex = (activeIndex - 1 + (total + 1)) % (total + 1);
         setActiveIndex(prevIndex);
         scrollToStep(prevIndex);
     };
@@ -46,7 +65,7 @@ export const BlogSection = () => {
     };
 
     return (
-        <section className={styles.section}>
+        <section id="blog" className={styles.section}>
             <div className={styles.container}>
                 <div className={styles.info}>
                     <h2>
@@ -63,12 +82,29 @@ export const BlogSection = () => {
 
                 <div className={styles.scrollWrapper} ref={containerRef}>
                     <ul className={styles.blogList}>
-                        {t.blogs.map((blog) => (
-                            <BlogCard key={blog.id} {...blog} />
+                        {displayPosts.map((post) => (
+                            <BlogCard
+                                key={post.id}
+                                id={post.id}
+                                author={post.author}
+                                title={post.title}
+                                excerpt={post.content.length > 150 ? post.content.slice(0, 150) + "…" : post.content}
+                                slug={post.slug}
+                                tags={post.tags}
+                                created_at={post.created_at}
+                            />
                         ))}
                     </ul>
                 </div>
             </div>
         </section>
+    );
+};
+
+export const BlogSection = (props: BlogSectionProps) => {
+    return (
+        <Suspense fallback={<div>Loading blog...</div>}>
+            <BlogContent {...props} />
+        </Suspense>
     );
 };

@@ -5,6 +5,7 @@ type CoursesTranslations = {
   allCourses: string;
   online: string;
   offline: string;
+  hybrid: string;
 };
 
 export const translations: Record<Lang, CoursesTranslations> = {
@@ -13,12 +14,15 @@ export const translations: Record<Lang, CoursesTranslations> = {
     allCourses: "All Courses",
     online: "Online",
     offline: "Offline",
+    hybrid: "Hybrid",
   },
   bg: {
     courses: "Курсове",
     allCourses: "Всички курсове",
     online: "Онлайн",
     offline: "Офлайн",
+    hybrid: "Хибрид",
   },
 };
+
 

@@ -2,27 +2,41 @@
 @use "../../../styles/mixins" as *;
 
 .header {
-    position: sticky;
+    position: fixed;
     top: 0;
-    z-index: 50;
+    left: 0;
+    right: 0;
+    z-index: 100;
     width: 100%;
-    padding: 1.5rem 0 0;
-    display: flex;
-    justify-content: center;
+    padding: 1rem 0;
+    pointer-events: none;
+    transition: transform 1.3s ease;
+}
+
+.headerVisible {
+    transform: translateY(0);
+}
+
+.headerHidden {
+    transform: translateY(-120%);
 }
 
 .container {
     @include container;
+    display: flex;
+    justify-content: center;
 }
 
 .inner {
     @include flex-between;
     padding: 0.5rem 1rem;
     gap: 1rem;
+    width: 100%;
     background-color: $color-white;
     border-radius: $radius-2xl;
     box-shadow: $shadow-lg;
     border: 1px solid $color-border;
+    pointer-events: auto;
 }
 
 .left {

@@ -15,18 +15,32 @@ interface NavLink {
 }
 
 const navLinks: NavLink[] = [
-  { key: "events", href: "/events" },
-  { key: "blog", href: "/blog" },
-  { key: "contact", href: "/contact" },
+  { key: "events", href: "/#events" },
+  { key: "blog", href: "/#blog" },
+  { key: "contact", href: "/#consultation" },
 ];
 
 export const Navbar = () => {
   const { lang } = useLanguage();
   const tr = translations[lang];
 
+  const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    const [path, hash] = href.split('#');
+    if (hash && (window.location.pathname === path || (path === '/' && window.location.pathname === ''))) {
+      if (window.location.hash === '#' + hash) {
+        const el = document.getElementById(hash);
+        if (el) {
+          e.preventDefault();
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    }
+  };
+
   const simpleLinks: SimpleLink[] = navLinks.map((link) => ({
     label: tr[link.key],
     href: link.href,
+    onClick: (e: any) => handleAnchorClick(e, link.href),
   }));
 
   return (

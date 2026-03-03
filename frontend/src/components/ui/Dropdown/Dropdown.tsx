@@ -9,51 +9,91 @@ interface DropdownProps {
     align?: "left" | "right";
 }
 
+const DropdownContext = React.createContext<{ setIsOpen: (val: boolean) => void }>({ setIsOpen: () => { } });
+
 export const Dropdown = ({ trigger, children, align = "left" }: DropdownProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        const handler = (e: MouseEvent) => {
+        const mouseDownHandler = (e: MouseEvent) => {
             if (ref.current && !ref.current.contains(e.target as Node)) {
                 setIsOpen(false);
             }
         };
-        document.addEventListener("mousedown", handler);
-        return () => document.removeEventListener("mousedown", handler);
+
+        document.addEventListener("mousedown", mouseDownHandler);
+
+        return () => {
+            document.removeEventListener("mousedown", mouseDownHandler);
+        };
     }, []);
 
-    return (
-        <div ref={ref} className={styles.dropdownWrapper}>
-            <button
-                type="button"
-                onClick={() => setIsOpen((prev) => !prev)}
-                className={styles.trigger}
-            >
-                {trigger}
-            </button>
 
-            {isOpen && (
-                <div className={`${styles.menu} ${styles[align]}`}>
-                    {children}
+
+    // Close on scroll to prevent stuck state
+    useEffect(() => {
+        if (!isOpen) return;
+
+        let lastPos = window.scrollY;
+        const handleScroll = () => {
+            if (Math.abs(window.scrollY - lastPos) > 10) {
+                setIsOpen(false);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, [isOpen]);
+
+    return (
+        <DropdownContext.Provider value={{ setIsOpen }}>
+            <div
+                ref={ref}
+                className={styles.dropdownWrapper}
+                onMouseEnter={() => !('ontouchstart' in window) && setIsOpen(true)}
+                onMouseLeave={() => !('ontouchstart' in window) && setIsOpen(false)}
+            >
+                <div
+                    onClick={() => setIsOpen((prev) => !prev)}
+                    className={styles.trigger}
+                >
+                    {trigger}
                 </div>
-            )}
-        </div>
+
+                {isOpen && (
+                    <div className={`${styles.menu} ${styles[align]}`}>
+                        {children}
+                    </div>
+                )}
+            </div>
+        </DropdownContext.Provider>
     );
 };
 
 export const DropdownItem = ({
     children,
     onClick,
+    className = "",
 }: {
     children: React.ReactNode;
     onClick?: () => void;
-}) => (
-    <button
-        type="button"
-        onClick={onClick}
-        className={styles.item}
-    >
-        {children}
-    </button>
-);
+    className?: string;
+}) => {
+    const { setIsOpen } = React.useContext(DropdownContext);
+    return (
+        <div
+            onClick={(e) => {
+                if (onClick) onClick();
+                setIsOpen(false);
+            }}
+            className={`${styles.item} ${className}`}
+        >
+            {children}
+        </div>
+    );
+};
+
+

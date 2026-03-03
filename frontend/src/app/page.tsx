@@ -1,10 +1,10 @@
-import { getProducts } from "@/lib/api";
+import { getCourses, getPosts } from "@/lib/api";
 import { PageContent } from "@/components/pages/HomePage/PageContent";
 
 export default async function Home() {
-    const products = await getProducts();
+    const courses = await getCourses();
+    const posts = await getPosts();
     return (
-        <PageContent products={products}></PageContent>
-
+        <PageContent courses={courses} posts={posts} />
     );
 }

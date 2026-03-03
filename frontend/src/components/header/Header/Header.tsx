@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Navbar } from "@/components/header/navbar/navbar";
 import { IconBag, IconUser } from "@/components/icons";
@@ -7,8 +9,29 @@ import { LanguageDropdown } from "@/components/header/LanguageDropdown/LanguageD
 import styles from "./Header.module.scss";
 
 export const Header = () => {
+    const [visible, setVisible] = useState(true);
+    const lastScrollY = useRef(0);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+            const scrollingDown = currentScrollY > lastScrollY.current;
+
+            if (currentScrollY < 80) {
+                setVisible(true);
+            } else {
+                setVisible(!scrollingDown);
+            }
+
+            lastScrollY.current = currentScrollY;
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
     return (
-        <header className={styles.header}>
+        <header className={`${styles.header} ${visible ? styles.headerVisible : styles.headerHidden}`}>
             <div className={styles.container}>
                 <div className={styles.inner}>
 

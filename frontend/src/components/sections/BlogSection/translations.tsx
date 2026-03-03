@@ -3,14 +3,15 @@ import type { Lang } from "@/lib/LanguageContext";
 
 
 export type Blog = {
-  id: string;          
-  author: string;           
+  id: string;
+  author: string;
   title: string;
   description: string;
   text: string;
   slug: string;
   tags: string[];
   img?: string;
+  date?: string;
 };
 
 export type BlogTranslations = {
@@ -23,14 +24,14 @@ export type BlogTitleTranslations = {
 }
 
 export const translationsTitle: Record<Lang, BlogTitleTranslations> = {
-    en: {
-        title: "From Latest from our Blog...",
-        badge: "gathered here",
-    },
-    bg: {
-        title: "Последно от нашия блог...",
-        badge: "събрано тук",
-    }
+  en: {
+    title: "From Latest from our Blog...",
+    badge: "gathered here",
+  },
+  bg: {
+    title: "Последно от нашия блог...",
+    badge: "събрано тук",
+  }
 }
 
 export const translations: Record<Lang, BlogTranslations> = {
@@ -73,7 +74,7 @@ export const translations: Record<Lang, BlogTranslations> = {
         tags: ["Visualization", "Design"],
       },
       {
-        id: "5", 
+        id: "5",
         author: "Emily Davis",
         title: "Top 5 interior design trends for 2024",
         description: "Stay ahead of the curve with our rundown of the top 5 interior design trends for 2024. From sustainable materials to bold colors, discover what's shaping the future of interior design.",

@@ -14,15 +14,17 @@ import { FAQSection } from "@/components/sections/FAQSection/FAQSection";
 import { Header } from "@/components/header/Header/Header";
 import { Footer } from "@/components/footer/Footer/Footer";
 import styles from "./PageContent.module.scss";
-import { Product } from "@/lib/api";
+import { Course, Post } from "@/lib/api";
 
 
 export const PageContent = ({
     metadata = {},
-    products = []
+    courses = [],
+    posts = []
 }: {
-    metadata?: Record<string, unknown>,
-    products?: Product[]
+    metadata?: Record<string, unknown>;
+    courses?: Course[];
+    posts?: Post[];
 }) => {
     return (
         <>
@@ -30,13 +32,13 @@ export const PageContent = ({
             <main className={styles.page}>
                 <HeroSection metadata={metadata} />
                 <AchievementsSection />
-                <CoursesSection products={products} />
+                <CoursesSection courses={courses} />
                 <AdvantagesSection />
                 <JourneySection />
                 <ReviewsSection />
                 <ConsultationSection />
                 <EventsSection />
-                <BlogSection />
+                <BlogSection posts={posts} />
                 <FAQSection />
             </main>
             <Footer />

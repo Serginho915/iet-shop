@@ -3,26 +3,63 @@
 import React from "react";
 import { Header } from "@/components/header/Header/Header";
 import { Footer } from "@/components/footer/Footer/Footer";
+import Link from "next/link";
 import { useTranslate } from "@/lib/useTranslate";
 import { translations } from "./translations";
 import styles from "./CoursePage.module.scss";
+import { Course } from "@/lib/api";
+import { Breadcrumbs, BreadcrumbItem } from "@/components/ui/Breadcrumbs/Breadcrumbs";
 
-/**
- * CoursePage Component
- * NOTE: Header and Footer are already included in the root layout.tsx.
- * They are added here as per user request to maintain consistency with PageContent 
- * if it were to be moved.
- */
-export const CoursePage = () => {
-    const { t } = useTranslate(translations);
+interface CoursePageProps {
+    course: Course;
+}
+
+export const CoursePage = ({ course }: CoursePageProps) => {
+    const { t, lang } = useTranslate(translations);
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        { label: t.course, href: "/#courses" },
+        { label: course.title }
+    ];
+
+    const [formattedStart, setFormattedStart] = React.useState<string>("");
+
+    React.useEffect(() => {
+        if (course.start) {
+            const locale = lang === "bg" ? "bg-BG" : "en-GB";
+            setFormattedStart(new Date(course.start).toLocaleDateString(locale, {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+            }));
+        }
+    }, [course.start, lang]);
 
     return (
         <div className={styles.coursePageWrapper}>
             <Header />
             <main className={styles.coursePage}>
                 <div className={styles.container}>
-                    <h1>{t.title}</h1>
-                    <p>{t.description}</p>
+                    <Breadcrumbs items={breadcrumbs} />
+                    <h1>{course.title}</h1>
+                    <p className={styles.description}>{course.description}</p>
+
+                    <div className={styles.meta}>
+                        {formattedStart && (
+                            <span className={styles.metaItem}>📅 {t.start}: {formattedStart}</span>
+                        )}
+                        <span className={styles.metaItem}>⏱ {course.duration}</span>
+                        <span className={styles.metaItem}>🎓 {course.type}</span>
+                        <span className={styles.metaItem}>💶 {course.price} €</span>
+                    </div>
+
+                    <div className={styles.tags}>
+                        {course.tags.map(tag => (
+                            <Link key={tag.id} href={`/?courseTag=${tag.name}#courses`} className={styles.tag}>
+                                {tag.name}
+                            </Link>
+                        ))}
+                    </div>
                 </div>
             </main>
             <Footer />

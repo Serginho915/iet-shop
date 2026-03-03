@@ -16,16 +16,36 @@ export type CourseTag = {
 
 export const courseTags: Record<Lang, CourseTag[]> = {
     en: [
-        { id: 'all', name: 'All' },
+        { id: 'all', name: 'All Categories' },
         { id: 'design', name: 'UI/UX Design' },
         { id: 'programming', name: 'Programming' },
         { id: 'marketing', name: 'Marketing' },
     ],
     bg: [
-        { id: 'all', name: 'Всички' },
+        { id: 'all', name: 'Всички категории' },
         { id: 'design', name: 'UI/UX Дизайн' },
         { id: 'programming', name: 'Програмиране' },
         { id: 'marketing', name: 'Маркетинг' },
+    ],
+}
+
+export type CourseTypeFilter = {
+    id: string;
+    name: string;
+}
+
+export const courseTypes: Record<Lang, CourseTypeFilter[]> = {
+    en: [
+        { id: 'all', name: 'All Types' },
+        { id: 'hybrid', name: 'Hybrid' },
+        { id: 'online', name: 'Online' },
+        { id: 'offline', name: 'Offline' },
+    ],
+    bg: [
+        { id: 'all', name: 'Всички типове' },
+        { id: 'hybrid', name: 'Хибриден' },
+        { id: 'online', name: 'Онлайн' },
+        { id: 'offline', name: 'Офлайн' },
     ],
 }
 

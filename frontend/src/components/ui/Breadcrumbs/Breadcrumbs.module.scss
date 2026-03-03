@@ -1,0 +1,41 @@
+@use "../../../styles/variables" as *;
+
+.breadcrumbs {
+    padding: 1rem 0;
+    margin-bottom: 2rem;
+}
+
+.list {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    font-size: 0.875rem; // 14px
+    color: $color-gray;
+}
+
+.link {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s;
+
+    &:hover {
+        color: $color-black;
+    }
+}
+
+.separator {
+    margin: 0 0.5rem;
+    color: lighten($color-gray, 20%);
+}
+
+.current {
+    color: $color-black;
+    font-weight: 500;
+}

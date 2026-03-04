@@ -16,6 +16,11 @@ http://localhost:8000/api/docs/
 Фронтенд:
 http://localhost:3000
 
+Dev superuser в fixture:
+- username: `admin`
+- password: `admin`
+- загрузка: `python manage.py loaddata api/fixtures/initial_data.json`
+
 #### Остановка
 ``` bash
 docker compose -f docker-compose.dev.yml down

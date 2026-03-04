@@ -15,7 +15,9 @@ EXPOSE 8000
 
 FROM base AS dev
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+RUN chmod +x /app/entrypoint.dev.sh
+
+CMD ["sh", "/app/entrypoint.dev.sh"]
 
 FROM base AS prod
 

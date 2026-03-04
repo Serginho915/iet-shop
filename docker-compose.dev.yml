@@ -4,6 +4,8 @@ services:
       context: ./backend
       target: dev
     container_name: django_backend
+    environment:
+      LOAD_FIXTURE_ON_STARTUP: "1"
     volumes:
       - ./backend:/app
     ports:

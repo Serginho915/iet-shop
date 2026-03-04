@@ -21,6 +21,8 @@ Dev superuser в fixture:
 - password: `admin`
 - загрузка: `python manage.py loaddata api/fixtures/initial_data.json`
 
+В dev-режиме при каждом старте backend-контейнера данные БД очищаются (`flush`) и вся fixture загружается автоматически.
+
 #### Остановка
 ``` bash
 docker compose -f docker-compose.dev.yml down

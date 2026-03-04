@@ -31,13 +31,12 @@ export const PageContent = ({
             <Header />
             <main className={styles.page}>
                 <HeroSection metadata={metadata} />
-                <AchievementsSection />
+                <EventsSection />
                 <CoursesSection courses={courses} />
                 <AdvantagesSection />
                 <JourneySection />
                 <ReviewsSection />
                 <ConsultationSection />
-                <EventsSection />
                 <BlogSection posts={posts} />
                 <FAQSection />
             </main>

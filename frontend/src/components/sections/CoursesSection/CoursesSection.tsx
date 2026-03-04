@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useState, useEffect, Suspense } from "react";
-import Link from "next/link";
+import Image from "next/image";
+import { LocalizedLink as Link } from "@/components/ui/LocalizedLink/LocalizedLink";
 import { useSearchParams, useRouter } from "next/navigation";
 import { translations, courseTags, courseTypes } from "./translations";
+import helpGuy from "@/assets/HeroSection/Courseguyhelp.png";
 import styles from "./CoursesSection.module.scss";
 import { IconLightbulb, IconHelpBtn } from "@/components/icons";
 import { CourseCard } from "@/components/ui/Coursecard/CourseCard";
@@ -25,6 +27,7 @@ const CoursesContent = ({ courses = [] }: CoursesSectionProps) => {
 
   const [activeTag, setActiveTag] = useState("all");
   const [activeType, setActiveType] = useState("all");
+  const [activeAudience, setActiveAudience] = useState("all");
 
   useEffect(() => {
     const tagFromUrl = searchParams.get("courseTag");
@@ -40,34 +43,41 @@ const CoursesContent = ({ courses = [] }: CoursesSectionProps) => {
     } else {
       setActiveType("all");
     }
+
+    const audienceFromUrl = searchParams.get("audience");
+    if (audienceFromUrl && ["adults", "kids"].includes(audienceFromUrl)) {
+      setActiveAudience(audienceFromUrl);
+    } else {
+      setActiveAudience("all");
+    }
   }, [searchParams, tags, types]);
 
-  const handleTagChange = (id: string) => {
+  const updateParams = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    if (id === "all") {
-      params.delete("courseTag");
+    if (value === "all") {
+      params.delete(key);
     } else {
-      params.set("courseTag", id);
+      params.set(key, value);
     }
     router.push(`?${params.toString()}#courses`, { scroll: false });
   };
 
-  const handleTypeChange = (id: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (id === "all") {
-      params.delete("courseType");
-    } else {
-      params.set("courseType", id);
-    }
-    router.push(`?${params.toString()}#courses`, { scroll: false });
-  };
-
+  const handleTagChange = (id: string) => updateParams("courseTag", id);
+  const handleTypeChange = (id: string) => updateParams("courseType", id);
+  const handleAudienceChange = (id: string) => updateParams("audience", id);
 
   const filteredCourses = courses.filter((course) => {
-    const matchesTag = activeTag === "all" || course.tags.some(tag => tag.name === activeTag);
+    const matchesTag = activeTag === "all" || course.tags.some(tag => tag.name.toLowerCase() === activeTag.toLowerCase());
     const matchesType = activeType === "all" || course.type === activeType;
-    return matchesTag && matchesType;
+    const matchesAudience = activeAudience === "all" || course.audience === activeAudience;
+    return matchesTag && matchesType && matchesAudience;
   });
+
+  const audienceButtons = [
+    { id: "all", label: t.allAudience },
+    { id: "adults", label: t.forAdults },
+    { id: "kids", label: t.forKids },
+  ];
 
   return (
     <section id="courses" className={styles.coursesSection}>
@@ -87,24 +97,44 @@ const CoursesContent = ({ courses = [] }: CoursesSectionProps) => {
         </div>
 
         <div className={styles.filterBar}>
-          <div className={styles.selectors}>
-            <Select
-              options={tags}
-              value={activeTag}
-              onChange={handleTagChange}
-              placeholder="Category"
-              className={styles.selector}
-            />
-            <Select
-              options={types}
-              value={activeType}
-              onChange={handleTypeChange}
-              placeholder="Type"
-              className={styles.selector}
-            />
+          <div className={styles.filterControls}>
+            <div className={styles.audienceTabs}>
+              {audienceButtons.map((btn) => (
+                <button
+                  key={btn.id}
+                  className={`${styles.audienceTab} ${activeAudience === btn.id ? styles.active : ""}`}
+                  onClick={() => handleAudienceChange(btn.id)}
+                >
+                  {btn.label}
+                </button>
+              ))}
+            </div>
+            <div className={styles.selectors}>
+              <Select
+                options={tags}
+                value={activeTag}
+                onChange={handleTagChange}
+                placeholder={t.categoryPlaceholder}
+                className={styles.selector}
+              />
+              <Select
+                options={types}
+                value={activeType}
+                onChange={handleTypeChange}
+                placeholder={t.formatPlaceholder}
+                className={styles.selector}
+              />
+            </div>
           </div>
 
           <div className={styles.helpContact}>
+            <Image
+              src={helpGuy}
+              alt="Help Icon"
+              width={32}
+              height={32}
+              className={styles.helpIcon}
+            />
             <div className={styles.helpTextWrapper}>
               <h4 className={styles.helpSubtitle}>{t.helpDeciding}</h4>
               <p className={styles.helpDescription}>{t.helpDecidingText}</p>
@@ -122,7 +152,7 @@ const CoursesContent = ({ courses = [] }: CoursesSectionProps) => {
               <CourseCard key={course.id} course={course} />
             ))
           ) : (
-            <div className={styles.noResults}>No courses found matching these criteria.</div>
+            <div className={styles.noResults}>{t.noResults}</div>
           )}
         </div>
       </div>

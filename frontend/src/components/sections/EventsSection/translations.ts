@@ -99,7 +99,7 @@ export const translations: Record<Lang, EventsTranslations> = {
             {
                 id: '3',
                 title: "Основни софтуерни инструменти за начинаещи в интериорния дизайн",
-                date: "01 Август 2026",
+                date: "01 Авг 2026",
                 tags: ["Инструменти", "Онлайн"],
                 isFree: false,
                 location: "Онлайн",
@@ -108,7 +108,7 @@ export const translations: Record<Lang, EventsTranslations> = {
             {
                 id: '4',
                 title: "Майсторство на светлина и сянка в интериорната визуализация",
-                date: "12 Септември 2026",
+                date: "12 Сеп 2026",
                 tags: ["Визуализация", "Онлайн"],
                 isFree: true,
                 location: "Онлайн",
@@ -117,7 +117,7 @@ export const translations: Record<Lang, EventsTranslations> = {
             {
                 id: '5',
                 title: "Как да работите с клиенти и да управлявате проекти?",
-                date: "05 Октомври 2026",
+                date: "05 Окт 2026",
                 tags: ["Бизнес", "Онлайн/Офлайн"],
                 isFree: false,
                 location: "Онлайн/Офлайн",

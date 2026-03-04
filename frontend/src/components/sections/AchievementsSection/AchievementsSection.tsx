@@ -70,6 +70,8 @@ export const AchievementsSection = () => {
               ref={videoRef}
               className={styles.video}
               src="/assets/Info-video.mov"
+              playsInline
+              preload="metadata"
             />
             {!isPlaying && (
               <div className={styles.playOverlay}>

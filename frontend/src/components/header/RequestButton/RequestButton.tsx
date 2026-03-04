@@ -14,9 +14,9 @@ export const RequestButton = () => {
     return (
         <div className={styles.wrapper}>
             <Button
-                variant="dark-outline"
+                variant="primary"
                 size="lg"
-                rounded="full"
+                rounded="xl"
                 onClick={() => router.push("/contact")}
             >
                 {tr.leaveRequest}

@@ -12,7 +12,7 @@ export interface Course {
   id: number;
   slug: string;
   title: string;
-  start: string;           // date ISO string
+  start: string;
   image?: string;
   description: string;
   duration: string;
@@ -22,6 +22,7 @@ export interface Course {
   stripe_product_id?: number;
   stripe_price_id?: number;
   tags: Tag[];
+  audience?: "adults" | "kids";
 }
 
 // ─── Post (blog article) ────────────────────────────────────────────────────
@@ -30,9 +31,9 @@ export interface Post {
   slug: string;
   title: string;
   author: string;
-  content: string;         // maps to `content` field in DB
-  picture?: string;        // maps to `picture` (img) field in DB
-  created_at: string;      // date ISO string
+  content: string;
+  picture?: string;
+  created_at: string;
   tags: Tag[];
 }
 
@@ -53,6 +54,7 @@ export const mockCourses: Course[] = [
       { id: 1, name: "programming" },
       { id: 3, name: "frontend" },
     ],
+    audience: "adults",
   },
   {
     id: 2,
@@ -69,6 +71,7 @@ export const mockCourses: Course[] = [
       { id: 1, name: "programming" },
       { id: 4, name: "backend" },
     ],
+    audience: "adults",
   },
   {
     id: 3,
@@ -84,6 +87,7 @@ export const mockCourses: Course[] = [
     tags: [
       { id: 2, name: "design" },
     ],
+    audience: "adults",
   },
   {
     id: 4,
@@ -99,6 +103,7 @@ export const mockCourses: Course[] = [
     tags: [
       { id: 5, name: "marketing" },
     ],
+    audience: "kids",
   },
 ];
 

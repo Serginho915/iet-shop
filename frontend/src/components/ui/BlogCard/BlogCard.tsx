@@ -3,7 +3,7 @@
 import React from "react";
 import styles from "./BlogCard.module.scss";
 import { IconHelpBtn } from "@/components/icons";
-import Link from "next/link";
+import { LocalizedLink as Link } from "@/components/ui/LocalizedLink/LocalizedLink";
 import { useRouter } from 'next/navigation';
 import { Tag } from "@/lib/api";
 

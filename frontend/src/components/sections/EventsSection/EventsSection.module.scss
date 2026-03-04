@@ -2,97 +2,94 @@
 @use "../../../styles/mixins" as *;
 
 .section {
-    padding: 80px 0;
-    background-color: transparent;
+    padding: 80px 0 60px 0;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.titleWrapper {
+    text-align: center;
+    margin-bottom: 60px;
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.badge {
+    position: absolute;
+    top: -45px;
+    right: 70%;
+    transform: translateX(-50%) rotate(-10deg);
+    padding: 6px 16px;
+    border: 1px solid $color-accent;
+    border-radius: 20px;
+    background: transparent;
+    z-index: 10;
+
+    span {
+        color: $color-accent;
+        font-size: 14px;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+}
+
+.title {
+    font-size: 48px;
+    font-weight: 500;
+    color: #000;
+    margin: 0;
 }
 
 .container {
     @include container;
-
-    background: #F5F6FA;
-    border-radius: 129px;
-    padding: 80px 114px 0; 
+    padding: 0 80px;
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.scrollContainer {
     width: 100%;
-}
-
-.header {
-    width: 100%;
-    margin-bottom: 44px; 
-}
-
-.titleWrapper {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    position: relative;
-    justify-content: flex-start;
-}
-
-.title {
-    margin: 0;
-    position: relative;
-}
-
-.badge {
-    padding: 4px 16px;
-    border: 1px dashed #F55;
-    border-radius: 20px;
-    transform: rotate(17.83deg);
-    position: absolute;
-    top: -20px;
-    left: 350px;
-}
-
-.badgeText {
-    font-size: 14px;
-    color: #F55;
-    font-weight: 400;
-}
-
-.eventsListContainer {
-    width: 100%;
+    max-height: 480px;
     overflow-y: auto;
-    height: 520px; 
-    scroll-behavior: smooth;
+    padding: 10px 0;
+    position: relative;
 
-    &::-webkit-scrollbar {
-        display: none;
-    }
-
+    // Hide scrollbar but keep functionality
     -ms-overflow-style: none;
+    /* IE and Edge */
     scrollbar-width: none;
 
+    /* Firefox */
+    &::-webkit-scrollbar {
+        display: none;
+        /* Chrome, Safari and Opera */
+    }
 }
 
 .eventsList {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 24px;
     width: 100%;
 }
 
 .scrollBtn {
-    margin: 40px auto 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    margin-top: 40px;
     background: none;
     border: none;
     cursor: pointer;
-    transition: transform 0.2s ease;
-    padding: 8px;
-    color: #000;
+    color: #22262F;
+    transition: transform 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     &:hover {
-        transform: translateY(4px);
-    }
-
-    svg {
-        display: block;
+        transform: translateY(5px);
     }
 }

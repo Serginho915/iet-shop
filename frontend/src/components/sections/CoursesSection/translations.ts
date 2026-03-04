@@ -6,6 +6,12 @@ type CoursesTranslations = {
     tipText: string;
     helpDeciding: string;
     helpDecidingText: string;
+    allAudience: string;
+    forAdults: string;
+    forKids: string;
+    categoryPlaceholder: string;
+    formatPlaceholder: string;
+    noResults: string;
 };
 
 
@@ -20,12 +26,14 @@ export const courseTags: Record<Lang, CourseTag[]> = {
         { id: 'design', name: 'UI/UX Design' },
         { id: 'programming', name: 'Programming' },
         { id: 'marketing', name: 'Marketing' },
+        { id: 'robotics', name: 'Robotics' },
     ],
     bg: [
         { id: 'all', name: 'Всички категории' },
         { id: 'design', name: 'UI/UX Дизайн' },
         { id: 'programming', name: 'Програмиране' },
         { id: 'marketing', name: 'Маркетинг' },
+        { id: 'robotics', name: 'Роботика' },
     ],
 }
 
@@ -36,13 +44,13 @@ export type CourseTypeFilter = {
 
 export const courseTypes: Record<Lang, CourseTypeFilter[]> = {
     en: [
-        { id: 'all', name: 'All Types' },
+        { id: 'all', name: 'All Formats' },
         { id: 'hybrid', name: 'Hybrid' },
         { id: 'online', name: 'Online' },
         { id: 'offline', name: 'Offline' },
     ],
     bg: [
-        { id: 'all', name: 'Всички типове' },
+        { id: 'all', name: 'Всички формати' },
         { id: 'hybrid', name: 'Хибриден' },
         { id: 'online', name: 'Онлайн' },
         { id: 'offline', name: 'Офлайн' },
@@ -56,6 +64,12 @@ export const translations: Record<Lang, CoursesTranslations> = {
         tipText: "No experience needed. Every course is beginner friendly.",
         helpDeciding: "Need help with deciding?",
         helpDecidingText: "Contact us via an online form.",
+        allAudience: "All",
+        forAdults: "For Adults",
+        forKids: "For Kids",
+        categoryPlaceholder: "Category",
+        formatPlaceholder: "Format",
+        noResults: "No courses found matching these criteria.",
     },
     bg: {
         choosePath: "Изберете своя път",
@@ -63,5 +77,11 @@ export const translations: Record<Lang, CoursesTranslations> = {
         tipText: "Не е необходим опит. Всеки курс е подходящ за начинаещи.",
         helpDeciding: "Нуждаете се от помощ при избора?",
         helpDecidingText: "Свържете се с нас чрез онлайн форма.",
+        allAudience: "Всички",
+        forAdults: "За възрастни",
+        forKids: "За деца",
+        categoryPlaceholder: "Категория",
+        formatPlaceholder: "Формат",
+        noResults: "Не са намерени курсове, отговарящи на тези критерии.",
     },
 };

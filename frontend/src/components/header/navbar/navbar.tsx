@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { LocalizedLink as Link } from "@/components/ui/LocalizedLink/LocalizedLink";
 import { CoursesDropdown } from "@/components/header/CoursesDropdown/CoursesDropdown";
 import { useLanguage } from "@/lib/LanguageContext";
 import { NavLinks, type SimpleLink } from "@/components/ui/NavLinks/NavLinks";

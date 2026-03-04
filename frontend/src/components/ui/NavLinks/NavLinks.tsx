@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { LocalizedLink as Link } from "@/components/ui/LocalizedLink/LocalizedLink";
 
 export type SimpleLink = {
   label: string;

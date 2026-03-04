@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { LocalizedLink as Link } from "@/components/ui/LocalizedLink/LocalizedLink";
 import Image from "next/image";
 import { Button } from "@/components/ui/Button/Button";
 import { NavLinks, type SimpleLink } from "@/components/ui/NavLinks/NavLinks";

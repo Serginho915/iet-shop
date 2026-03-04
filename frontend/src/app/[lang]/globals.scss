@@ -1,5 +1,5 @@
-@use "../styles/variables" as *;
-@use "../styles/mixins" as *;
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
 
 *,
 *::before,
@@ -10,7 +10,13 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: $color-bg;
+    min-height: 100vh;
+    background:
+        url('../../assets/Background.png') center/100% repeat,
+        linear-gradient(180deg, #D5E6FF 0%, #FFFFFF 100%) no-repeat;
+    background-size: 100% auto, 100% 693px;
+    background-attachment: fixed, scroll;
+    background-color: #FFFFFF;
     color: #000;
     font-family: $font-rubik;
     font-size: var(--font-size-s, 20px);

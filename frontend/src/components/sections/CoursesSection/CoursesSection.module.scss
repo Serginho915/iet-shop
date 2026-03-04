@@ -2,195 +2,222 @@
 @use "../../../styles/mixins" as *;
 
 .coursesSection {
-    scroll-margin-top: 100px;
-    background-color: $color-white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 80px;
+  scroll-margin-top: 100px;
+  background-color: $color-white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 80px;
 }
 
-
 .container {
-    @include container;
-    padding: 60px 44px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4rem;
-    background-color: #F5F6FA;
-    border-radius: 48px;
+  @include container;
+  padding: 60px 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f5f6fa;
+  border-radius: 48px;
 }
 
 .head {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-    text-align: center;
-}
-
-.topSeparator {
-    width: 20px;
-    height: 2px;
-    background-color: #38BDF8;
-}
-
-.bottomSeparator {
-    width: 25px;
-    height: 2px;
-    background-color: #F472B6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: center;
 }
 
 .title {
-    font-family: $font-roboto-flex;
-    font-size: var(--font-size-2xl, 48px);
-    font-weight: 500;
-    line-height: normal;
-    letter-spacing: 0.96px;
-    color: $color-black;
-    margin: 0;
+  font-family: $font-roboto-flex;
+  font-size: var(--font-size-2xl, 48px);
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: 0.96px;
+  color: $color-black;
+  margin: 0;
 }
 
 .tipBlock {
-    display: flex;
-    justify-content: center;
-    width: 100%;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 1rem;
 }
 
 .tipContent {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    max-width: 500px;
-    text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 600px;
+  text-align: left;
 }
 
 .tipIcon {
-    color: #EF4444;
-    width: 32px;
-    height: 32px;
-    flex-shrink: 0;
+  color: #ef4444;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
 }
 
 .tipText {
-    font-size: 1.5rem;
-    line-height: 1.4;
-    color: $color-black;
-    font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1.4;
+  color: $color-black;
+  font-weight: 400;
 }
 
 .tipTitle {
-    font-weight: 700;
+  font-weight: 700;
 }
 
 .filterBar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    gap: 2rem;
-    margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+  gap: 2rem;
+  margin-top: 3.5rem;
 
-    @media (max-width: 1024px) {
-        flex-direction: column;
-        align-items: stretch;
-    }
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+.filterControls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-start;
+
+  @media (max-width: 1024px) {
+    align-items: center;
+  }
+}
+
+.audienceTabs {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.audienceTab {
+  padding: 10px 24px;
+  border-radius: 12px;
+  background: #D7DFE9;
+  color: #22262F;
+  font-size: 20px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &.active {
+    background: #2D3139;
+    color: #FFFFFF;
+  }
+
+  &:hover:not(.active) {
+    background: darken(#D7DFE9, 5%);
+  }
 }
 
 .selectors {
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
 
-    @media (max-width: 640px) {
-        flex-direction: column;
-    }
+  @media (max-width: 640px) {
+    flex-direction: column;
+  }
 }
 
 .selector {
-    min-width: 260px;
+  min-width: 250px;
 
-    @media (max-width: 640px) {
-        min-width: 100%;
-    }
+  // Apply the same light gray background to dropdowns if they use a custom class
+  @media (max-width: 640px) {
+    min-width: 100%;
+  }
 }
 
 .helpContact {
-    position: relative;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 2rem;
-    width: 100%;
-    max-width: 530px;
-    background-color: #F8FAFC;
-    border-radius: 28px;
-    padding: 24px 150px 32px 32px;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    min-height: 140px;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  width: 100%;
+  max-width: 530px;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 -2px 8px 0 #155dfc;
+  padding: 24px 150px 32px 32px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  min-height: 140px;
+  text-align: left;
 }
 
 .helpTextWrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .helpSubtitle {
-    font-size: 2rem;
-    font-weight: 500;
-    margin: 0;
-    color: $color-black;
+  font-size: 2rem;
+  font-weight: 500;
+  margin: 0;
+  color: $color-black;
 }
 
 .helpDescription {
-    font-size: 1.125rem;
-    color: #64748B;
-    margin: 0;
+  font-size: 1.125rem;
+  color: #64748b;
+  margin: 0;
 }
 
 .helpLink {
-    position: absolute;
-    bottom: -1px;
-    right: -1px;
-    width: 78px;
-    height: 55px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    flex-shrink: 0;
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 78px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
 
-    &:hover {
-        transform: scale(1.05);
-    }
+  &:hover {
+    transform: scale(1.05);
+  }
 
-    svg {
-        display: block;
-        width: 100%;
-        height: 100%;
-    }
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .coursesGrid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
-    width: 100%;
-    margin-top: 3rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  width: 100%;
+  margin-top: 3rem;
 
-    @media (max-width: 1200px) {
-        grid-template-columns: 1fr;
-    }
+  @media (max-width: 1200px) {
+    grid-template-columns: 1fr;
+  }
 }
 
-// .title, 
-// .statCount {
-//     font-family: $font-roboto-flex;
-//     font-size: 3.5rem;
-//     font-weight: 500;
-//     line-height: 1.1;
-//     color: $color-black-second;
-// }
+.noResults {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem;
+  font-size: 1.25rem;
+  color: #64748b;
+}

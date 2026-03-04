@@ -1,18 +1,19 @@
 @use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
 
 .card {
-    background: #FFFFFF;
+    background: #EFF6FF;
     border-radius: 40px;
     padding: 24px 44px;
     display: flex;
     align-items: center;
-    gap: 32px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    margin-bottom: 16px;
-    transition: transform 0.2s ease;
+    justify-content: space-between;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    width: 100%;
 
     &:hover {
         transform: translateY(-2px);
+        box-shadow: $shadow-lg;
     }
 }
 
@@ -20,27 +21,52 @@
     flex-shrink: 0;
 }
 
-.imagePlaceholder {
-    width: 60px;
-    height: 60px;
-    background-color: #E2E8F0;
-    border-radius: 12px;
+.avatars {
+    display: flex;
+    align-items: center;
+    margin-right: -10px;
+
+    .avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: #CCC; // Placeholder
+        border: 3px solid #EFF6FF;
+        margin-left: -15px;
+        overflow: hidden;
+
+        &:first-child {
+            margin-left: 0;
+        }
+    }
+}
+
+.imgPlaceholder {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .middle {
-    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
 }
 
 .title {
-    font-size: 24px;
+    font-family: $font-roboto;
+    font-size: 20px;
     font-weight: 500;
-    line-height: normal;
-    color: #000000;
+    line-height: 1.2;
+    color: #22262F;
     margin: 0;
-    max-width: 500px;
+    max-width: 480px;
+}
+
+.infoRow {
+    display: flex;
+    align-items: center;
+    gap: 24px;
 }
 
 .tags {
@@ -50,31 +76,59 @@
 }
 
 .tag {
+    font-family: $font-rubik;
     font-size: 14px;
-    padding: 2px 12px;
-    border-radius: 20px;
-    background: #F1F5F9;
-    color: #64748B;
-    border: 1px solid #E2E8F0;
+    font-weight: 400;
+    padding: 4px 14px;
+    border-radius: 8px;
+    background: #22262F;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    &.primary {
+        background: $color-accent;
+    }
+}
+
+.icon {
+    width: 16px;
+    height: 16px;
+    color: inherit;
 }
 
 .right {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
-    min-width: 180px;
+    gap: 12px;
+    min-width: 140px;
+}
+
+.dateRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: 400;
+    color: #22262F;
 }
 
 .date {
-    font-size: 22px;
-    font-weight: 400;
-    color: #000000;
+    font-family: $font-rubik;
 }
 
 .joinBtn {
-    min-width: 180px;
-    height: 48px;
-    background-color: #212631 !important;
+    width: 100%;
+    height: 44px;
+    background-color: $color-accent !important;
     color: #FFFFFF !important;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 20px !important;
+
+    &:hover {
+        background-color: darken($color-accent, 10%) !important;
+    }
 }

@@ -1,21 +1,23 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import Image from "next/image";
-import HeroImage from "@/assets/HeroImage.png";
 import { useTranslate } from "@/lib/useTranslate";
-import { Button } from "@/components/ui/Button/Button";
-import RectangleHero from "@/assets/RectangleHero.png";
-import locationIcon from "@/assets/Location.svg";
 import { translations } from "./translations";
 import styles from "./HeroSection.module.scss";
 
-interface HeroSectionProps {
-  metadata?: Record<string, unknown>;
-}
+// Images from assets/HeroSection
+import heroMain from "@/assets/HeroSection/HeroMain.jpg";
+import heroGeorge from "@/assets/HeroSection/heroGeorge.png";
+import beginnerFriendly from "@/assets/HeroSection/beginnerFriendly.svg";
+import checkLabel from "@/assets/HeroSection/checkLabel.svg";
+import student1 from "@/assets/HeroSection/student1.png";
+import student2 from "@/assets/HeroSection/student2.png";
+import student3 from "@/assets/HeroSection/student3.png";
+import student4 from "@/assets/HeroSection/student4.png";
+import student5 from "@/assets/HeroSection/student5.png";
 
-export const HeroSection = ({ metadata = {} }: HeroSectionProps) => {
+export const HeroSection = ({ metadata = {} }: { metadata?: Record<string, unknown> }) => {
   const { t: tr, lang } = useTranslate(translations);
 
   const getDynamic = (key: string, fallback: string) => {
@@ -24,6 +26,13 @@ export const HeroSection = ({ metadata = {} }: HeroSectionProps) => {
     return typeof value === "string" ? value : fallback;
   };
 
+  const expertises = [
+    { title: getDynamic("expertiseDesign", tr.expertiseDesign), isBlue: false },
+    { title: getDynamic("expertiseMarketing", tr.expertiseMarketing), isBlue: false },
+    { title: getDynamic("expertiseProgramming", tr.expertiseProgramming), isBlue: true },
+    { title: getDynamic("expertiseRobotics", tr.expertiseRobotics), isBlue: false },
+    { title: getDynamic("expertiseGameDev", tr.expertiseGameDev), isBlue: false },
+  ];
 
   return (
     <section className={styles.hero}>
@@ -39,56 +48,77 @@ export const HeroSection = ({ metadata = {} }: HeroSectionProps) => {
           <p className={styles.heroDescription}>
             {getDynamic("heroDescription", tr.heroDescription)}{" "}
             <span className={styles.heroDescriptionHighlight}>
-              {getDynamic(
-                "heroDescriptionHighlight",
-                tr.heroDescriptionHighlight,
-              )}
+              {getDynamic("heroDescriptionHighlight", tr.heroDescriptionHighlight)}
             </span>{" "}
             {getDynamic("heroDescriptionEnd", tr.heroDescriptionEnd)}
           </p>
-
-          <div className={styles.location}>
-            <Image
-              src={locationIcon}
-              alt="location"
-              width={20}
-              height={20}
-              className={styles.locationIcon}
-            />
-            <span>{getDynamic("location", tr.location)}</span>
-          </div>
         </div>
 
         <div className={styles.heroContentRight}>
           <div className={styles.imageWrapper}>
-            <Image
-              src={HeroImage}
-              alt="hero-image"
-              fill
-              className={styles.heroImage}
-              priority
-            />
+            <div className={styles.codeIcon}>&lt;/&gt;</div>
+            <div className={styles.imageContainer}>
+              <Image
+                src={heroMain}
+                alt="hero-image"
+                fill
+                className={styles.heroImage}
+                priority
+              />
+            </div>
           </div>
         </div>
       </div>
-      <div className={styles.heroActions}>
-        <Link href="#courses">
-          <Button className={styles.browseButton}>
-            {getDynamic("browseCourses", tr.browseCourses)}
-          </Button>
-        </Link>
-      </div>
-      <div className={styles.mainTitleBlock}>
-        <div className={styles.watermarkWrapper}>
-          <div className={styles.decorationRectangle}>
-            <Image
-              src={RectangleHero}
-              alt="decoration"
-              fill
-              className={styles.decorationImage}
-            />
+
+      <div className={styles.expertiseSection}>
+        <div className={styles.statsBlock}>
+          <div className={styles.georgeBlock}>
+            <Image src={heroGeorge} alt="George" width={116} height={156} className={styles.georgeAvatar} />
+            <p className={styles.georgeChat}>
+              {getDynamic("georgeChat", tr.georgeChat)}
+            </p>
           </div>
-          <h1 className={styles.mainTitleH1}>{getDynamic("mainTitleBlock", tr.mainTitleBlock)}</h1>
+
+          <div className={styles.statsRightInner}>
+            <div className={styles.statsGrid}>
+              <div className={styles.statItem}>
+                <span className={styles.count}>100%</span>
+                <span className={styles.label}>
+                  <Image src={beginnerFriendly} alt="beginner friendly" width={20} height={20} /> {getDynamic("beginnerFriendly", tr.beginnerFriendly)}
+                </span>
+              </div>
+              <div className={styles.statItem}>
+                <span className={styles.count}>900+</span>
+                <div className={styles.label}>
+                  <Image src={checkLabel} alt="check" width={20} height={20} />
+                  <p className={styles.coursesDeliveredText}>{getDynamic("coursesDelivered", tr.coursesDelivered)}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.studentsInfo}>
+              <div className={styles.studentAvatars}>
+                {[student1, student2, student3, student4, student5].map((s, i) => (
+                  <Image key={i} src={s} alt="student" width={40} height={40} />
+                ))}
+              </div>
+              <span className={styles.studentsText}>
+                1500+ {getDynamic("studentsCompleted", tr.studentsCompleted)}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.expertiseList}>
+          <h4 className={styles.expertiseTitle}>{getDynamic("expertiseTitle", tr.expertiseTitle)}</h4>
+          {expertises.map((exp, i) => (
+            <div
+              key={i}
+              className={`${styles.expertisePill} ${exp.isBlue ? styles.active : ""}`}
+            >
+              &lt; {exp.title} &gt;
+            </div>
+          ))}
         </div>
       </div>
     </section>

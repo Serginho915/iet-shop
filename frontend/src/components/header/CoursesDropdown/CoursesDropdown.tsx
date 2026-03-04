@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { LocalizedLink as Link } from "@/components/ui/LocalizedLink/LocalizedLink";
 import { Dropdown, DropdownItem } from "@/components/ui/Dropdown/Dropdown";
 import { useLanguage } from "@/lib/LanguageContext";
 import { translations } from "./translations";
@@ -19,13 +19,17 @@ export const CoursesDropdown = () => {
 
     const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
         const [path, hash] = href.split('#');
-        if (hash && (window.location.pathname === path || (path === '/' && window.location.pathname === ''))) {
-            if (window.location.hash === '#' + hash) {
-                const el = document.getElementById(hash);
-                if (el) {
-                    e.preventDefault();
-                    el.scrollIntoView({ behavior: 'smooth' });
-                }
+        // Check if we are on the same page (considering the lang prefix)
+        const currentPurePath = window.location.pathname.replace(`/${lang}`, '') || '/';
+        const targetPurePath = path || '/';
+
+        if (hash && (currentPurePath === targetPurePath)) {
+            const el = document.getElementById(hash);
+            if (el) {
+                e.preventDefault();
+                el.scrollIntoView({ behavior: 'smooth' });
+                // Update hash in URL without jump
+                window.history.pushState(null, '', href.startsWith('/') ? href : `/${lang}${href}`);
             }
         }
     };

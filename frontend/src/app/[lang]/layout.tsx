@@ -1,9 +1,11 @@
+import React from "react";
 import type { Metadata } from "next";
 import { Roboto, Rubik, Roboto_Flex } from "next/font/google";
 import "./globals.scss";
 import { Header } from "@/components/header/Header/Header";
 import { Footer } from "@/components/footer/Footer/Footer";
 import { LanguageProvider } from "@/lib/LanguageContext";
+import { CookieBanner } from "@/components/ui/CookieBanner/CookieBanner";
 
 const roboto = Roboto({
   weight: ["400", "500", "700", "900"],
@@ -26,18 +28,23 @@ export const metadata: Metadata = {
   description: "Get your right course",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
+  params
 }: Readonly<{
   children: React.ReactNode;
+  params: Promise<{ lang: string }>
 }>) {
+  const { lang } = await params;
+
   return (
-    <html lang="en">
+    <html lang={lang}>
       <body
         className={`${roboto.variable} ${robotoFlex.variable} ${rubik.variable} antialiased text-gray-900 bg-gray-50`}
       >
-        <LanguageProvider>
+        <LanguageProvider initialLang={lang as "en" | "bg"}>
           {children}
+          <CookieBanner />
         </LanguageProvider>
       </body>
     </html>

@@ -12,33 +12,43 @@ export const EventsSection = () => {
   const { t } = useTranslate(translations);
 
   const { containerRef, scrollNext } = useVerticalScroll({
-    cardHeight: 148,
+    cardHeight: 180,
     gap: 24,
   });
-
-  const canScroll = t.events.length > 3;
 
   return (
     <section className={styles.section} id="events">
       <div className={styles.container}>
-        <div className={styles.eventsListContainer} ref={containerRef}>
+        <div className={styles.titleWrapper}>
+          <div className={styles.badge}>
+            <span>{t.badge}</span>
+          </div>
+          <h2 className={styles.title}>{t.title}</h2>
+        </div>
+
+        <div className={styles.scrollContainer} ref={containerRef}>
           <div className={styles.eventsList}>
             {t.events.map((event) => (
               <EventCard
                 key={event.id}
-                {...event}
+                title={event.title}
+                date={event.date}
+                tags={event.tags}
+                location={event.location}
                 joinBtnText={t.joinBtn}
-                onJoin={() => console.log("Joining event:", event.id)}
+                onJoin={() => {
+                  if (typeof window !== 'undefined' && event.joinUrl) {
+                    window.open(event.joinUrl, '_blank');
+                  }
+                }}
               />
             ))}
           </div>
         </div>
 
-        {canScroll && (
-          <button className={styles.scrollBtn} onClick={scrollNext}>
-            <IconArrowDown />
-          </button>
-        )}
+        <button className={styles.scrollBtn} onClick={scrollNext} aria-label="Scroll to next events">
+          <IconArrowDown />
+        </button>
       </div>
     </section>
   );

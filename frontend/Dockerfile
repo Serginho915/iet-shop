@@ -12,7 +12,7 @@ EXPOSE 3000
 FROM base AS dev
 
 CMD ["npm", "run", "dev"]
-
+  
 FROM base AS builder
 
 ENV NEXT_TELEMETRY_DISABLED=1

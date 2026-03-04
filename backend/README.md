@@ -19,3 +19,17 @@ python manage.py runserver
 ```
 
 API: http://127.0.0.1:8000/
+
+Загрузка тестовых данных (fixtures)
+```
+cd backend
+python manage.py loaddata api/fixtures/initial_data.json
+```
+
+Если нужно загрузить fixture «с нуля»:
+```
+cd backend
+python manage.py flush --no-input
+python manage.py migrate
+python manage.py loaddata api/fixtures/initial_data.json
+```

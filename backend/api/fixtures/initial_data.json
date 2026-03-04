@@ -1,0 +1,164 @@
+[
+  {
+    "model": "api.tag",
+    "pk": 1,
+    "fields": {
+      "name": "python"
+    }
+  },
+  {
+    "model": "api.tag",
+    "pk": 2,
+    "fields": {
+      "name": "backend"
+    }
+  },
+  {
+    "model": "api.tag",
+    "pk": 3,
+    "fields": {
+      "name": "education"
+    }
+  },
+  {
+    "model": "api.course",
+    "pk": 1,
+    "fields": {
+      "slug": "python-backend-pro",
+      "title": "Python Backend Pro",
+      "start": "2026-04-01",
+      "image": "courses/python-backend-pro.jpg",
+      "description": "Практический курс по Django/DRF и REST API.",
+      "duration": "12 weeks",
+      "type": "online",
+      "price": 79000,
+      "is_active": true,
+      "stripe_product_id": 101001,
+      "stripe_price_id": 201001,
+      "tags": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  {
+    "model": "api.course",
+    "pk": 2,
+    "fields": {
+      "slug": "fullstack-essentials",
+      "title": "Fullstack Essentials",
+      "start": "2026-05-15",
+      "image": "courses/fullstack-essentials.jpg",
+      "description": "Базовый курс по fullstack-разработке.",
+      "duration": "10 weeks",
+      "type": "hybrid",
+      "price": 69000,
+      "is_active": true,
+      "stripe_product_id": 101002,
+      "stripe_price_id": 201002,
+      "tags": [
+        2,
+        3
+      ]
+    }
+  },
+  {
+    "model": "api.event",
+    "pk": 1,
+    "fields": {
+      "title": "Open Day: Career in IT",
+      "date": "2026-03-20",
+      "type": "offline",
+      "tags": [
+        3
+      ]
+    }
+  },
+  {
+    "model": "api.event",
+    "pk": 2,
+    "fields": {
+      "title": "Django API Workshop",
+      "date": "2026-04-10",
+      "type": "online",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "api.post",
+    "pk": 1,
+    "fields": {
+      "title": "Почему DRF ускоряет разработку",
+      "author": "IET Team",
+      "content": "Коротко о том, как DRF помогает быстрее запускать API.",
+      "picture": "posts/drf-speed.jpg",
+      "created_at": "2026-03-01T10:00:00Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "api.post",
+    "pk": 2,
+    "fields": {
+      "title": "Как выбрать IT-курс в 2026",
+      "author": "IET Team",
+      "content": "Сравнение форматов обучения и практические рекомендации.",
+      "picture": "posts/course-choice.jpg",
+      "created_at": "2026-03-02T12:30:00Z",
+      "tags": [
+        3
+      ]
+    }
+  },
+  {
+    "model": "api.consultation",
+    "pk": 1,
+    "fields": {
+      "name": "Alex Petrov",
+      "email": "alex.petrov@example.com",
+      "phone": "+77011234567",
+      "interested": 1
+    }
+  },
+  {
+    "model": "api.consultation",
+    "pk": 2,
+    "fields": {
+      "name": "Dana Sadykova",
+      "email": "d.sadykova@example.com",
+      "phone": "+77019876543",
+      "interested": 2
+    }
+  },
+  {
+    "model": "api.order",
+    "pk": 1,
+    "fields": {
+      "status": true,
+      "total_amount": 79000,
+      "stripe_payment_intent_id": 555001,
+      "stripe_checkout_session_id": 666001,
+      "created_at": "2026-03-03T09:00:00Z",
+      "paid_at": "2026-03-03T09:05:00Z"
+    }
+  },
+  {
+    "model": "api.order",
+    "pk": 2,
+    "fields": {
+      "status": false,
+      "total_amount": 69000,
+      "stripe_payment_intent_id": 555002,
+      "stripe_checkout_session_id": 666002,
+      "created_at": "2026-03-03T11:00:00Z",
+      "paid_at": null
+    }
+  }
+]

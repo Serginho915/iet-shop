@@ -19,4 +19,6 @@ CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
 FROM base AS prod
 
-CMD ["gunicorn", "core.wsgi:application", "--bind", "0.0.0.0:8000"]
+RUN chmod +x /app/entrypoint.prod.sh
+
+CMD ["/app/entrypoint.prod.sh"]

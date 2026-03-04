@@ -21,11 +21,6 @@ http://localhost:3000
 docker compose -f docker-compose.dev.yml down
 ```
 
-#### Пересборка после изменений зависимостей
-```  bash
-docker compose -f docker-compose.dev.yml up --build --no-cache
-```
-
 #### Запуск на VPS (prod, сборка локально из проекта)
 ```bash
 docker compose -f docker-compose.prod.yml up -d --build

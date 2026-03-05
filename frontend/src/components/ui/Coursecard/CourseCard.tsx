@@ -15,7 +15,7 @@ interface CourseCardProps {
 }
 
 export const CourseCard = ({ course }: CourseCardProps) => {
-  const { t } = useTranslate(translations);
+  const { t, lang } = useTranslate(translations);
   const router = useRouter();
 
   const title = course?.title ?? "Front End Development";
@@ -27,7 +27,7 @@ export const CourseCard = ({ course }: CourseCardProps) => {
     : "12 May 2026";
 
   const handleCardClick = () => {
-    router.push(`/courses/${slug}`);
+    router.push(`/${lang}/courses/${slug}`);
   };
 
   return (

@@ -105,8 +105,8 @@
 .audienceTab {
   padding: 10px 24px;
   border-radius: 12px;
-  background: #D7DFE9;
-  color: #22262F;
+  background: #d7dfe9;
+  color: #22262f;
   font-size: 20px;
   font-weight: 500;
   border: none;
@@ -114,12 +114,12 @@
   transition: all 0.2s ease;
 
   &.active {
-    background: #2D3139;
-    color: #FFFFFF;
+    background: #2d3139;
+    color: #ffffff;
   }
 
   &:hover:not(.active) {
-    background: darken(#D7DFE9, 5%);
+    background: darken(#d7dfe9, 5%);
   }
 }
 
@@ -128,15 +128,17 @@
   gap: 1rem;
   flex-wrap: wrap;
 
+
   @media (max-width: 640px) {
     flex-direction: column;
   }
 }
 
 .selector {
+
   min-width: 250px;
 
-  // Apply the same light gray background to dropdowns if they use a custom class
+ 
   @media (max-width: 640px) {
     min-width: 100%;
   }
@@ -166,7 +168,8 @@
 }
 
 .helpSubtitle {
-  font-size: 2rem;
+  width: 360px;
+  font-size: 24px;
   font-weight: 500;
   margin: 0;
   color: $color-black;
@@ -176,6 +179,12 @@
   font-size: 1.125rem;
   color: #64748b;
   margin: 0;
+}
+
+.helpIcon {
+  width: 106px;
+  height: auto;
+  pointer-events: none;
 }
 
 .helpLink {

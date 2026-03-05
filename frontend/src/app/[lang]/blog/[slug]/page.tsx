@@ -1,6 +1,20 @@
 import { BlogPage } from "@/components/pages/BlogPage/BlogPage";
-import { getBlogBySlug } from "@/lib/api";
+import { getBlogBySlug, getPosts } from "@/lib/api";
 import { notFound } from "next/navigation";
+import { i18n } from "@/i18n-config";
+
+export async function generateStaticParams() {
+    const posts = await getPosts();
+    const paths: { lang: string; slug: string }[] = [];
+
+    i18n.locales.forEach((locale) => {
+        posts.forEach((post) => {
+            paths.push({ lang: locale, slug: post.slug });
+        });
+    });
+
+    return paths;
+}
 
 interface PageProps {
     params: Promise<{

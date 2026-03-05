@@ -13,17 +13,17 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem 1.5rem;
-    background: $color-white;
-    border: 1px solid $color-border;
-    border-radius: $radius-xl;
-    box-shadow: $shadow-sm;
+    background: #D2DAE7;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
     cursor: pointer;
     transition: all 0.2s ease;
     text-align: left;
 
     &:hover {
         border-color: $color-black;
-        background: #f8f8f8;
+        background: #d1d5dc;
     }
 
     &.open {
@@ -42,7 +42,7 @@
     display: flex;
     align-items: center;
     transition: transform 0.2s ease;
-    color: $color-gray;
+    color: #000;
 
     .open & {
         transform: rotate(180deg);
@@ -59,7 +59,7 @@
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: $radius-xl;
+    border-radius: 8px;
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
     padding: 0.5rem;
     overflow: hidden;

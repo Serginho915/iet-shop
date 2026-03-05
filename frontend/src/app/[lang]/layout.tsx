@@ -6,6 +6,11 @@ import { Header } from "@/components/header/Header/Header";
 import { Footer } from "@/components/footer/Footer/Footer";
 import { LanguageProvider } from "@/lib/LanguageContext";
 import { CookieBanner } from "@/components/ui/CookieBanner/CookieBanner";
+import { i18n } from "@/i18n-config";
+
+export async function generateStaticParams() {
+  return i18n.locales.map((locale) => ({ lang: locale }));
+}
 
 const roboto = Roboto({
   weight: ["400", "500", "700", "900"],

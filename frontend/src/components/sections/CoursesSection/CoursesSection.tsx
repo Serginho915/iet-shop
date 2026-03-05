@@ -25,32 +25,14 @@ const CoursesContent = ({ courses = [] }: CoursesSectionProps) => {
   const tags = courseTags[lang];
   const types = courseTypes[lang];
 
-  const [activeTag, setActiveTag] = useState("all");
-  const [activeType, setActiveType] = useState("all");
-  const [activeAudience, setActiveAudience] = useState("all");
+  const tagFromUrl = searchParams.get("courseTag");
+  const activeTag = (tagFromUrl && tags.some(t => t.id === tagFromUrl)) ? tagFromUrl : "all";
 
-  useEffect(() => {
-    const tagFromUrl = searchParams.get("courseTag");
-    if (tagFromUrl && tags.some(t => t.id === tagFromUrl)) {
-      setActiveTag(tagFromUrl);
-    } else {
-      setActiveTag("all");
-    }
+  const typeFromUrl = searchParams.get("courseType");
+  const activeType = (typeFromUrl && types.some(t => t.id === typeFromUrl)) ? typeFromUrl : "all";
 
-    const typeFromUrl = searchParams.get("courseType");
-    if (typeFromUrl && types.some(t => t.id === typeFromUrl)) {
-      setActiveType(typeFromUrl);
-    } else {
-      setActiveType("all");
-    }
-
-    const audienceFromUrl = searchParams.get("audience");
-    if (audienceFromUrl && ["adults", "kids"].includes(audienceFromUrl)) {
-      setActiveAudience(audienceFromUrl);
-    } else {
-      setActiveAudience("all");
-    }
-  }, [searchParams, tags, types]);
+  const audienceFromUrl = searchParams.get("audience");
+  const activeAudience = (audienceFromUrl && ["adults", "kids"].includes(audienceFromUrl)) ? audienceFromUrl : "all";
 
   const updateParams = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -64,10 +46,18 @@ const CoursesContent = ({ courses = [] }: CoursesSectionProps) => {
 
   const handleTagChange = (id: string) => updateParams("courseTag", id);
   const handleTypeChange = (id: string) => updateParams("courseType", id);
-  const handleAudienceChange = (id: string) => updateParams("audience", id);
+  const handleAudienceChange = (id: string) => {
+    if (id === "all") {
+      const params = new URLSearchParams();
+      // We keep the hash if we want, or just push a clean URL
+      router.push(`?#courses`, { scroll: false });
+    } else {
+      updateParams("audience", id);
+    }
+  };
 
   const filteredCourses = courses.filter((course) => {
-    const matchesTag = activeTag === "all" || course.tags.some(tag => tag.name.toLowerCase() === activeTag.toLowerCase());
+    const matchesTag = activeTag === "all" || course.tags.some(tag => tag.name.toLowerCase() === activeTag.toLowerCase() || tag.id.toString() === activeTag);
     const matchesType = activeType === "all" || course.type === activeType;
     const matchesAudience = activeAudience === "all" || course.audience === activeAudience;
     return matchesTag && matchesType && matchesAudience;
@@ -131,8 +121,8 @@ const CoursesContent = ({ courses = [] }: CoursesSectionProps) => {
             <Image
               src={helpGuy}
               alt="Help Icon"
-              width={32}
-              height={32}
+              width={106}
+              height={106}
               className={styles.helpIcon}
             />
             <div className={styles.helpTextWrapper}>

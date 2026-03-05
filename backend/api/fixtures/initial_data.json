@@ -21,42 +21,76 @@
     "model": "api.tag",
     "pk": 1,
     "fields": {
-      "name": "python"
+      "name": "programming"
     }
   },
   {
     "model": "api.tag",
     "pk": 2,
     "fields": {
-      "name": "backend"
+      "name": "design"
     }
   },
   {
     "model": "api.tag",
     "pk": 3,
     "fields": {
-      "name": "education"
+      "name": "marketing"
+    }
+  },
+  {
+    "model": "api.tag",
+    "pk": 4,
+    "fields": {
+      "name": "adults"
+    }
+  },
+  {
+    "model": "api.tag",
+    "pk": 5,
+    "fields": {
+      "name": "kids"
+    }
+  },
+  {
+    "model": "api.tag",
+    "pk": 6,
+    "fields": {
+      "name": "networking"
+    }
+  },
+  {
+    "model": "api.tag",
+    "pk": 7,
+    "fields": {
+      "name": "personalized"
+    }
+  },
+  {
+    "model": "api.tag",
+    "pk": 8,
+    "fields": {
+      "name": "roblox"
     }
   },
   {
     "model": "api.course",
     "pk": 1,
     "fields": {
-      "slug": "python-backend-pro",
-      "title": "Python Backend Pro",
-      "start": "2026-04-01",
-      "image": "courses/python-backend-pro.jpg",
-      "description": "Практический курс по Django/DRF и REST API.",
-      "duration": "12 weeks",
-      "type": "online",
-      "price": 79000,
+      "slug": "smm-pro",
+      "title": "Social Media Marketing Pro",
+      "start": "2026-05-12",
+      "image": "",
+      "description": "Become the best marketing expery in the world!",
+      "duration": "2 months",
+      "type": "hybrid",
+      "price": 199,
       "is_active": true,
-      "stripe_product_id": 101001,
-      "stripe_price_id": 201001,
+      "stripe_product_id": null,
+      "stripe_price_id": null,
       "tags": [
-        1,
-        2,
-        3
+        3,
+        4
       ]
     }
   },
@@ -64,20 +98,82 @@
     "model": "api.course",
     "pk": 2,
     "fields": {
-      "slug": "fullstack-essentials",
-      "title": "Fullstack Essentials",
-      "start": "2026-05-15",
-      "image": "courses/fullstack-essentials.jpg",
-      "description": "Базовый курс по fullstack-разработке.",
-      "duration": "10 weeks",
+      "slug": "cisco-ccna",
+      "title": "Cisco CCNA Certification",
+      "start": "2026-05-12",
+      "image": "",
+      "description": "Subtitle!",
+      "duration": "2 months",
       "type": "hybrid",
-      "price": 69000,
+      "price": 249,
       "is_active": true,
-      "stripe_product_id": 101002,
-      "stripe_price_id": 201002,
+      "stripe_product_id": null,
+      "stripe_price_id": null,
       "tags": [
-        2,
-        3
+        6,
+        4
+      ]
+    }
+  },
+  {
+    "model": "api.course",
+    "pk": 3,
+    "fields": {
+      "slug": "personalized-it",
+      "title": "Personalized IT Training",
+      "start": "2026-05-12",
+      "image": "",
+      "description": "Personalized IT Training",
+      "duration": "2 months",
+      "type": "hybrid",
+      "price": 299,
+      "is_active": true,
+      "stripe_product_id": null,
+      "stripe_price_id": null,
+      "tags": [
+        7,
+        4
+      ]
+    }
+  },
+  {
+    "model": "api.course",
+    "pk": 4,
+    "fields": {
+      "slug": "tech-academy-kids",
+      "title": "Digital Tech Academy for Kids (7-14)",
+      "start": "2026-05-12",
+      "image": "",
+      "description": "Digital Tech Academy for Kids (7-14)",
+      "duration": "2 months",
+      "type": "hybrid",
+      "price": 149,
+      "is_active": true,
+      "stripe_product_id": null,
+      "stripe_price_id": null,
+      "tags": [
+        5
+      ]
+    }
+  },
+  {
+    "model": "api.course",
+    "pk": 5,
+    "fields": {
+      "slug": "roblox-game-dev",
+      "title": "Game Development with Roblox Studio",
+      "start": "2026-05-12",
+      "image": "",
+      "description": "Game Development with Roblox Studio",
+      "duration": "2 months",
+      "type": "hybrid",
+      "price": 179,
+      "is_active": true,
+      "stripe_product_id": null,
+      "stripe_price_id": null,
+      "tags": [
+        5,
+        8
       ]
     }
   },

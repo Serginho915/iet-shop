@@ -1,5 +1,5 @@
 import { BlogPage } from "@/components/pages/BlogPage/BlogPage";
-import { getBlogBySlug, getPosts } from "@/lib/api";
+import { getPostBySlug, getPosts } from "@/lib/api";
 import { notFound } from "next/navigation";
 import { i18n } from "@/i18n-config";
 
@@ -24,7 +24,7 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
     const { slug } = await params;
-    const post = await getBlogBySlug(slug);
+    const post = await getPostBySlug(slug);
 
     if (!post) {
         notFound();

@@ -13,7 +13,7 @@ class CourseAdmin(admin.ModelAdmin):
 	list_filter = ("type", "is_active", "start")
 	search_fields = ("title", "slug")
 	readonly_fields = ("slug",)
-
+ 
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):

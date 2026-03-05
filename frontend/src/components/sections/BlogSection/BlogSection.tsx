@@ -92,6 +92,7 @@ const BlogContent = ({ posts = [] }: BlogSectionProps) => {
                                 slug={post.slug}
                                 tags={post.tags}
                                 created_at={post.created_at}
+                                picture={post.picture}
                             />
                         ))}
                     </ul>

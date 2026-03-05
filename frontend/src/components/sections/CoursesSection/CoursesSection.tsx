@@ -10,7 +10,7 @@ import styles from "./CoursesSection.module.scss";
 import { IconLightbulb, IconHelpBtn } from "@/components/icons";
 import { CourseCard } from "@/components/ui/Coursecard/CourseCard";
 import { Select } from "@/components/ui/Select/Select";
-import { Course } from "@/lib/api";
+import { Course, getTags, Tag } from "@/lib/api";
 import { useTranslate } from "@/lib/useTranslate";
 
 interface CoursesSectionProps {
@@ -22,8 +22,19 @@ const CoursesContent = ({ courses = [] }: CoursesSectionProps) => {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const tags = courseTags[lang];
+  const [dbTags, setDbTags] = useState<Tag[]>([]);
   const types = courseTypes[lang];
+
+  useEffect(() => {
+    getTags().then(tags => {
+      setDbTags(tags);
+    });
+  }, []);
+
+  const tags = [
+    { id: 'all', name: lang === 'bg' ? 'Всички категории' : 'All Categories' },
+    ...dbTags.map(tag => ({ id: tag.id.toString(), name: tag.name }))
+  ];
 
   const tagFromUrl = searchParams.get("courseTag");
   const activeTag = (tagFromUrl && tags.some(t => t.id === tagFromUrl)) ? tagFromUrl : "all";
@@ -49,12 +60,12 @@ const CoursesContent = ({ courses = [] }: CoursesSectionProps) => {
   const handleAudienceChange = (id: string) => {
     if (id === "all") {
       const params = new URLSearchParams();
-      // We keep the hash if we want, or just push a clean URL
       router.push(`?#courses`, { scroll: false });
     } else {
       updateParams("audience", id);
     }
   };
+
 
   const filteredCourses = courses.filter((course) => {
     const matchesTag = activeTag === "all" || course.tags.some(tag => tag.name.toLowerCase() === activeTag.toLowerCase() || tag.id.toString() === activeTag);
@@ -85,6 +96,7 @@ const CoursesContent = ({ courses = [] }: CoursesSectionProps) => {
             </div>
           </div>
         </div>
+
 
         <div className={styles.filterBar}>
           <div className={styles.filterControls}>

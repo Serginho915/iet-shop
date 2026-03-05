@@ -6,7 +6,7 @@ import { IconHelpBtn } from "@/components/icons";
 import { LocalizedLink as Link } from "@/components/ui/LocalizedLink/LocalizedLink";
 import { useRouter } from 'next/navigation';
 import { Tag } from "@/lib/api";
-
+import Image from "next/image";
 import { useLanguage } from "@/lib/LanguageContext";
 
 export interface BlogCardProps {
@@ -14,10 +14,10 @@ export interface BlogCardProps {
   tags: Tag[];
   author: string;
   title: string;
-  /** Short excerpt — derived from content on the caller side */
   excerpt?: string;
   slug: string;
   created_at: string;
+  picture?: string;
 }
 
 export const BlogCard = ({
@@ -27,12 +27,13 @@ export const BlogCard = ({
   excerpt,
   slug,
   created_at,
+  picture,
 }: BlogCardProps) => {
   const router = useRouter();
   const { lang } = useLanguage();
 
   const handleCardClick = () => {
-    router.push(`/blog/${slug}`);
+    router.push(`/${lang}/blog/${slug}`);
   };
 
   const [formattedDate, setFormattedDate] = React.useState<string>("");
@@ -65,7 +66,17 @@ export const BlogCard = ({
       </div>
 
       <div className={styles.imageWrapper}>
-        <div className={styles.placeholder} />
+        {picture ? (
+          <Image
+            src={picture.startsWith('http') ? picture : `/${picture}`}
+            alt={title}
+            fill
+            className={styles.image}
+            sizes="(max-width: 768px) 100vw, 509px"
+          />
+        ) : (
+          <div className={styles.placeholder} />
+        )}
       </div>
 
       <div className={styles.content}>

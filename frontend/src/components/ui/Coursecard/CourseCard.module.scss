@@ -6,8 +6,10 @@
     background: #FFFFFF;
     border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: 40px;
-    display: grid;
-    gap: 40px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
     width: 633px;
     min-height: 291px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -16,51 +18,79 @@
         transform: translateY(-4px);
         box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
     }
+
+    @media (max-width: 768px) {
+        width: 100%;
+    }
 }
 
 .top {
-    padding: 24px 24px 0;
     display: flex;
     gap: 32px;
     align-items: flex-start;
+
+    @media (max-width: 640px) {
+        flex-direction: column;
+    }
+}
+
+.imageContainer {
+    width: 250px;
+    height: 155px;
+    border-radius: 32px;
+    overflow: hidden;
+    background: #E2E8F0;
+    flex-shrink: 0;
+
+    .image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 }
 
 .imagePlaceholder {
-    width: 250px;
-    height: 155px;
+    width: 100%;
+    height: 100%;
     background: #E2E8F0;
-    border-radius: 32px;
-    flex-shrink: 0;
 }
 
 .badges {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
     flex: 1;
 }
 
 .badge {
-    position: relative;
-    //border: 1px solid rgba(125, 211, 252, 0.3);
-    border-bottom: 2px solid #818CF8;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #E0F2FE;
     border-radius: 20px;
-    padding: 12px 24px;
-    font-size: 1.125rem;
-    color: $color-black;
-    text-align: center;
-    background: white;
-    width: 100%;
-    max-width: 240px;
-    align-self: flex-end;
+    padding: 10px 16px;
+    font-size: 0.9375rem;
+    color: #0369A1;
+    width: fit-content;
+    white-space: nowrap;
+}
+
+.badgeIcon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .titleWrapper {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-top: 8px;
-    margin-left: 24px;
 }
 
 .dot {
@@ -71,22 +101,31 @@
 }
 
 .title {
-    font-size: 1.75rem;
-    font-weight: 500;
+    font-size: 1.5rem;
+    font-weight: 600;
     color: $color-black;
     margin: 0;
+
+    @media (max-width: 640px) {
+        font-size: 1.25rem;
+    }
+}
+
+.description {
+    font-size: 1rem;
+    color: #64748b;
+    margin: 0;
+    line-height: 1.5;
 }
 
 .footer {
-    display: flex;;
-    justify-content: flex-end;
-    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
 }
 
 .actionLink {
-    position: absolute;
-    bottom: 3px;
-    left: 3px;
     width: 78px;
     height: 55px;
     display: flex;
@@ -98,20 +137,22 @@
     &:hover {
         transform: scale(1.05);
     }
-
-    svg {
-        display: block;
-        width: 100%;
-        height: 100%;
-    }
 }
 
 .submitBtn {
-    flex: 1;
-    max-width: 410px;
+    flex: 0 1 410px;
     height: 55px;
     font-size: 18px;
-    font-weight: 400;
-    border-radius: 24px ;
-    background-color: #1E293B ;
+    font-weight: 500;
+    border-radius: 24px;
+    background-color: $color-accent;
+    color: white;
+
+    &:hover {
+        background-color: $color-accent-hover;
+    }
+
+    @media (max-width: 640px) {
+        flex: 1;
+    }
 }

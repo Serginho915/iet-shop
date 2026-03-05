@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { Header } from "@/components/header/Header/Header";
 import { Footer } from "@/components/footer/Footer/Footer";
 import { LocalizedLink as Link } from "@/components/ui/LocalizedLink/LocalizedLink";
@@ -41,6 +42,18 @@ export const CoursePage = ({ course }: CoursePageProps) => {
             <main className={styles.coursePage}>
                 <div className={styles.container}>
                     <Breadcrumbs items={breadcrumbs} />
+                    {course.image && (
+                        <div className={styles.imageContainer}>
+                            <Image
+                                src={course.image}
+                                alt={course.title}
+                                width={1200}
+                                height={600}
+                                className={styles.courseImage}
+                                priority
+                            />
+                        </div>
+                    )}
                     <h1>{course.title}</h1>
                     <p className={styles.description}>{course.description}</p>
 

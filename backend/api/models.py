@@ -70,7 +70,8 @@ class Event(models.Model):
 
 
 class Post(models.Model):
-	title = models.CharField(max_length=255)
+  slug = models.SlugField(max_length=255, unique=True, blank=True, editable=False)
+  title = models.CharField(max_length=255)
 	author = models.CharField(max_length=255)
 	content = models.TextField()
 	picture = models.ImageField(upload_to="posts/")

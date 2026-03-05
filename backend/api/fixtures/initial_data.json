@@ -112,6 +112,7 @@
     "fields": {
       "title": "Почему DRF ускоряет разработку",
       "author": "IET Team",
+      "slug": "pochemu-drf-uskorjaet-razrabotku",
       "content": "Коротко о том, как DRF помогает быстрее запускать API.",
       "picture": "posts/drf-speed.jpg",
       "created_at": "2026-03-01T10:00:00Z",
@@ -127,6 +128,7 @@
     "fields": {
       "title": "Как выбрать IT-курс в 2026",
       "author": "IET Team",
+      "slug": "kak-vybrat-it-kurs-v-2026",
       "content": "Сравнение форматов обучения и практические рекомендации.",
       "picture": "posts/course-choice.jpg",
       "created_at": "2026-03-02T12:30:00Z",

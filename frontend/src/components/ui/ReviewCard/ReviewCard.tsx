@@ -1,7 +1,8 @@
 import React from 'react';
 
 import styles from './ReviewCard.module.scss';
-import { IconGoogle } from '@/components/icons';
+import { IconQuote } from '@/components/icons';
+import { IconGoogle} from '@/components/icons';
 
 interface ReviewCardProps {
     id?: string;
@@ -13,6 +14,9 @@ interface ReviewCardProps {
 export const ReviewCard = ({ text, name, studentStatus }: ReviewCardProps) => {
     return (
         <div className={styles.card}>
+            <div className={styles.quoteWrapper}>
+                <IconQuote className={styles.quoteIcon} />
+            </div>
             <p className={styles.reviewText}>
                 &ldquo;{text}&rdquo;
             </p>

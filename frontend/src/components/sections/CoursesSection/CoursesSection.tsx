@@ -4,7 +4,7 @@ import React, { useState, useEffect, Suspense } from "react";
 import Image from "next/image";
 import { LocalizedLink as Link } from "@/components/ui/LocalizedLink/LocalizedLink";
 import { useSearchParams, useRouter } from "next/navigation";
-import { translations, courseTags, courseTypes } from "./translations";
+import { translations, courseTypes } from "./translations";
 import helpGuy from "@/assets/HeroSection/Courseguyhelp.png";
 import styles from "./CoursesSection.module.scss";
 import { IconLightbulb, IconHelpBtn } from "@/components/icons";
@@ -15,21 +15,26 @@ import { useTranslate } from "@/lib/useTranslate";
 
 interface CoursesSectionProps {
   courses?: Course[];
+  tags?: Tag[];
 }
 
-const CoursesContent = ({ courses = [] }: CoursesSectionProps) => {
+const CoursesContent = ({ courses = [], tags: initialTags = [] }: CoursesSectionProps) => {
   const { t, lang } = useTranslate(translations);
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const [dbTags, setDbTags] = useState<Tag[]>([]);
+  const [dbTags, setDbTags] = useState<Tag[]>(initialTags);
   const types = courseTypes[lang];
 
   useEffect(() => {
-    getTags().then(tags => {
-      setDbTags(tags);
-    });
-  }, []);
+    if (initialTags.length === 0) {
+      getTags().then(tags => {
+        setDbTags(tags);
+      });
+    } else {
+      setDbTags(initialTags);
+    }
+  }, [initialTags]);
 
   const tags = [
     { id: 'all', name: lang === 'bg' ? 'Всички категории' : 'All Categories' },
@@ -98,6 +103,7 @@ const CoursesContent = ({ courses = [] }: CoursesSectionProps) => {
         </div>
 
 
+
         <div className={styles.filterBar}>
           <div className={styles.filterControls}>
             <div className={styles.audienceTabs}>
@@ -136,6 +142,7 @@ const CoursesContent = ({ courses = [] }: CoursesSectionProps) => {
               width={106}
               height={106}
               className={styles.helpIcon}
+              style={{ height: 'auto' }}
             />
             <div className={styles.helpTextWrapper}>
               <h4 className={styles.helpSubtitle}>{t.helpDeciding}</h4>

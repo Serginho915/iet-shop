@@ -9,8 +9,17 @@ import { Modal } from "@/components/ui/Modal/Modal";
 import { useLanguage } from "@/lib/LanguageContext";
 import { translations } from "./translations";
 import styles from "./Footer.module.scss";
-// Импортируем плакат на случай если это он
+
 import euProjectImg from "@/assets/Plakat-IOT-Digi.jpg";
+import {
+  IconFacebook,
+  IconInstagram,
+  IconLinkedIn,
+  IconYouTube
+} from "@/components/icons";
+import logoImg from "@/assets/logo-iet.jpg";
+import { getTags, type Tag } from "@/lib/api";
+import { useEffect } from "react";
 
 type FooterLink = {
   label: string;
@@ -131,6 +140,15 @@ export const Footer = ({ config }: FooterProps) => {
   const { lang } = useLanguage();
   const tr = translations[lang];
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [categories, setCategories] = useState<Tag[]>([]);
+
+  useEffect(() => {
+    getTags().then(tags => {
+      // Filter out audience tags (id 4 for adults usually) if needed, 
+      // but let's just keep all for now as categories
+      setCategories(tags);
+    });
+  }, []);
 
   const {
     companyName,
@@ -167,11 +185,16 @@ export const Footer = ({ config }: FooterProps) => {
     onClick: item.translationKey === "footerLegalEuInfo" ? handleOpenModal : undefined,
   }));
 
-  const coursesLinks: SimpleLink[] = courses.links.map((item) => ({
-    label: item.translationKey ? tr[item.translationKey] : item.label,
-    href: item.href,
-    external: item.external,
-  }));
+  const coursesLinks: SimpleLink[] = categories.length > 0
+    ? categories.map(tag => ({
+      label: tag.name,
+      href: `/#courses?category=${tag.id}`,
+    }))
+    : courses.links.map((item) => ({
+      label: item.translationKey ? tr[item.translationKey] : item.label,
+      href: item.href,
+      external: item.external,
+    }));
 
   return (
     <>
@@ -180,22 +203,32 @@ export const Footer = ({ config }: FooterProps) => {
           <div className={styles.top}>
             <div className={styles.companyColumn}>
               <div className={styles.company}>
+                <Link href="/" className={styles.logo}>
+                  <Image src={logoImg} alt="IET Logo" width={160} height={40} className={styles.logoImg} />
+                </Link>
                 <div className={styles.companyName}>{companyNameText}</div>
-                {logoText && <div className={styles.logo}>{logoText}</div>}
                 {socials.length > 0 && (
                   <div className={styles.socials}>
-                    {socials.map((social) => (
-                      <Link
-                        key={social.name}
-                        href={social.href}
-                        aria-label={social.label}
-                        className={styles.socialBtn}
-                        target={social.href.startsWith("http") ? "_blank" : undefined}
-                        rel={social.href.startsWith("http") ? "noreferrer" : undefined}
-                      >
-                        {social.label[0]}
-                      </Link>
-                    ))}
+                    {socials.map((social) => {
+                      let Icon = null;
+                      if (social.name === "facebook") Icon = IconFacebook;
+                      else if (social.name === "instagram") Icon = IconInstagram;
+                      else if (social.name === "linkedin") Icon = IconLinkedIn;
+                      else if (social.name === "youtube") Icon = IconYouTube;
+
+                      return (
+                        <Link
+                          key={social.name}
+                          href={social.href}
+                          aria-label={social.label}
+                          className={styles.socialBtn}
+                          target={social.href.startsWith("http") ? "_blank" : undefined}
+                          rel={social.href.startsWith("http") ? "noreferrer" : undefined}
+                        >
+                          {Icon ? <Icon className={styles.socialIcon} /> : social.label[0]}
+                        </Link>
+                      );
+                    })}
                   </div>
                 )}
               </div>

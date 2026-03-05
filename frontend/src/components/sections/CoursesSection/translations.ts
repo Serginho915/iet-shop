@@ -15,28 +15,6 @@ type CoursesTranslations = {
 };
 
 
-export type CourseTag = {
-    id: string;
-    name: string;
-}
-
-export const courseTags: Record<Lang, CourseTag[]> = {
-    en: [
-        { id: 'all', name: 'All Categories' },
-        { id: 'design', name: 'UI/UX Design' },
-        { id: 'programming', name: 'Programming' },
-        { id: 'marketing', name: 'Marketing' },
-        { id: 'robotics', name: 'Robotics' },
-    ],
-    bg: [
-        { id: 'all', name: 'Всички категории' },
-        { id: 'design', name: 'UI/UX Дизайн' },
-        { id: 'programming', name: 'Програмиране' },
-        { id: 'marketing', name: 'Маркетинг' },
-        { id: 'robotics', name: 'Роботика' },
-    ],
-}
-
 export type CourseTypeFilter = {
     id: string;
     name: string;

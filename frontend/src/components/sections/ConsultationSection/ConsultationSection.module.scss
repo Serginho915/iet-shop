@@ -13,8 +13,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 507px;
+    max-width: 648px;
     width: 100%;
+    border-radius: 48px;
+    background: #2C2F39;
+    padding: 32px 60px;
 }
 
 .header {
@@ -23,13 +26,12 @@
 }
 
 .title {
-    // Uses global H2 style
+    color: #fff;
     margin-bottom: 12px;
 }
 
 .description {
-    // Uses body style
-    color: #64748B;
+    color: #fff;
     max-width: 440px;
     margin: 0 auto;
 }
@@ -135,6 +137,12 @@
     margin-left: 8px;
 }
 
+.privacyGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
 .privacy {
     display: flex;
     align-items: center;
@@ -159,6 +167,10 @@
         background-color: #5A55F4;
         border-color: #5A55F4;
     }
+
+    &.hasError {
+        border-color: $color-accent;
+    }
 }
 
 .checkIcon {
@@ -169,7 +181,7 @@
 
 .privacyText {
     font-size: 14px;
-    color: #475569;
+    color: #fff;
     line-height: normal;
 }
 
@@ -189,13 +201,10 @@
     min-width: 212px;
 }
 
-.successMessage {
-    margin-top: 2rem;
-    padding: 1rem 2rem;
-    background-color: #ECFDF5;
-    border: 1px solid #10B981;
-    color: #065F46;
-    border-radius: 12px;
+.simpleSuccess {
+    color: #fff;
+    font-size: 24px;
     text-align: center;
+    padding: 60px 0;
     font-weight: 500;
 }

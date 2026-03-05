@@ -7,9 +7,14 @@ import { translations } from "./translations";
 import { EventCard } from "@/components/ui/EventCard/EventCard";
 import { IconArrowDown } from "@/components/icons";
 import { useVerticalScroll } from "@/lib/useVerticalScroll";
+import { Event } from "@/lib/api";
 
-export const EventsSection = () => {
-  const { t } = useTranslate(translations);
+interface EventsSectionProps {
+  events?: Event[];
+}
+
+export const EventsSection = ({ events = [] }: EventsSectionProps) => {
+  const { t, lang } = useTranslate(translations);
 
   const { containerRef, scrollNext } = useVerticalScroll({
     cardHeight: 180,
@@ -28,27 +33,39 @@ export const EventsSection = () => {
 
         <div className={styles.scrollContainer} ref={containerRef}>
           <div className={styles.eventsList}>
-            {t.events.map((event) => (
-              <EventCard
-                key={event.id}
-                title={event.title}
-                date={event.date}
-                tags={event.tags}
-                location={event.location}
-                joinBtnText={t.joinBtn}
-                onJoin={() => {
-                  if (typeof window !== 'undefined' && event.joinUrl) {
-                    window.open(event.joinUrl, '_blank');
-                  }
-                }}
-              />
-            ))}
+            {events.map((event) => {
+              const dateObj = new Date(event.date);
+              const formattedDate = !isNaN(dateObj.getTime())
+                ? dateObj.toLocaleDateString(lang === 'bg' ? 'bg-BG' : 'en-GB', {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric',
+                })
+                : event.date;
+
+              return (
+                <EventCard
+                  key={event.id}
+                  title={event.title}
+                  date={formattedDate}
+                  tags={event.tags.map(tag => tag.name)}
+                  location={event.type}
+                  joinBtnText={t.joinBtn}
+                  onJoin={() => {
+                    // Logic for joining event could be added here
+                  }}
+                />
+              );
+            })}
+            {events.length === 0 && <div className={styles.noEvents}>{lang === 'bg' ? 'Няма предстоящи събития' : 'No upcoming events'}</div>}
           </div>
         </div>
 
-        <button className={styles.scrollBtn} onClick={scrollNext} aria-label="Scroll to next events">
-          <IconArrowDown />
-        </button>
+        {events.length > 0 && (
+          <button className={styles.scrollBtn} onClick={scrollNext} aria-label="Scroll to next events">
+            <IconArrowDown />
+          </button>
+        )}
       </div>
     </section>
   );

@@ -1,12 +1,9 @@
-import { i18n } from "@/i18n-config";
-
-// ─── Tag ───────────────────────────────────────────────────────────────────
+// ─── Interfaces ─────────────────────────────────────────────────────────────
 export interface Tag {
   id: number;
   name: string;
 }
 
-// ─── Course ────────────────────────────────────────────────────────────────
 export interface Course {
   id: number;
   slug: string;
@@ -24,7 +21,6 @@ export interface Course {
   audience?: "adults" | "kids";
 }
 
-// ─── Post (blog article) ────────────────────────────────────────────────────
 export interface Post {
   id: number;
   slug: string;
@@ -36,68 +32,87 @@ export interface Post {
   tags: Tag[];
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
-
-// ─── Internal Helpers ───────────────────────────────────────────────────────
-
-export async function getTags(): Promise<Tag[]> {
-  try {
-    const res = await fetch(`${API_URL}/tags/`, { next: { revalidate: 3600 } });
-    if (!res.ok) {
-      console.error(`Tags API error: ${res.status}`);
-      return [];
-    }
-    return await res.json();
-  } catch (error) {
-    console.error("Critical error fetching tags:", error);
-    return [];
-  }
+export interface Event {
+  id: number;
+  title: string;
+  date: string;
+  type: "online" | "offline" | "hybrid";
+  tags: Tag[];
 }
 
-function mapCourse(course: any, allTags: Tag[]): Course {
-  const courseTags = (course.tags || []).map((tagId: number) => {
-    return allTags.find((t: Tag) => t.id === tagId) || { id: tagId, name: 'Unknown' };
-  });
+const API_BASE = "http://127.0.0.1:8000";
+const API_URL = `${API_BASE}/api`;
 
-  // Determine audience based on specific tags (4: Adults, 5: Kids)
-  let audience: "adults" | "kids" | undefined = undefined;
-  if (course.tags?.includes(4)) audience = "adults";
-  else if (course.tags?.includes(5)) audience = "kids";
+const resolveUrl = (url?: string) => {
+  if (!url) return undefined;
+  if (url.startsWith('http')) return url;
+  return `${API_BASE}${url.startsWith('/') ? '' : '/'}${url}`;
+};
 
-  // Map image URL to backend media root
-  let imageUrl = course.image;
-  if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('/')) {
-    const baseUrl = API_URL.replace('/api', '');
-    imageUrl = `${baseUrl}/media/${imageUrl}`;
+const mapTags = (tagIds: any[], allTags: Tag[]) => (tagIds || []).map(id => {
+  if (typeof id === 'object') return id;
+  return allTags.find(t => t.id === Number(id)) || { id: Number(id), name: `Tag ${id}` };
+});
+
+const safeFetch = async (endpoint: string) => {
+  const url = `${API_URL}${endpoint}/`.replace(/\/+$/, '/');
+  try {
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch (err) {
+    return null;
   }
+};
+
+export async function getTags(): Promise<Tag[]> {
+  const tags = await safeFetch('/tags');
+  return tags || [];
+}
+
+export async function getHomePageData() {
+  const [tags, courses, posts, events] = await Promise.all([
+    getTags(),
+    safeFetch('/courses'),
+    safeFetch('/posts'),
+    safeFetch('/events')
+  ]);
+
+  const allTags = tags || [];
 
   return {
-    ...course,
-    image: imageUrl,
-    tags: courseTags,
-    audience: audience
+    tags: allTags,
+    courses: (courses || []).map((c: any) => ({
+      ...c,
+      image: resolveUrl(c.image),
+      tags: mapTags(c.tags, allTags),
+      audience: c.tags?.some((t: any) => t === 4 || t.id === 4) ? "adults" : "kids"
+    })),
+    posts: (posts || []).map((p: any) => ({
+      ...p,
+      picture: resolveUrl(p.picture),
+      tags: mapTags(p.tags, allTags)
+    })),
+    events: (events || []).map((e: any) => ({
+      ...e,
+      tags: mapTags(e.tags, allTags)
+    }))
   };
 }
 
-// ─── Public API ─────────────────────────────────────────────────────────────
-
 export async function getCourses(): Promise<Course[]> {
-  try {
-    const [coursesRes, tags] = await Promise.all([
-      fetch(`${API_URL}/courses/`, { next: { revalidate: 60 } }),
-      getTags()
-    ]);
+  const { courses } = await getHomePageData();
+  return courses;
+}
 
-    if (!coursesRes.ok) {
-      console.error(`Courses API failed with status ${coursesRes.status}`);
-      return [];
-    }
-    const data = await coursesRes.json();
-    return data.map((c: any) => mapCourse(c, tags));
-  } catch (error) {
-    console.error("Critical error fetching courses:", error);
-    return [];
-  }
+export async function getPosts(): Promise<Post[]> {
+  const { posts } = await getHomePageData();
+  return posts;
+}
+
+export async function getEvents(): Promise<Event[]> {
+  const { events } = await getHomePageData();
+  return events;
 }
 
 export async function getCourseBySlug(slug: string): Promise<Course | undefined> {
@@ -105,40 +120,12 @@ export async function getCourseBySlug(slug: string): Promise<Course | undefined>
   return courses.find(c => c.slug === slug);
 }
 
-export async function getPosts(): Promise<Post[]> {
-  try {
-    const [postsRes, tags] = await Promise.all([
-      fetch(`${API_URL}/posts/`, { next: { revalidate: 60 } }),
-      getTags()
-    ]);
-
-    if (!postsRes.ok) {
-      console.error(`Posts API failed with status ${postsRes.status}`);
-      return [];
-    }
-
-    const data = await postsRes.json();
-    return data.map((post: any) => {
-      let pictureUrl = post.picture;
-      if (pictureUrl && !pictureUrl.startsWith('http') && !pictureUrl.startsWith('/')) {
-        const baseUrl = API_URL.replace('/api', '');
-        pictureUrl = `${baseUrl}/media/${pictureUrl}`;
-      }
-      return {
-        ...post,
-        picture: pictureUrl,
-        tags: (post.tags || []).map((id: number) =>
-          tags.find((t: Tag) => t.id === id) || { id, name: 'Unknown' }
-        )
-      };
-    });
-  } catch (error) {
-    console.error("Critical error fetching posts:", error);
-    return [];
-  }
-}
-
 export async function getPostBySlug(slug: string): Promise<Post | undefined> {
   const posts = await getPosts();
   return posts.find(p => p.slug === slug);
+}
+
+export async function getEventBySlug(title: string): Promise<Event | undefined> {
+  const events = await getEvents();
+  return events.find(e => e.title === title);
 }

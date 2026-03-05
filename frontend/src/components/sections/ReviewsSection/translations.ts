@@ -4,7 +4,7 @@ export type Review = {
     id: string;
     text: string;
     name: string;
-    studentStatus: string; // e.g., "Student" or "Graduate"
+    studentStatus: string; //Student or Graduate
 };
 
 export type ReviewsTranslations = {
@@ -19,8 +19,8 @@ export const translations: Record<Lang, ReviewsTranslations> = {
     en: {
         title: "We’re proud to have such",
         highlight: "incredible alumni!",
-        reminderTitle: 'Glad You Asked!',
-        reminderHighlight: 'If there’s still something you want to check, don’t hesistate to give us a shout!',
+        reminderTitle: 'Friendly Reminder:',
+        reminderHighlight: 'You can do anything. If you let us guide you, we show you that.',
         reviews: [
             {
                 id: "1",
@@ -69,8 +69,8 @@ export const translations: Record<Lang, ReviewsTranslations> = {
     bg: {
         title: "Гордеем се, че имаме такива",
         highlight: "невероятни възпитаници!",
-        reminderTitle: 'Радвам се, че попитахте!',
-        reminderHighlight: 'If there’s still something you want to check, don’t hesistate to give us a shout!',
+        reminderTitle: 'Приятелско напомняне:',
+        reminderHighlight: 'Можете всичко. Ако ни позволите да ви водим, ще ви го докажем.',
         reviews: [
             {
                 id: "1",

@@ -14,27 +14,51 @@ import { FAQSection } from "@/components/sections/FAQSection/FAQSection";
 import { Header } from "@/components/header/Header/Header";
 import { Footer } from "@/components/footer/Footer/Footer";
 import styles from "./PageContent.module.scss";
-import { Course, Post } from "@/lib/api";
-
+import { useState, useEffect } from "react";
+import { getHomePageData, Course, Post, Tag, Event } from "@/lib/api";
 
 export const PageContent = ({
-    metadata = {},
-    courses = [],
-    posts = []
+    metadata: initialMetadata = {},
+    courses: initialCourses = [],
+    posts: initialPosts = [],
+    tags: initialTags = [],
+    events: initialEvents = []
 }: {
     metadata?: Record<string, unknown>;
     courses?: Course[];
     posts?: Post[];
+    tags?: Tag[];
+    events?: Event[];
 }) => {
+    const [courses, setCourses] = useState<Course[]>(initialCourses);
+    const [posts, setPosts] = useState<Post[]>(initialPosts);
+    const [tags, setTags] = useState<Tag[]>(initialTags);
+    const [events, setEvents] = useState<Event[]>(initialEvents);
+
+    useEffect(() => {
+        // If server-side fetch failed (returned empty arrays), try fetching on client
+        if (initialCourses.length === 0 && initialPosts.length === 0) {
+            console.log("[Client] Server data missing, fetching directly from API...");
+            getHomePageData().then(data => {
+                setCourses(data.courses);
+                setPosts(data.posts);
+                setTags(data.tags);
+                setEvents(data.events);
+            }).catch(err => {
+                console.error("[Client] API call failed:", err);
+            });
+        }
+    }, [initialCourses, initialPosts]);
+
     return (
         <>
             <Header />
             <main className={styles.page}>
-                <HeroSection metadata={metadata} />
-                <EventsSection />
-                <CoursesSection courses={courses} />
+                <HeroSection metadata={initialMetadata} />
+                <CoursesSection courses={courses} tags={tags} />
                 <AdvantagesSection />
                 <JourneySection />
+                <EventsSection events={events} />
                 <ReviewsSection />
                 <ConsultationSection />
                 <BlogSection posts={posts} />

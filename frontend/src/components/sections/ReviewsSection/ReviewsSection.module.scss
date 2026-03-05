@@ -2,8 +2,8 @@
 @use "../../../styles/mixins" as *;
 
 .section {
-    padding:0 0 80px 0;
-    background-color: #F8F9FA;
+    padding: 0 0 80px 0;
+
 }
 
 .sectionLayout {
@@ -15,6 +15,8 @@
 .container {
     @include container;
     padding: 0 44px;
+    border-radius: 48px;
+    background: linear-gradient(180deg, #DEE5FF -8.46%, #E5EFFD 54.11%, #FFF 94.79%);
 }
 
 .mainLayout {
@@ -32,9 +34,8 @@
     justify-content: space-between;
 }
 
-.titleContainer {
-    // margin-bottom: 2rem;
-}
+// .titleContainer {
+// }
 
 .title {
     font-size: 38px;
@@ -49,9 +50,8 @@
     display: block;
 }
 
-.navigation {
-    // margin-top: 22px;
-}
+// .navigation {
+// }
 
 .navList {
     display: flex;
@@ -156,6 +156,6 @@
 
 .reminderLayout {
     display: flex;
-    gap: 34px;
+    justify-content: center;
     margin-top: 40px;
 }

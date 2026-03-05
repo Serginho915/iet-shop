@@ -10,6 +10,16 @@
     border-radius: 48px;
     background: #FFF;
     box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.25);
+    position: relative;
+}
+
+.quoteWrapper {
+    margin-bottom: 24px;
+}
+
+.quoteIcon {
+    width: 48px;
+    height: 48px;
 }
 
 .reviewText {

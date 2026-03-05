@@ -1,4 +1,4 @@
-import { getCourses, getPosts } from "@/lib/api";
+import { getHomePageData } from "@/lib/api";
 import { PageContent } from "@/components/pages/HomePage/PageContent";
 import { i18n } from "@/i18n-config";
 
@@ -7,9 +7,14 @@ export async function generateStaticParams() {
 }
 
 export default async function Home() {
-    const courses = await getCourses();
-    const posts = await getPosts();
+    const data = await getHomePageData();
+
     return (
-        <PageContent courses={courses} posts={posts} />
+        <PageContent
+            courses={data.courses}
+            posts={data.posts}
+            tags={data.tags}
+            events={data.events}
+        />
     );
 }

@@ -26,9 +26,5 @@ export default async function Page({ params }: PageProps) {
     const { slug } = await params;
     const post = await getPostBySlug(slug);
 
-    if (!post) {
-        notFound();
-    }
-
-    return <BlogPage post={post} />;
+    return <BlogPage post={post} slug={slug} />;
 }

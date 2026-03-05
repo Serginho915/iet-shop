@@ -1,19 +1,12 @@
 import type { NextConfig } from "next";
 
-const IMAGE_HOSTNAMES = process.env.NEXT_PUBLIC_IMAGE_HOSTNAMES || "";
-
-const imageHostnames = IMAGE_HOSTNAMES.split(",")
-  .map((host) => host.trim())
-  .filter(Boolean);
-
 const nextConfig: NextConfig = {
-  output: "export",
   images: {
     unoptimized: true,
-    remotePatterns: imageHostnames.map((hostname) => ({
-      protocol: "https",
-      hostname,
-    })),
+    remotePatterns: [
+      { protocol: "http", hostname: "127.0.0.1" },
+      { protocol: "http", hostname: "localhost" },
+    ],
   },
 };
 

@@ -2,7 +2,7 @@
 
 import React from "react";
 import styles from "./BlogCard.module.scss";
-import { IconHelpBtn } from "@/components/icons";
+import { IconArrowUpRight } from "@/components/icons";
 import { LocalizedLink as Link } from "@/components/ui/LocalizedLink/LocalizedLink";
 import { useRouter } from 'next/navigation';
 import { Tag } from "@/lib/api";
@@ -36,15 +36,6 @@ export const BlogCard = ({
     router.push(`/${lang}/blog/${slug}`);
   };
 
-  const [formattedDate, setFormattedDate] = React.useState<string>("");
-
-  React.useEffect(() => {
-    if (created_at) {
-      const locale = lang === "bg" ? "bg-BG" : "en-GB";
-      setFormattedDate(new Date(created_at).toLocaleDateString(locale));
-    }
-  }, [created_at, lang]);
-
   return (
     <div className={styles.card} onClick={handleCardClick} style={{ cursor: 'pointer' }}>
       <div className={styles.top}>
@@ -61,7 +52,9 @@ export const BlogCard = ({
           aria-label="Read full post"
           onClick={(e) => e.stopPropagation()}
         >
-          <IconHelpBtn />
+          <div className={styles.arrowCircle}>
+            <IconArrowUpRight className={styles.arrowIcon} />
+          </div>
         </Link>
       </div>
 
@@ -80,10 +73,7 @@ export const BlogCard = ({
       </div>
 
       <div className={styles.content}>
-        <div className={styles.meta}>
-          <span className={styles.author}>{author}</span>
-          {formattedDate && <span className={styles.date}>{formattedDate}</span>}
-        </div>
+        <div className={styles.authorLabel}>{author}</div>
         <h4 className={styles.title}>{title}</h4>
         {excerpt && <p className={styles.description}>{excerpt}</p>}
       </div>

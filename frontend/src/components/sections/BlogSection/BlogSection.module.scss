@@ -19,7 +19,8 @@
   width: 100%;
   overflow-x: hidden;
   position: relative;
-
+  padding: 20px 0;
+  margin: -20px 0;
 }
 
 .blogList {
@@ -28,9 +29,8 @@
   flex-wrap: nowrap;
   gap: 24px;
   list-style: none;
-  padding: 0;
+  padding: 20px 0;
   margin: 0;
-
 }
 
 .infoBadge {

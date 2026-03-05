@@ -21,56 +21,35 @@
     "model": "api.tag",
     "pk": 1,
     "fields": {
-      "name": "programming"
+      "name": "SMM"
     }
   },
   {
     "model": "api.tag",
     "pk": 2,
     "fields": {
-      "name": "design"
+      "name": "Networking"
     }
   },
   {
     "model": "api.tag",
     "pk": 3,
     "fields": {
-      "name": "marketing"
+      "name": "IT Training"
     }
   },
   {
     "model": "api.tag",
     "pk": 4,
     "fields": {
-      "name": "adults"
+      "name": "Education"
     }
   },
   {
     "model": "api.tag",
     "pk": 5,
     "fields": {
-      "name": "kids"
-    }
-  },
-  {
-    "model": "api.tag",
-    "pk": 6,
-    "fields": {
-      "name": "networking"
-    }
-  },
-  {
-    "model": "api.tag",
-    "pk": 7,
-    "fields": {
-      "name": "personalized"
-    }
-  },
-  {
-    "model": "api.tag",
-    "pk": 8,
-    "fields": {
-      "name": "roblox"
+      "name": "GameDev"
     }
   },
   {
@@ -80,18 +59,14 @@
       "slug": "smm-pro",
       "title": "Social Media Marketing Pro",
       "start": "2026-05-12",
-      "image": "",
+      "image": "courses/smm-pro.png",
       "description": "Become the best marketing expery in the world!",
       "duration": "2 months",
       "type": "hybrid",
-      "price": 199,
+      "age_group": "adult",
+      "price": 0,
       "is_active": true,
-      "stripe_product_id": null,
-      "stripe_price_id": null,
-      "tags": [
-        3,
-        4
-      ]
+      "tags": [1, 4]
     }
   },
   {
@@ -101,178 +76,65 @@
       "slug": "cisco-ccna",
       "title": "Cisco CCNA Certification",
       "start": "2026-05-12",
-      "image": "",
+      "image": "courses/cisco-ccna.png",
       "description": "Subtitle!",
       "duration": "2 months",
       "type": "hybrid",
-      "price": 249,
+      "age_group": "adult",
+      "price": 0,
       "is_active": true,
-      "stripe_product_id": null,
-      "stripe_price_id": null,
-      "tags": [
-        6,
-        4
-      ]
+      "tags": [2, 3]
     }
   },
   {
     "model": "api.course",
     "pk": 3,
     "fields": {
-      "slug": "personalized-it",
+      "slug": "it-training",
       "title": "Personalized IT Training",
       "start": "2026-05-12",
-      "image": "",
+      "image": "courses/it-training.png",
       "description": "Personalized IT Training",
       "duration": "2 months",
       "type": "hybrid",
-      "price": 299,
+      "age_group": "adult",
+      "price": 0,
       "is_active": true,
-      "stripe_product_id": null,
-      "stripe_price_id": null,
-      "tags": [
-        7,
-        4
-      ]
+      "tags": [3]
     }
   },
   {
     "model": "api.course",
     "pk": 4,
     "fields": {
-      "slug": "tech-academy-kids",
+      "slug": "kids-tech-academy",
       "title": "Digital Tech Academy for Kids (7-14)",
       "start": "2026-05-12",
-      "image": "",
+      "image": "courses/kids-academy.png",
       "description": "Digital Tech Academy for Kids (7-14)",
       "duration": "2 months",
       "type": "hybrid",
-      "price": 149,
+      "age_group": "minor",
+      "price": 0,
       "is_active": true,
-      "stripe_product_id": null,
-      "stripe_price_id": null,
-      "tags": [
-        5
-      ]
+      "tags": [4]
     }
   },
   {
     "model": "api.course",
     "pk": 5,
     "fields": {
-      "slug": "roblox-game-dev",
+      "slug": "roblox-gamedev",
       "title": "Game Development with Roblox Studio",
       "start": "2026-05-12",
-      "image": "",
+      "image": "courses/roblox-gamedev.png",
       "description": "Game Development with Roblox Studio",
       "duration": "2 months",
       "type": "hybrid",
-      "price": 179,
+      "age_group": "minor",
+      "price": 0,
       "is_active": true,
-      "stripe_product_id": null,
-      "stripe_price_id": null,
-      "tags": [
-        5,
-        8
-      ]
-    }
-  },
-  {
-    "model": "api.event",
-    "pk": 1,
-    "fields": {
-      "title": "Open Day: Career in IT",
-      "date": "2026-03-20",
-      "type": "offline",
-      "tags": [
-        3
-      ]
-    }
-  },
-  {
-    "model": "api.event",
-    "pk": 2,
-    "fields": {
-      "title": "Django API Workshop",
-      "date": "2026-04-10",
-      "type": "online",
-      "tags": [
-        1,
-        2
-      ]
-    }
-  },
-  {
-    "model": "api.post",
-    "pk": 1,
-    "fields": {
-      "title": "Почему DRF ускоряет разработку",
-      "author": "IET Team",
-      "content": "Коротко о том, как DRF помогает быстрее запускать API.",
-      "picture": "posts/drf-speed.jpg",
-      "created_at": "2026-03-01T10:00:00Z",
-      "tags": [
-        1,
-        2
-      ]
-    }
-  },
-  {
-    "model": "api.post",
-    "pk": 2,
-    "fields": {
-      "title": "Как выбрать IT-курс в 2026",
-      "author": "IET Team",
-      "content": "Сравнение форматов обучения и практические рекомендации.",
-      "picture": "posts/course-choice.jpg",
-      "created_at": "2026-03-02T12:30:00Z",
-      "tags": [
-        3
-      ]
-    }
-  },
-  {
-    "model": "api.consultation",
-    "pk": 1,
-    "fields": {
-      "name": "Alex Petrov",
-      "email": "alex.petrov@example.com",
-      "phone": "+77011234567",
-      "interested": 1
-    }
-  },
-  {
-    "model": "api.consultation",
-    "pk": 2,
-    "fields": {
-      "name": "Dana Sadykova",
-      "email": "d.sadykova@example.com",
-      "phone": "+77019876543",
-      "interested": 2
-    }
-  },
-  {
-    "model": "api.order",
-    "pk": 1,
-    "fields": {
-      "status": true,
-      "total_amount": 79000,
-      "stripe_payment_intent_id": 555001,
-      "stripe_checkout_session_id": 666001,
-      "created_at": "2026-03-03T09:00:00Z",
-      "paid_at": "2026-03-03T09:05:00Z"
-    }
-  },
-  {
-    "model": "api.order",
-    "pk": 2,
-    "fields": {
-      "status": false,
-      "total_amount": 69000,
-      "stripe_payment_intent_id": 555002,
-      "stripe_checkout_session_id": 666002,
-      "created_at": "2026-03-03T11:00:00Z",
-      "paid_at": null
+      "tags": [5, 4]
     }
   }
 ]

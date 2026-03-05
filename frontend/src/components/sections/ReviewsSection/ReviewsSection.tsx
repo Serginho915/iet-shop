@@ -23,9 +23,6 @@ export const ReviewsSection = () => {
   return (
     <section className={styles.section}>
       <div className={styles.container}>
-        <div>
-
-        </div>
         <div className={styles.sectionLayout}>
           <div className={styles.mainLayout}>
             <div className={styles.titleWrapper}>

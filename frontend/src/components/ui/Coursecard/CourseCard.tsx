@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/Button/Button';
-import { IconHelpBtn, IconInfinity, IconLocation, IconCalendar } from '@/components/icons';
+import { IconHelpBtn, IconInfinity, IconLocation, IconClock } from '@/components/icons';
 import styles from './CourseCard.module.scss';
 import { useTranslate } from "@/lib/useTranslate";
 import { useRouter } from 'next/navigation';
@@ -25,9 +25,12 @@ export const CourseCard = ({ course }: CourseCardProps) => {
   const description = course?.description;
   const imageUrl = course?.image;
 
+  const startDateLabel = t.start;
   const startDate = course?.start
     ? new Date(course.start).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })
     : "12 May 2026";
+
+  const typeLabel = (t as any)[courseType] || courseType;
 
   const handleCardClick = () => {
     router.push(`/${lang}/courses/${slug}`);
@@ -52,15 +55,15 @@ export const CourseCard = ({ course }: CourseCardProps) => {
         <div className={styles.badges}>
           <div className={styles.badge}>
             <IconInfinity className={styles.badgeIcon} />
-            {duration}
+            <span className={styles.badgeText}>{duration}</span>
           </div>
           <div className={styles.badge}>
             <IconLocation className={styles.badgeIcon} />
-            {courseType} (offline/online)
+            <span className={styles.badgeText}>{typeLabel}</span>
           </div>
           <div className={styles.badge}>
-            <IconCalendar className={styles.badgeIcon} />
-            {t.start}: {startDate}
+            <IconClock className={styles.badgeIcon} />
+            <span className={styles.badgeText}>{startDateLabel}: {startDate}</span>
           </div>
         </div>
       </div>

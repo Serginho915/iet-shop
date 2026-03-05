@@ -5,6 +5,7 @@ import styles from "./FAQSection.module.scss";
 import { useTranslate } from "@/lib/useTranslate";
 import { translations, translationsTitle } from "./translations";
 import { ReminderCard } from "@/components/ui/ReminderCard/ReminderCard";
+import gladAsked from "@/assets/Glad asked.png";
 
 export const FAQSection = () => {
   const { t: tr } = useTranslate(translations);
@@ -23,16 +24,13 @@ export const FAQSection = () => {
         <ul className={styles.faqList}>
           {tr.faqs.map((faq) => (
             <li key={faq.id} className={styles.faqItemWrapper}>
-              <div className={styles.decorations}>
-                <div className={styles.decorLarge}></div>
-                <div className={styles.decorSmall}></div>
-              </div>
               <div className={styles.faqItem}>
                 <div
-                  className={styles.faqQuestion}
+                  className={`${styles.faqQuestion} ${activeFAQ === faq.id ? styles.active : ""}`}
                   onClick={() => toggleFAQ(faq.id)}
                 >
-                  {faq.question}
+                  <span>{faq.question}</span>
+                  <div className={styles.toggleArrow}></div>
                 </div>
                 {activeFAQ === faq.id && (
                   <p className={styles.faqAnswer}>{faq.answer}</p>
@@ -45,6 +43,9 @@ export const FAQSection = () => {
           <ReminderCard
             title={titleTr?.reminderTitle}
             text={titleTr?.reminderText}
+            mascotSrc={gladAsked}
+            mascotWidth={210}
+            mascotHeight={210}
           />
         </div>
       </div>

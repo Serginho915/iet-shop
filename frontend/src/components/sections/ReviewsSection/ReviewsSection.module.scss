@@ -63,12 +63,16 @@
 }
 
 .title {
-    font-size: 28px;
+    font-size: 22px;
     line-height: normal;
     font-weight: 500;
     color: #000;
     margin: 0;
     text-align: center;
+
+    @include tablet {
+        font-size: 28px;
+    }
 
     @include desktop {
         font-size: 38px;

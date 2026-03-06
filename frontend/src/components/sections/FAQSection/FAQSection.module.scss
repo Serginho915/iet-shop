@@ -47,18 +47,18 @@
   position: relative;
   padding-left: 24px;
 
-  @include desktop {
-    width: 910px;
-    gap: 16px;
-    padding-left: 36px;
-  }
-
   &::before,
   &::after {
     content: "";
     position: absolute;
     background: #DAE2FF;
     left: 0;
+  }
+
+  @include desktop {
+    max-width: 910px;
+    gap: 16px;
+    padding-left: 36px;
   }
 
   &::before {
@@ -190,7 +190,7 @@
     justify-content: flex-end;
     align-items: flex-end;
     margin-top: 40px;
-    width: 858px;
+    max-width: 858px;
     margin-left: auto;
     margin-right: auto;
     gap: 0;

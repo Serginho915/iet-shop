@@ -144,48 +144,98 @@
 
 .expertiseSection {
     @include container;
-    padding: 40px 80px 0 80px;
+    padding: 24px 1rem 0;
     display: grid;
-    grid-template-columns: 1fr 360px; // Explicit 360 width for right side
-    gap: 40px;
+    grid-template-columns: 1fr;
+    gap: 24px;
 
-    @media (max-width: 1344px) {
-        grid-template-columns: 1fr;
+    @include tablet {
+        padding: 30px 2rem 0;
+        gap: 32px;
+    }
+
+    @media (min-width: 1344px) {
+        padding: 40px 80px 0;
+        grid-template-columns: 1fr 360px;
+        gap: 40px;
     }
 }
 
 .statsBlock {
     background: #22262f;
     border-radius: 24px;
-    padding: 44px 24px;
+    padding: 24px 16px;
     color: white;
     display: flex;
-    flex-direction: row;
-    gap: 122px;
+    flex-direction: column;
+    gap: 24px;
     align-items: stretch;
+
+    @include tablet {
+        padding: 32px 24px;
+        flex-direction: row;
+        gap: 40px;
+    }
+
+    @include desktop {
+        flex-direction: row;
+        gap: 122px;
+        padding: 44px 24px;
+    }
 }
 
 .georgeBlock {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
     justify-content: space-between;
     flex-shrink: 0;
+    gap: 16px;
+
+    @include tablet {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+
+    @include desktop {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
 }
 
 .georgeAvatar {
     object-fit: contain;
+    width: 80px !important;
+    height: auto !important;
+
+    @include tablet {
+        width: auto !important;
+        height: auto !important;
+    }
 }
 
 .georgeChat {
     background: #e8f2f3;
     color: #22262f;
-    padding: 24px 32px;
-    border-radius: 0 28px 28px 28px;
-    font-size: 14px;
-    max-width: 269px;
+    padding: 14px 18px;
+    border-radius: 0 20px 20px 20px;
+    font-size: 13px;
+    max-width: 220px;
     margin: 0;
     position: relative;
+
+    @include tablet {
+        padding: 18px 24px;
+        font-size: 14px;
+        max-width: 269px;
+        border-radius: 0 28px 28px 28px;
+    }
+
+    @include desktop {
+        padding: 24px 32px;
+    }
 }
 
 .statsRightInner {
@@ -193,12 +243,28 @@
     flex-direction: column;
     justify-content: space-between;
     flex: 1;
+    gap: 20px;
+
+    @include desktop {
+        gap: 0;
+    }
 }
 
 .statsGrid {
     display: flex;
-    gap: 40px;
+    flex-direction: column;
+    gap: 16px;
     align-items: flex-start;
+
+    @include tablet {
+        flex-direction: row;
+        gap: 24px;
+    }
+
+    @include desktop {
+        flex-direction: row;
+        gap: 40px;
+    }
 }
 
 .statItem {
@@ -207,22 +273,35 @@
 
     .count {
         color: #f5f6fa;
-        font-weight: 500;
-        line-height: 54px;
-        letter-spacing: 2px;
-        font-size: 56px;
         font-weight: 700;
+        line-height: 1.1;
+        font-size: 36px;
         display: block;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
+
+        @include tablet {
+            font-size: 44px;
+            line-height: 48px;
+            margin-bottom: 8px;
+        }
+
+        @include desktop {
+            font-size: 56px;
+            line-height: 54px;
+        }
     }
 
     .label {
-        font-size: 14px;
+        font-size: 13px;
         color: rgba(255, 255, 255, 0.7);
         display: flex;
         align-items: center;
         gap: 8px;
         line-height: normal;
+
+        @include desktop {
+            font-size: 14px;
+        }
 
         img {
             flex-shrink: 0;
@@ -233,7 +312,11 @@
 .studentsInfo {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 12px;
+
+    @include desktop {
+        gap: 20px;
+    }
 }
 
 .studentAvatars {
@@ -241,11 +324,16 @@
     margin-right: -10px;
 
     img {
-        width: 40px;
-        height: 40px;
+        width: 32px;
+        height: 32px;
         border-radius: 50%;
         border: 2px solid #22262f;
         margin-left: -10px;
+
+        @include desktop {
+            width: 40px;
+            height: 40px;
+        }
 
         &:first-child {
             margin-left: 0;
@@ -262,35 +350,55 @@
 }
 
 .studentsText {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 500;
-    max-width: 280px;
+    max-width: 220px;
+
+    @include desktop {
+        font-size: 14px;
+        max-width: 280px;
+    }
 }
 
 .expertiseList {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
+
+    @include desktop {
+        gap: 16px;
+    }
 }
 
 .expertiseTitle {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
     margin: 0;
+
+    @include desktop {
+        font-size: 18px;
+    }
 }
 
 .expertisePill {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 12px 24px;
-    border-radius: 24px 24px 24px 0;
+    padding: 10px 16px;
+    border-radius: 20px 20px 20px 0;
     background: #dae2ff;
     color: #22262f;
     font-weight: 500;
+    font-size: 14px;
     gap: 8px;
     transition: all 0.2s ease;
     width: 100%;
+
+    @include desktop {
+        padding: 12px 24px;
+        border-radius: 24px 24px 24px 0;
+        font-size: 16px;
+    }
 
     &.active {
         background: #0061ff;

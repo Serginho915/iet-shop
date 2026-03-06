@@ -85,16 +85,21 @@
 .footer {
 	background: #23262f;
 	color: #bcbec4;
-	border-radius: 3.5rem;
-	padding: 2rem 0 1rem 0;
+	border-radius: 2rem;
+	padding: 2rem 1rem 1rem 1rem;
 	margin: 1rem 0;
 	font-family: inherit;
 	font-size: 1rem;
+
+	@include desktop {
+		border-radius: 3.5rem;
+		padding: 2rem 0 1rem 0;
+	}
 }
 
 .container {
 	@include container;
-	padding: 0 1rem;
+	padding: 0;
 	display: flex;
 	flex-direction: column;
 	gap: 2rem;
@@ -102,20 +107,41 @@
 
 .top {
 	display: grid;
-	grid-template-columns: 2fr 1.6fr 1.6fr auto;
-	column-gap: 48px;
+	grid-template-columns: 1fr;
+	row-gap: 2rem;
 	align-items: flex-start;
+
+	@include tablet {
+		grid-template-columns: 1fr 1fr;
+		column-gap: 40px;
+	}
+
+	@include desktop {
+		grid-template-columns: 2fr 1.6fr 1.6fr auto;
+		column-gap: 48px;
+	}
 }
 
 .company {
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
+	align-items: center;
+	text-align: center;
+
+	@include desktop {
+		align-items: flex-start;
+		text-align: left;
+	}
 }
 
 .companyName {
-	font-size: 20px;
+	font-size: 18px;
 	color: #bcbec4;
+
+	@include desktop {
+		font-size: 20px;
+	}
 }
 
 .logo {
@@ -146,13 +172,22 @@
 .partnered {
 	margin-top: 24px;
 	color: #bcbec4;
-	font-size: 15px;
+	font-size: 14px;
+
+	@include desktop {
+		font-size: 15px;
+	}
 }
 
 .partners {
 	display: flex;
 	gap: 8px;
 	margin-top: 8px;
+	justify-content: center;
+
+	@include desktop {
+		justify-content: flex-start;
+	}
 }
 
 .partnerLogo {
@@ -166,7 +201,21 @@
 .contactColumn,
 .coursesColumn,
 .actionColumn {
-	min-width: 200px;
+	width: 100%;
+
+	@include desktop {
+		min-width: 200px;
+	}
+}
+
+.contactColumn,
+.coursesColumn,
+.actionColumn {
+	text-align: center;
+
+	@include desktop {
+		text-align: left;
+	}
 }
 
 .contact,
@@ -178,15 +227,26 @@
 	color: #fff;
 	font-size: 18px;
 	font-weight: 500;
-	margin-bottom: 8px;
+	margin-bottom: 12px;
 }
 
 .courses {
 	margin-bottom: 16px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	@include desktop {
+		align-items: flex-start;
+	}
 }
 
 .leaveRequest {
-	margin-top: 24px;
+	margin-top: 20px;
+
+	@include desktop {
+		margin-top: 24px;
+	}
 }
 
 .leaveRequest button {
@@ -194,11 +254,16 @@
 	color: #23262f;
 	border: none;
 	border-radius: 24px;
-	padding: 12px 32px;
-	font-size: 18px;
+	padding: 10px 24px;
+	font-size: 16px;
 	font-weight: 500;
 	cursor: pointer;
 	transition: background 0.2s;
+
+	@include desktop {
+		padding: 12px 32px;
+		font-size: 18px;
+	}
 }
 
 .leaveRequest button:hover {
@@ -207,35 +272,29 @@
 
 .bottomRow {
 	display: flex;
-	justify-content: space-between;
+	flex-direction: column;
 	align-items: center;
-	margin-top: 16px;
-	gap: 24px;
+	margin-top: 20px;
+	gap: 20px;
+	padding-top: 20px;
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+	@include desktop {
+		flex-direction: row;
+		justify-content: space-between;
+		margin-top: 16px;
+		padding-top: 0;
+		border-top: none;
+	}
 }
 
 .bottom {
-	text-align: right;
+	text-align: center;
 	color: #bcbec4;
-	font-size: 15px;
-}
+	font-size: 14px;
 
-@media (max-width: 1024px) {
-	.top {
-		grid-template-columns: 1fr 1fr;
-		row-gap: 24px;
-	}
-
-	.actionColumn {
-		display: flex;
-		justify-content: flex-start;
-	}
-
-	.bottomRow {
-		flex-direction: column;
-		align-items: flex-start;
-	}
-
-	.bottom {
-		text-align: left;
+	@include desktop {
+		text-align: right;
+		font-size: 15px;
 	}
 }

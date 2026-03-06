@@ -3,13 +3,30 @@
 
 .card {
     background: #EFF6FF;
-    border-radius: 40px;
-    padding: 24px 44px;
+    border-radius: 24px;
+    padding: 24px;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 24px;
+    align-items: stretch;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     width: 100%;
+
+    @include tablet {
+        flex-direction: row;
+        border-radius: 40px;
+        padding: 24px 44px;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    @include desktop {
+        flex-direction: row;
+        border-radius: 40px;
+        padding: 24px 44px;
+        align-items: center;
+        justify-content: space-between;
+    }
 
     &:hover {
         transform: translateY(-2px);
@@ -19,6 +36,15 @@
 
 .left {
     flex-shrink: 0;
+    display: none; // Hide avatars on mobile to save space
+
+    @include tablet {
+        display: block;
+    }
+
+    @include desktop {
+        display: block;
+    }
 }
 
 .avatars {
@@ -30,7 +56,7 @@
         width: 50px;
         height: 50px;
         border-radius: 50%;
-        background: #CCC; // Placeholder
+        background: #CCC;
         border: 3px solid #EFF6FF;
         margin-left: -15px;
         overflow: hidden;
@@ -51,35 +77,72 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    text-align: center;
+
+    @include tablet {
+        text-align: left;
+    }
+
+    @include desktop {
+        text-align: left;
+    }
 }
 
 .title {
     font-family: $font-roboto;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 500;
     line-height: 1.2;
     color: #22262F;
     margin: 0;
-    max-width: 480px;
+    max-width: 100%;
+
+    @include tablet {
+        font-size: 20px;
+        max-width: 400px;
+    }
+
+    @include desktop {
+        font-size: 20px;
+        max-width: 480px;
+    }
 }
 
 .infoRow {
     display: flex;
     align-items: center;
     gap: 24px;
+    justify-content: center;
+
+    @include tablet {
+        justify-content: flex-start;
+    }
+
+    @include desktop {
+        justify-content: flex-start;
+    }
 }
 
 .tags {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
+    justify-content: center;
+
+    @include tablet {
+        justify-content: flex-start;
+    }
+
+    @include desktop {
+        justify-content: flex-start;
+    }
 }
 
 .tag {
     font-family: $font-rubik;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 400;
-    padding: 4px 14px;
+    padding: 4px 12px;
     border-radius: 8px;
     background: #22262F;
     color: #FFFFFF;
@@ -87,32 +150,72 @@
     align-items: center;
     gap: 6px;
 
+    @include tablet {
+        font-size: 14px;
+        padding: 4px 14px;
+    }
+
+    @include desktop {
+        font-size: 14px;
+        padding: 4px 14px;
+    }
+
     &.primary {
         background: $color-accent;
     }
 }
 
 .icon {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     color: inherit;
+
+    @include tablet {
+        width: 16px;
+        height: 16px;
+    }
+
+    @include desktop {
+        width: 16px;
+        height: 16px;
+    }
 }
 
 .right {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
-    min-width: 140px;
+    gap: 16px;
+    width: 100%;
+
+    @include tablet {
+        width: auto;
+        min-width: 140px;
+        gap: 12px;
+    }
+
+    @include desktop {
+        width: auto;
+        min-width: 140px;
+        gap: 12px;
+    }
 }
 
 .dateRow {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 400;
     color: #22262F;
+
+    @include tablet {
+        font-size: 18px;
+    }
+
+    @include desktop {
+        font-size: 18px;
+    }
 }
 
 .date {
@@ -127,6 +230,10 @@
     font-size: 16px;
     font-weight: 500;
     border-radius: 20px !important;
+
+    @include tablet {
+        max-width: 160px;
+    }
 
     &:hover {
         background-color: darken($color-accent, 10%) !important;

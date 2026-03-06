@@ -15,28 +15,44 @@
     @include container;
     display: flex;
     flex-direction: column;
-    padding: 60px 80px 112px 60px;
-    gap: 82px;
+    padding: 20px 1rem 60px 1rem;
+    gap: 40px;
     align-items: center;
 
-    @media (min-width: 1024px) {
+    @include desktop {
         flex-direction: row;
-        height: auto;
+        padding: 40px 2rem 80px 2rem;
+        gap: clamp(20px, 4vw, 82px);
     }
 }
 
 .heroContentLeft {
     flex: 1;
-    max-width: 540px;
+    max-width: 100%;
+
+    @include desktop {
+        max-width: 540px;
+    }
 }
 
 .heroTitle {
     font-family: $font-roboto;
-    font-size: 56px;
+    font-size: 32px;
     line-height: 1.1;
     font-weight: 500;
     color: #22262f;
-    margin: 0 0 40px 0;
+    margin: 0 0 24px 0;
+    text-align: center;
+
+    @include tablet {
+        font-size: 44px;
+    }
+
+    @include desktop {
+        font-size: 56px;
+        margin: 0 0 40px 0;
+        text-align: left;
+    }
 
     .heroTitleHighlight {
         color: $color-accent;
@@ -46,11 +62,22 @@
 
 .heroDescription {
     font-family: $font-rubik;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 1.4;
     color: #5b5a5a;
     font-weight: 400;
-    max-width: 466px;
+    max-width: 100%;
+    text-align: center;
+
+    @include tablet {
+        font-size: 18px;
+    }
+
+    @include desktop {
+        font-size: 20px;
+        max-width: 466px;
+        text-align: left;
+    }
 
     .heroDescriptionHighlight {
         color: $color-accent;
@@ -62,8 +89,12 @@
     flex: 1;
     position: relative;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
+
+    @include desktop {
+        justify-content: flex-end;
+    }
 }
 
 .imageWrapper {
@@ -91,8 +122,8 @@
     top: -15px;
     left: -15px;
     z-index: 10;
-    width: 54px;
-    height: 54px;
+    width: 40px;
+    height: 40px;
     background: #2d2c2c;
     border-radius: 12px;
     display: flex;
@@ -101,8 +132,14 @@
     color: white;
     transform: rotate(-12deg);
     font-weight: 600;
-    font-size: 20px;
+    font-size: 16px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+    @include desktop {
+        width: 54px;
+        height: 54px;
+        font-size: 20px;
+    }
 }
 
 .expertiseSection {
@@ -112,7 +149,7 @@
     grid-template-columns: 1fr 360px; // Explicit 360 width for right side
     gap: 40px;
 
-    @media (max-width: 1024px) {
+    @media (max-width: 1344px) {
         grid-template-columns: 1fr;
     }
 }

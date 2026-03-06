@@ -13,14 +13,14 @@ export const translations: Record<Lang, JourneyTranslations> = {
         titlePrefix: "",
         titleHighlight: "700+",
         titleSuffix: " students already joined us",
-        description: "Welcome to our family. Become member of our community, get new proffession, earn, develop and ",
+        description: "Welcome to our family. Become member of our community, get new profession, earn, develop and ",
         descriptionHighlight: "help each other!"
     },
     bg: {
         titlePrefix: "",
         titleHighlight: "700+",
         titleSuffix: " студенти вече се присъединиха",
-        description: "Добре дошли в нашето семейство. Станете член на нашата общност, вземете нова професія, печелете, развивайте се и си ",
+        description: "Добре дошли в нашето семейство. Станете член на нашата общност, вземете нова професия, печелете, развивайте се и си ",
         descriptionHighlight: "помагайте един на друг!"
     }
 };

@@ -6,7 +6,11 @@ import { useLanguage } from "@/lib/LanguageContext";
 import { translations } from "./translations";
 import styles from "./CoursesDropdown.module.scss";
 
-export const CoursesDropdown = () => {
+interface CoursesDropdownProps {
+    onLinkClick?: () => void;
+}
+
+export const CoursesDropdown = ({ onLinkClick }: CoursesDropdownProps) => {
     const { lang } = useLanguage();
     const tr = translations[lang];
 
@@ -18,6 +22,7 @@ export const CoursesDropdown = () => {
     ];
 
     const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+        onLinkClick?.();
         const [path, hash] = href.split('#');
         // Check if we are on the same page (considering the lang prefix)
         const currentPurePath = window.location.pathname.replace(`/${lang}`, '') || '/';

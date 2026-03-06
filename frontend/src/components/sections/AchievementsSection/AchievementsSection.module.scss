@@ -8,14 +8,30 @@
     margin-bottom: 40px;
 }
 
+.achievmentsSection {
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+
+    @include desktop {
+        margin-bottom: 60px;
+    }
+}
+
 .infoContainer {
     @include container;
-    padding: 2rem 1rem 0;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 4rem;
+    flex-direction: column;
+    gap: 3rem;
+
+    @include desktop {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 4rem;
+        padding-top: 2rem;
+    }
 }
 
 .statsColumn {
@@ -23,18 +39,42 @@
     flex-direction: column;
     gap: 1.3rem;
     flex: 1;
-    max-width: 450px;
+    width: 100%;
+
+    @include desktop {
+        max-width: 450px;
+    }
 }
 
 .statsRow {
     display: flex;
-    gap: 4rem;
+    flex-direction: column;
+    gap: 2rem;
+
+    @include tablet {
+        flex-direction: row;
+        gap: 4rem;
+    }
+
+    @include desktop {
+        flex-direction: row;
+        gap: 4rem;
+    }
 }
 
 .statItem {
     display: flex;
     flex-direction: column;
     gap: 0.2rem;
+    text-align: center;
+
+    @include tablet {
+        text-align: left;
+    }
+
+    @include desktop {
+        text-align: left;
+    }
 
     &.accent {
         .statCount {
@@ -45,17 +85,29 @@
 
 .statCount {
     font-family: $font-roboto-flex;
-    font-size: 3.5rem;
+    font-size: 2.5rem;
     font-weight: 500;
     line-height: 1.1;
     color: $color-black-second;
+
+    @include tablet {
+        font-size: 3rem;
+    }
+
+    @include desktop {
+        font-size: 3.5rem;
+    }
 }
 
 .statText {
-    font-size: 1.125rem;
+    font-size: 1rem;
     line-height: 1.4;
     color: $color-black;
     margin: 0;
+
+    @include desktop {
+        font-size: 1.125rem;
+    }
 }
 
 .rightSection {
@@ -63,14 +115,29 @@
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    max-width: 600px;
+    width: 100%;
+
+    @include desktop {
+        max-width: 600px;
+    }
 }
 
 .communityBlock {
     display: flex;
     gap: 1rem;
     align-items: flex-start;
-    padding-left: 2rem;
+    padding-left: 0;
+    justify-content: center;
+
+    @include tablet {
+        padding-left: 2rem;
+        justify-content: flex-start;
+    }
+
+    @include desktop {
+        padding-left: 2rem;
+        justify-content: flex-start;
+    }
 }
 
 .stars {
@@ -82,22 +149,36 @@
 
 .communityText {
     font-family: $font-rubik;
-    font-size: 1.5rem; // 24px
+    font-size: 1.25rem;
     line-height: 1.2;
     color: $color-black-second;
-    width: 300px;
+    max-width: 300px;
     margin: 0;
+
+    @include desktop {
+        font-size: 1.5rem;
+    }
 }
 
 .videoWrapper {
     position: relative;
     width: 100%;
-    aspect-ratio: 16/7;
-    border-radius: 999px;
+    aspect-ratio: 16/9;
+    border-radius: 24px;
     overflow: hidden;
     cursor: pointer;
     background: linear-gradient(90deg, #231F20 0%, #9F9F9F 100%);
     box-shadow: $shadow-lg;
+
+    @include tablet {
+        aspect-ratio: 16/7;
+        border-radius: 999px;
+    }
+
+    @include desktop {
+        aspect-ratio: 16/7;
+        border-radius: 999px;
+    }
 
     &:hover {
         .playOverlay {
@@ -120,4 +201,14 @@
     transition: transform 0.2s ease;
     z-index: 2;
     pointer-events: none;
+
+    svg {
+        width: 64px;
+        height: 64px;
+
+        @include desktop {
+            width: 80px;
+            height: 80px;
+        }
+    }
 }

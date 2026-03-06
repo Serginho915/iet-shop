@@ -11,6 +11,7 @@ body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
+    overflow-x: hidden;
     background:
         url('../../assets/Background.png') center/100% repeat,
         linear-gradient(180deg, #D5E6FF 0%, #FFFFFF 100%) no-repeat;

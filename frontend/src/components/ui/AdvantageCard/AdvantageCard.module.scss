@@ -1,20 +1,29 @@
 @use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
 
 .card {
     position: relative;
-    width: 240px;
-    min-width: 240px;
-    height: 380px;
+    width: 100%;
+    max-width: 280px;
+    height: auto;
+    min-height: 380px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 24px 16px;
+    padding: 24px 20px;
     border-radius: 24px;
     background-color: #DEE5FF;
     box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.25);
     transition: transform 0.3s ease;
     overflow: hidden;
     color: #000;
+
+    @include desktop {
+        width: 240px;
+        min-width: 240px;
+        height: 380px;
+        padding: 24px 16px;
+    }
 
     &:hover {
         transform: translateY(-5px);
@@ -29,23 +38,35 @@
 .content {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
+
+    @include desktop {
+        gap: 16px;
+    }
 }
 
 .title {
-    font-size: 32px;
+    font-size: 24px;
     font-weight: 600;
     line-height: 1.1;
     color: inherit;
     margin: 0;
+
+    @include desktop {
+        font-size: 32px;
+    }
 }
 
 .description {
-    font-size: 20px;
+    font-size: 16px;
     line-height: 1.2;
     color: inherit;
     margin: 0;
     font-weight: 400;
+
+    @include desktop {
+        font-size: 20px;
+    }
 }
 
 .imageWrapper {
@@ -58,8 +79,14 @@
 
     .image {
         width: auto;
-        height: 100%;
-        max-height: 180px;
+        height: auto;
+        max-width: 100%;
+        max-height: 160px;
         object-fit: contain;
+
+        @include desktop {
+            height: 100%;
+            max-height: 180px;
+        }
     }
 }

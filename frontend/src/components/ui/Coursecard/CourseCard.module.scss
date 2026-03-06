@@ -5,43 +5,61 @@
   position: relative;
   background: #FFFFFF;
   border: 1px solid rgba(0, 0, 0, 0.05);
-  border-radius: 40px;
-  padding: 24px 0 0;
+  border-radius: 32px;
+  padding: 20px 0 0;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: 633px;
-  min-height: 291px;
+  width: 100%;
+  min-height: auto;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  @include desktop {
+    border-radius: 40px;
+    padding: 24px 0 0;
+    width: 633px;
+    min-height: 291px;
+  }
 
   &:hover {
     transform: translateY(-4px);
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
   }
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
 }
 
 .top {
   display: flex;
-  gap: 32px;
-  align-items: flex-start;
-  padding: 0 24px 0;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  padding: 0 20px;
 
-  @media (max-width: 640px) {
-    flex-direction: column;
+  @include tablet {
+    flex-direction: row;
+    gap: 32px;
+    align-items: flex-start;
+  }
+
+  @include desktop {
+    flex-direction: row;
+    gap: 32px;
+    align-items: flex-start;
+    padding: 0 24px;
   }
 }
 
 .imageContainer {
-  width: 250px;
+  width: 100%;
+  max-width: 250px;
   height: 155px;
-  border-radius: 32px;
+  border-radius: 20px;
   overflow: hidden;
   background: #E2E8F0;
   flex-shrink: 0;
+
+  @include desktop {
+    border-radius: 32px;
+  }
 
   .image {
     width: 100%;
@@ -59,8 +77,9 @@
 .badges {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   flex: 1;
+  width: 100%;
 }
 
 .badge {
@@ -69,21 +88,30 @@
   align-items: center;
   background: #E0F6F8;
   border-radius: 40px;
-  padding: 6px 16px;
-  height: 44px;
+  padding: 6px 12px;
+  height: 36px;
   color: #000;
-  font-family: var(--font-family-body, Rubik);
-  font-size: 20px;
-  font-style: normal;
+  font-family: inherit;
+  font-size: 14px;
   font-weight: 400;
-  line-height: normal;
+
+  @include desktop {
+    padding: 6px 16px;
+    height: 44px;
+    font-size: 20px;
+  }
 }
 
 .badgeIcon {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   flex-shrink: 0;
-  margin-right: -20px;
+
+  @include desktop {
+    width: 20px;
+    height: 20px;
+    margin-right: -20px;
+  }
 }
 
 .badgeText {
@@ -95,38 +123,52 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 0 24px 0;
+  padding: 0 20px;
+
+  @include desktop {
+    padding: 0 24px;
+  }
 }
 
 .titleWrapper {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .dot {
-  width: 12px;
-  height: 12px;
+  width: 8px;
+  height: 8px;
   background-color: #FB7185;
   border-radius: 50%;
+
+  @include desktop {
+    width: 12px;
+    height: 12px;
+  }
 }
 
 .title {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 600;
   color: $color-black;
   margin: 0;
 
-  @media (max-width: 640px) {
-    font-size: 1.25rem;
+  @include desktop {
+    font-size: 1.5rem;
   }
 }
 
 .description {
-  font-size: 1rem;
+  font-size: 0.875rem;
   color: #64748b;
   margin: 0;
-  line-height: 1.5;
+  line-height: 1.4;
+
+  @include desktop {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
 }
 
 .footer {
@@ -137,14 +179,17 @@
 }
 
 .actionLink {
-  width: 78px;
-  height: 55px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include flex-center;
+  width: 60px;
+  height: 48px;
   cursor: pointer;
   transition: transform 0.2s ease;
-  margin-left:3px;
+
+  @include desktop {
+    width: 78px;
+    height: 55px;
+    margin-left: 3px;
+  }
 
   &:hover {
     transform: scale(1.05);
@@ -152,19 +197,22 @@
 }
 
 .submitBtn {
-  flex: 0 1 410px;
-  height: 55px;
-  font-size: 18px;
+  flex: 1;
+  height: 48px;
+  font-size: 16px;
   font-weight: 500;
-  border-radius: 24px;
+  border-radius: 20px;
   background-color: $color-accent;
   color: white;
 
-  &:hover {
-    background-color: $color-accent-hover;
+  @include desktop {
+    flex: 0 1 410px;
+    height: 55px;
+    font-size: 18px;
+    border-radius: 24px;
   }
 
-  @media (max-width: 640px) {
-    flex: 1;
+  &:hover {
+    background-color: $color-accent-hover;
   }
 }

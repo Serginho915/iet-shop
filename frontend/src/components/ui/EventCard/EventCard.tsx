@@ -10,7 +10,7 @@ interface EventCardProps {
     location: string;
     joinBtnText: string;
     onJoin?: () => void;
-    image?: any; 
+    image?: string; 
 }
 
 export const EventCard = ({ title, date, tags, location, joinBtnText, onJoin }: EventCardProps) => {

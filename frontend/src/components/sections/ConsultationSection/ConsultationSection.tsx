@@ -6,15 +6,16 @@ import { translations } from "./translations";
 import styles from "./ConsultationSection.module.scss";
 import { Button } from "@/components/ui/Button/Button";
 import Link from 'next/link';
+import { submitConsultation, Course } from '@/lib/api';
 
-export const ConsultationSection = () => {
+export const ConsultationSection = ({ courses = [] }: { courses?: Course[] }) => {
   const { t } = useTranslate(translations);
 
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
-    interest: '',
+    interested: 0,
     privacyAccepted: false
   });
 
@@ -22,35 +23,64 @@ export const ConsultationSection = () => {
     name: false,
     email: false,
     phone: false,
+    interested: false,
     privacy: false
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target;
+
+    // Type narrowing for checkbox Support
+    const checked = type === 'checkbox' ? (e.target as HTMLInputElement).checked : undefined;
+
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === 'checkbox' ? checked : (name === 'interested' ? Number(value) : value)
     }));
 
     if (errors[name as keyof typeof errors]) {
       setErrors(prev => ({ ...prev, [name]: false }));
     }
+    setSubmitError('');
   };
 
   const validateEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
+  const validateBGPhone = (phone: string) => {
+    const cleaned = phone.replace(/[\s\-\(\)]/g, '');
+    return /^\d{7}$/.test(cleaned);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitError('');
 
     const newErrors = {
       name: formData.name.trim() === '',
       email: !validateEmail(formData.email),
-      phone: formData.phone.trim().length < 6,
+      phone: !validateBGPhone(formData.phone),
+      interested: formData.interested === 0,
       privacy: !formData.privacyAccepted
     };
 
@@ -61,9 +91,23 @@ export const ConsultationSection = () => {
     if (hasNoErrors) {
       setIsSubmitting(true);
       try {
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        console.log('Form data submitted:', formData);
+        await submitConsultation({
+          name: formData.name,
+          email: formData.email,
+          phone: `+359${formData.phone.replace(/[\s\-\(\)]/g, '')}`,
+          interested: formData.interested
+        });
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          interested: 0,
+          privacyAccepted: false
+        });
         setIsSuccess(true);
+      } catch (err) {
+        setSubmitError('An error occurred. Please try again.');
+        console.error('Consultation submit error:', err);
       } finally {
         setIsSubmitting(false);
       }
@@ -113,34 +157,64 @@ export const ConsultationSection = () => {
               <div className={styles.inputGroup}>
                 <div className={`${styles.phoneFieldWrapper} ${errors.phone ? styles.hasError : ''}`}>
                   <div className={styles.flagWrapper}>
-                    <img
-                      src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Bulgaria.svg"
-                      alt="BG"
-                      className={styles.flag}
-                    />
+                    <svg width="20" height="14" viewBox="0 0 20 14" className={styles.flag}>
+                      <rect width="20" height="14" fill="white" />
+                      <rect y="0" width="20" height="4.67" fill="white" />
+                      <rect y="4.67" width="20" height="4.67" fill="#00966E" />
+                      <rect y="9.33" width="20" height="4.67" fill="#D62612" />
+                    </svg>
                     <span className={styles.countryCode}>+359</span>
                   </div>
                   <input
                     type="tel"
                     name="phone"
-                    placeholder={t.phonePlaceholder}
+                    placeholder={t.phonePlaceholder || "XXXXXXX"}
                     className={styles.phoneInput}
                     value={formData.phone}
                     onChange={handleChange}
+                    maxLength={7}
                   />
                 </div>
                 {errors.phone && <span className={styles.errorText}>{t.errorPhone}</span>}
               </div>
 
-              <div className={styles.inputGroup}>
-                <input
-                  type="text"
-                  name="interest"
-                  placeholder={t.interestPlaceholder}
-                  className={styles.field}
-                  value={formData.interest}
-                  onChange={handleChange}
-                />
+              <div className={styles.inputGroup} ref={dropdownRef}>
+                <div
+                  className={`${styles.field} ${styles.customSelect} ${errors.interested ? styles.hasError : ''} ${formData.interested === 0 ? styles.placeholderSelect : ''}`}
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                >
+                  <span className={styles.selectValue}>
+                    {formData.interested === 0
+                      ? (t.selectCoursePlaceholder || t.interestPlaceholder)
+                      : courses.find(c => c.id === formData.interested)?.title}
+                  </span>
+                  <svg
+                    className={`${styles.chevronIcon} ${isDropdownOpen ? styles.open : ''}`}
+                    width="16" height="16" viewBox="0 0 16 16" fill="none"
+                  >
+                    <path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+                {isDropdownOpen && (
+                  <ul className={styles.dropdownList}>
+                    {courses.map((course) => (
+                      <li
+                        key={course.id}
+                        className={`${styles.dropdownItem} ${formData.interested === course.id ? styles.selected : ''}`}
+                        onClick={() => {
+                          setFormData(prev => ({ ...prev, interested: course.id }));
+                          setIsDropdownOpen(false);
+                          if (errors.interested) {
+                            setErrors(prev => ({ ...prev, interested: false }));
+                          }
+                        }}
+                      >
+                        {course.title}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {errors.interested && <span className={styles.errorText}>{t.errorInterest}</span>}
               </div>
 
               <div className={styles.privacyGroup}>
@@ -162,6 +236,8 @@ export const ConsultationSection = () => {
                 </div>
                 {errors.privacy && <span className={styles.errorText}>{t.errorPrivacy}</span>}
               </div>
+
+              {submitError && <div className={styles.errorText} style={{ textAlign: 'center', marginTop: '10px', fontSize: '14px' }}>{submitError}</div>}
 
               <div className={styles.submitWrapper}>
                 <Button

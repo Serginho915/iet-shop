@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/Button/Button';
-import { IconHelpBtn, IconInfinity, IconLocation, IconClock } from '@/components/icons';
+import { IconHelpBtn, IconInfinity, IconLocationCourse, IconClock } from '@/components/icons';
 import styles from './CourseCard.module.scss';
 import { useTranslate } from "@/lib/useTranslate";
 import { useRouter } from 'next/navigation';
@@ -58,7 +58,7 @@ export const CourseCard = ({ course }: CourseCardProps) => {
             <span className={styles.badgeText}>{duration}</span>
           </div>
           <div className={styles.badge}>
-            <IconLocation className={styles.badgeIcon} />
+            <IconLocationCourse className={styles.badgeIcon} />
             <span className={styles.badgeText}>{typeLabel}</span>
           </div>
           <div className={styles.badge}>

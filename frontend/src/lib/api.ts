@@ -129,3 +129,20 @@ export async function getEventBySlug(title: string): Promise<Event | undefined> 
   const events = await getEvents();
   return events.find(e => e.title === title);
 }
+
+export async function submitConsultation(data: { name: string; email: string; phone: string; interested: number }) {
+  const url = `${API_URL}/consultations/`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to submit consultation');
+  }
+
+  return await res.json();
+}

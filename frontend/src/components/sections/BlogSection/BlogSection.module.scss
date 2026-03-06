@@ -5,32 +5,59 @@
   @include container;
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 30px;
+
+  @include desktop {
+    gap: 40px;
+  }
 }
 
 .section {
   scroll-margin-top: 100px;
-  padding: 100px 0 60px;
+  padding: 60px 0 40px;
   margin-bottom: 40px;
+
+  @include desktop {
+    padding: 100px 0 60px;
+  }
 }
 
 
 .scrollWrapper {
   width: 100%;
-  overflow-x: hidden;
+  overflow-x: auto;
   position: relative;
-  padding: 20px 0;
-  margin: -20px 0;
+  padding: 10px 1rem;
+  margin: -10px 0;
+
+  // Hide scrollbar but keep functionality
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @include desktop {
+    overflow-x: hidden;
+    padding: 20px 0;
+    margin: -20px 0;
+  }
 }
 
 .blogList {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  gap: 24px;
+  gap: 16px;
   list-style: none;
-  padding: 20px 0;
+  padding: 10px 0;
   margin: 0;
+
+  @include desktop {
+    gap: 24px;
+    padding: 20px 0;
+  }
 }
 
 .infoBadge {
@@ -38,21 +65,20 @@
 }
 
 .linkIcon {
-  position: absolute;
-  bottom: 3px;
-  left: 3px;
-  width: 78px;
-  height: 55px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: transform 0.2s ease;
+  display: none;
 
-  // &:hover {
-  //     transform: scale(1.05);
-  // }
-
+  @include desktop {
+    display: flex;
+    position: absolute;
+    bottom: 3px;
+    left: 3px;
+    width: 78px;
+    height: 55px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
 }
 
 .iconHelpBtn {

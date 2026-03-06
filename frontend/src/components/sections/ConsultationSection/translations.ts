@@ -7,6 +7,7 @@ export type ConsultationTranslations = {
     emailPlaceholder: string;
     phonePlaceholder: string;
     interestPlaceholder: string;
+    selectCoursePlaceholder: string;
     privacyPrefix: string;
     privacyLink: string;
     privacySuffix: string;
@@ -15,6 +16,7 @@ export type ConsultationTranslations = {
     errorEmail: string;
     errorPhone: string;
     errorPrivacy: string;
+    errorInterest: string;
     successMessage: string;
 };
 
@@ -24,16 +26,18 @@ export const translations: Record<Lang, ConsultationTranslations> = {
         description: "(If you have questions about courses or don't know what to choose, leave your number: we'll call to answer all your questions)",
         namePlaceholder: "Name",
         emailPlaceholder: "Email",
-        phonePlaceholder: "Phone",
+        phonePlaceholder: "XXXXXXX",
         interestPlaceholder: "I'm interested in",
+        selectCoursePlaceholder: "Select a course",
         privacyPrefix: "I agree to the ",
         privacyLink: "Privacy Policy",
         privacySuffix: " and personal data processing.",
         buttonLabel: "Leave Request",
         errorName: "Please enter your name.",
         errorEmail: "Please enter a valid email.",
-        errorPhone: "Please enter a valid phone number.",
+        errorPhone: "Please enter 7 digits after +359.",
         errorPrivacy: "You must agree to the privacy policy.",
+        errorInterest: "Please select a course.",
         successMessage: "Thank you! We will contact you soon."
     },
     bg: {
@@ -41,16 +45,18 @@ export const translations: Record<Lang, ConsultationTranslations> = {
         description: "(Ако имате въпроси относно курсовете или не знаете какво да изберете, оставете своя номер: ние ще се обадим, за да отговорим на всички ваши въпроси)",
         namePlaceholder: "Име",
         emailPlaceholder: "Имейл",
-        phonePlaceholder: "Телефон",
+        phonePlaceholder: "XXXXXXX",
         interestPlaceholder: "Интересувам се от",
+        selectCoursePlaceholder: "Изберете курс",
         privacyPrefix: "Съгласен съм с ",
         privacyLink: "Политиката за поверителност",
         privacySuffix: " и обработката на лични данни.",
         buttonLabel: "Оставете заявка",
         errorName: "Моля, въведете вашето име.",
         errorEmail: "Моля, въведете валиден имейл.",
-        errorPhone: "Моля, въведете валиден телефонен номер.",
+        errorPhone: "Моля, въведете 7 цифри след +359.",
         errorPrivacy: "Трябва да се съгласите с политиката за поверителност.",
+        errorInterest: "Моля, изберете курс.",
         successMessage: "Благодарим ви! Ще се свържем с вас скоро."
     }
 };

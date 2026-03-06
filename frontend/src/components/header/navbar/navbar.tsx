@@ -20,19 +20,31 @@ const navLinks: NavLink[] = [
   { key: "contact", href: "/#consultation" },
 ];
 
-export const Navbar = () => {
+interface NavbarProps {
+  onLinkClick?: () => void;
+}
+
+export const Navbar = ({ onLinkClick }: NavbarProps) => {
   const { lang } = useLanguage();
   const tr = translations[lang];
 
   const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    onLinkClick?.();
+
     const [path, hash] = href.split('#');
-    if (hash && (window.location.pathname === path || (path === '/' && window.location.pathname === ''))) {
-      if (window.location.hash === '#' + hash) {
-        const el = document.getElementById(hash);
-        if (el) {
-          e.preventDefault();
-          el.scrollIntoView({ behavior: 'smooth' });
-        }
+    if (!hash) return;
+
+    // Check if we are on the same page (considering the lang prefix)
+    const currentPurePath = window.location.pathname.replace(`/${lang}`, '') || '/';
+    const targetPurePath = path || '/';
+
+    if (currentPurePath === targetPurePath) {
+      const el = document.getElementById(hash);
+      if (el) {
+        e.preventDefault();
+        el.scrollIntoView({ behavior: 'smooth' });
+        // Update hash in URL without jump
+        window.history.pushState(null, '', href.startsWith('/') ? href : `/${lang}${href}`);
       }
     }
   };
@@ -47,7 +59,7 @@ export const Navbar = () => {
     <nav className={styles.nav}>
       <ul className={styles.navList}>
         <li>
-          <CoursesDropdown />
+          <CoursesDropdown onLinkClick={onLinkClick} />
         </li>
         <NavLinks links={simpleLinks} linkClassName={styles.navLink} asListItems />
       </ul>

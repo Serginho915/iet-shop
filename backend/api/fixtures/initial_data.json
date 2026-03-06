@@ -136,5 +136,74 @@
       "is_active": true,
       "tags": [5, 4]
     }
+  },
+  {
+    "model": "api.event",
+    "pk": 1,
+    "fields": {
+      "title": "IET Tech Meetup",
+      "date": "2026-04-15",
+      "type": "hybrid",
+      "tags": [1, 2]
+    }
+  },
+  {
+    "model": "api.event",
+    "pk": 2,
+    "fields": {
+      "title": "React Masterclass",
+      "date": "2026-05-10",
+      "type": "online",
+      "tags": [2, 3]
+    }
+  },
+  {
+    "model": "api.event",
+    "pk": 3,
+    "fields": {
+      "title": "Design Patterns Seminar",
+      "date": "2026-06-20",
+      "type": "offline",
+      "tags": [3, 4]
+    }
+  },
+  {
+    "model": "api.post",
+    "pk": 1,
+    "fields": {
+      "title": "The Future of Web Development",
+      "slug": "future-of-web-development",
+      "author": "IET Team",
+      "content": "Discover the latest trends in web development, from Next.js optimizations to advanced CSS techniques.",
+      "picture": "posts/future-web.png",
+      "created_at": "2026-03-01T12:00:00Z",
+      "tags": [1]
+    }
+  },
+  {
+    "model": "api.post",
+    "pk": 2,
+    "fields": {
+      "title": "Getting Started with React",
+      "slug": "getting-started-with-react",
+      "author": "Alex Code",
+      "content": "React remains the popular frontend library. Here is a guide to building your first interactive app.",
+      "picture": "posts/react-start.png",
+      "created_at": "2026-03-02T12:00:00Z",
+      "tags": [2]
+    }
+  },
+  {
+    "model": "api.post",
+    "pk": 3,
+    "fields": {
+      "title": "UI/UX Essentials for Developers",
+      "slug": "ui-ux-essentials-for-developers",
+      "author": "Design PRO",
+      "content": "Learn how to implement responsive, accessible, and beautiful interfaces for your applications.",
+      "picture": "posts/ui-ux.png",
+      "created_at": "2026-03-03T12:00:00Z",
+      "tags": [3]
+    }
   }
 ]

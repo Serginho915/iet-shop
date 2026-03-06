@@ -36,7 +36,7 @@ export const PageContent = ({
     const [events, setEvents] = useState<Event[]>(initialEvents);
 
     useEffect(() => {
-        // If server-side fetch failed (returned empty arrays), try fetching on client
+
         if (initialCourses.length === 0 && initialPosts.length === 0) {
             console.log("[Client] Server data missing, fetching directly from API...");
             getHomePageData().then(data => {
@@ -60,7 +60,7 @@ export const PageContent = ({
                 <JourneySection />
                 <EventsSection events={events} />
                 <ReviewsSection />
-                <ConsultationSection />
+                <ConsultationSection courses={courses} />
                 <BlogSection posts={posts} />
                 <FAQSection />
             </main>

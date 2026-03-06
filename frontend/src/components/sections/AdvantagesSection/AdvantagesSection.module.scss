@@ -2,37 +2,68 @@
 @use "../../../styles/mixins" as *;
 
 .advantagesSection {
-    //padding: 0 0 6rem 0;
     background-color: $color-white;
     margin-bottom: 40px;
 }
 
 .cardContainer {
     @include container;
-    padding: 0 44px;
+    padding: 0 1rem;
+
+    @include desktop {
+        padding: 0 44px;
+    }
 }
 
 .header {
-    margin-bottom: 4rem;
-    padding-left: 71px;
+    margin-bottom: 2rem;
+    padding-left: 0;
+    text-align: center;
+
+    @include desktop {
+        margin-bottom: 4rem;
+        padding-left: 71px;
+        text-align: left;
+    }
 }
 
 .title {
-    font-size: 3rem;
+    font-size: 2rem;
     font-weight: 500;
     color: $color-black;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
+
+    @include tablet {
+        font-size: 2.5rem;
+    }
+
+    @include desktop {
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+    }
 }
 
 .subtitle {
     @include subtitle;
     color: $color-accent;
-    font-size: 3rem;
+    font-size: 2rem;
+
+    @include tablet {
+        font-size: 2.5rem;
+    }
+
+    @include desktop {
+        font-size: 3rem;
+    }
 }
 
 .gridWrapper {
     width: 100%;
-    margin-top: 3rem;
+    margin-top: 2rem;
+
+    @include desktop {
+        margin-top: 3rem;
+    }
 }
 
 .grid {

@@ -34,35 +34,42 @@
 
 .top {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: center;
-  padding: 0 20px;
+  flex-direction: row;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 0 16px;
 
   @include tablet {
-    flex-direction: row;
-    gap: 32px;
-    align-items: flex-start;
+    gap: 24px;
+    padding: 0 20px;
   }
 
   @include desktop {
-    flex-direction: row;
     gap: 32px;
-    align-items: flex-start;
     padding: 0 24px;
   }
 }
 
 .imageContainer {
-  width: 100%;
-  max-width: 250px;
-  height: 155px;
-  border-radius: 20px;
+  width: 110px;
+  min-width: 110px;
+  height: 128px;
+  border-radius: 16px;
   overflow: hidden;
   background: #E2E8F0;
   flex-shrink: 0;
 
+  @include tablet {
+    width: 180px;
+    min-width: 180px;
+    height: 140px;
+    border-radius: 20px;
+  }
+
   @include desktop {
+    width: 250px;
+    min-width: 250px;
+    height: 152px;
     border-radius: 32px;
   }
 
@@ -208,16 +215,27 @@
 }
 
 .submitBtn {
-  flex: 1;
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 160px;
+  max-width: 260px;
   height: 48px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   border-radius: 20px;
   background-color: $color-accent;
   color: white;
 
+  @include tablet {
+    min-width: 200px;
+    max-width: 300px;
+    font-size: 16px;
+  }
+
   @include desktop {
     flex: 0 1 410px;
+    width: auto;
+    max-width: 410px;
     height: 55px;
     font-size: 18px;
     border-radius: 24px;

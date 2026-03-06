@@ -185,16 +185,34 @@ export const Footer = ({ config }: FooterProps) => {
     onClick: item.translationKey === "footerLegalEuInfo" ? handleOpenModal : undefined,
   }));
 
+  const scrollToSection = (sectionId: string, extraParams?: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    const el = document.getElementById(sectionId);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+    if (extraParams) {
+      const newUrl = `/${lang}/?${extraParams}#${sectionId}`;
+      window.history.pushState(null, "", newUrl);
+    } else {
+      const newUrl = `/${lang}/#${sectionId}`;
+      window.history.pushState(null, "", newUrl);
+    }
+  };
+
   const coursesLinks: SimpleLink[] = categories.length > 0
     ? categories.map(tag => ({
       label: tag.name,
-      href: `/#courses?category=${tag.id}`,
+      href: `/#courses`,
+      onClick: scrollToSection("courses", `category=${tag.id}`),
     }))
     : courses.links.map((item) => ({
       label: item.translationKey ? tr[item.translationKey] : item.label,
-      href: item.href,
+      href: "/#courses",
+      onClick: scrollToSection("courses"),
       external: item.external,
     }));
+
 
   return (
     <>

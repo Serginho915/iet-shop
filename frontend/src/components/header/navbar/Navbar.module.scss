@@ -10,8 +10,8 @@
 .navList {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
+    align-items: stretch;
+    gap: 0;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -19,6 +19,7 @@
 
     @include desktop {
         flex-direction: row;
+        align-items: center;
         justify-content: center;
         gap: 2.5rem;
     }
@@ -28,17 +29,29 @@
     display: flex;
     align-items: center;
     gap: 0.25rem;
-    font-size: 18px;
-    font-weight: 700;
-    color: $color-black;
+    font-size: 17px;
+    font-weight: 600;
+    color: #1a1a2e;
     @include transition-standard;
     cursor: pointer;
+    padding: 16px 4px;
+    border-bottom: 1px solid #f1f5f9;
+    width: 100%;
 
     @include desktop {
         font-size: 15px;
+        font-weight: 700;
+        padding: 0;
+        border-bottom: none;
+        width: auto;
+        color: $color-black;
     }
 
     &:hover {
-        color: $color-gray;
+        color: $color-accent;
+
+        @include desktop {
+            color: $color-gray;
+        }
     }
 }

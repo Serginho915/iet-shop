@@ -24,7 +24,7 @@
     top: 100%;
     z-index: 100;
     min-width: 180px;
-    background-color: transparent; // Make gap area transparent
+    background-color: transparent;
     border-radius: $radius-xl;
     padding-top: 0.75rem; // 0.25rem gap + 0.5rem top padding
     padding-bottom: 0.5rem;
@@ -32,11 +32,11 @@
     transform-origin: top;
     animation: dropdownContentShow 0.2s ease-out;
 
-    // The white background with border/shadow
+
     &::after {
         content: "";
         position: absolute;
-        top: 0.25rem; // Starts after visual gap
+        top: 0.25rem;
         left: 0;
         right: 0;
         bottom: 0;

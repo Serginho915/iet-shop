@@ -6,13 +6,6 @@
     display: flex;
     justify-content: center;
     margin-bottom: 40px;
-}
-
-.achievmentsSection {
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 40px;
 
     @include desktop {
         margin-bottom: 60px;
@@ -171,13 +164,13 @@
     box-shadow: $shadow-lg;
 
     @include tablet {
-        aspect-ratio: 16/7;
-        border-radius: 999px;
+        aspect-ratio: 16/9;
+        border-radius: 40px;
     }
 
     @include desktop {
-        aspect-ratio: 16/7;
-        border-radius: 999px;
+        aspect-ratio: 16/9;
+        border-radius: 48px;
     }
 
     &:hover {

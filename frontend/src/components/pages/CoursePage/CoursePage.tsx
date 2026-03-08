@@ -6,7 +6,7 @@ import { Footer } from "@/components/footer/Footer/Footer";
 import { useTranslate } from "@/lib/useTranslate";
 import { translations } from "./translations";
 import styles from "./CoursePage.module.scss";
-import { Course, getCourseBySlug } from "@/lib/api";
+import { Course, getCourseBySlug, getCourses } from "@/lib/api";
 import { Breadcrumbs, BreadcrumbItem } from "@/components/ui/Breadcrumbs/Breadcrumbs";
 import { HeroSectionCourse } from "@/components/sections/CoursePage/HeroSectionCourse/HeroSectionCourse";
 
@@ -14,6 +14,8 @@ import { AboutSection } from "@/components/sections/CoursePage/AboutSection/Abou
 import { AudienceSection } from "@/components/sections/CoursePage/AudienceSection/AudienceSection";
 import { ModulesSection } from "@/components/sections/CoursePage/ModulesSection/ModuleSection";
 import { LearnSection } from "@/components/sections/CoursePage/LearnSection/LearnSection";
+import { ConsultationSection } from "@/components/sections/Generic/ConsultationSection/ConsultationSection";
+import { SimilarCoursesSection } from "@/components/sections/CoursePage/SimilarCoursesSection/SimilarCoursesSection";
 
 interface CoursePageProps {
     course?: Course;
@@ -23,6 +25,11 @@ interface CoursePageProps {
 export const CoursePage = ({ course: initialCourse, slug }: CoursePageProps) => {
     const { t, lang } = useTranslate(translations);
     const [course, setCourse] = useState<Course | undefined>(initialCourse);
+    const [allCourses, setAllCourses] = useState<Course[]>([]);
+
+    useEffect(() => {
+        getCourses().then(setAllCourses);
+    }, []);
 
     useEffect(() => {
         if (!course) {
@@ -74,6 +81,8 @@ export const CoursePage = ({ course: initialCourse, slug }: CoursePageProps) => 
                     <AudienceSection course={course} />
                     <ModulesSection course={course} />
                     <LearnSection course={course} />
+                    <ConsultationSection courses={allCourses} />
+                    <SimilarCoursesSection course={course} allCourses={allCourses} />
 
                 </div>
             </main>

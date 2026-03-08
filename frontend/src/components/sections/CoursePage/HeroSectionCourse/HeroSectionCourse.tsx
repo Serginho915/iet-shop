@@ -7,6 +7,7 @@ import { IconCalendarHero, IconLocation, IconInfinity, IconBeginner } from "@/co
 
 import { useTranslate } from "@/lib/useTranslate";
 import { translations } from "./translations";
+import { title } from "process";
 
 interface HeroSectionCourseProps {
   course: Course;
@@ -19,10 +20,13 @@ export const HeroSectionCourse = ({
 }: HeroSectionCourseProps) => {
   const { t, lang } = useTranslate(translations);
 
-  // Calculate converted price (mock logic based on the image, 1 EUR ~ 1.95 BGN)
+  // Calculate converted price (mock logic  1 EUR ~ 1.95 BGN)
   const bgnPrice = (course.price * 1.95583).toFixed(2);
 
-  // Helper to highlight the last two words in color
+  const renderTitle = (title: string) => {
+    return title.replaceAll(' ', '_');
+  }
+  
   const renderHighlightedDescription = (text: string) => {
     if (!text) return null;
     const words = text.trim().split(/\s+/);
@@ -98,7 +102,7 @@ export const HeroSectionCourse = ({
       </div>
 
       <div className={styles.bottomContent}>
-        <h1 className={styles.title}>{course.title}</h1>
+        <h1 className={styles.title}>{renderTitle(course.title)}</h1>
         <button
           className={styles.bookButton}
           onClick={() => {

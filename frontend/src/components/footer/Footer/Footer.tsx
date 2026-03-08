@@ -19,6 +19,7 @@ import {
 } from "@/components/icons";
 import logoImg from "@/assets/logo-iet.jpg";
 import { getTags, type Tag } from "@/lib/api";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 type FooterLink = {
@@ -141,11 +142,10 @@ export const Footer = ({ config }: FooterProps) => {
   const tr = translations[lang];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [categories, setCategories] = useState<Tag[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     getTags().then(tags => {
-      // Filter out audience tags (id 4 for adults usually) if needed, 
-      // but let's just keep all for now as categories
       setCategories(tags);
     });
   }, []);
@@ -188,15 +188,16 @@ export const Footer = ({ config }: FooterProps) => {
   const scrollToSection = (sectionId: string, extraParams?: string) => (e: React.MouseEvent) => {
     e.preventDefault();
     const el = document.getElementById(sectionId);
+
+    const targetUrl = extraParams
+      ? `/${lang}/?${extraParams}#${sectionId}`
+      : `/${lang}/#${sectionId}`;
+
     if (el) {
       el.scrollIntoView({ behavior: "smooth" });
-    }
-    if (extraParams) {
-      const newUrl = `/${lang}/?${extraParams}#${sectionId}`;
-      window.history.pushState(null, "", newUrl);
+      router.push(targetUrl, { scroll: false });
     } else {
-      const newUrl = `/${lang}/#${sectionId}`;
-      window.history.pushState(null, "", newUrl);
+      window.location.href = targetUrl;
     }
   };
 
@@ -204,12 +205,15 @@ export const Footer = ({ config }: FooterProps) => {
     ? categories.map(tag => ({
       label: tag.name,
       href: `/#courses`,
-      onClick: scrollToSection("courses", `category=${tag.id}`),
+      onClick: scrollToSection("courses", `courseTag=${tag.id}`),
     }))
     : courses.links.map((item) => ({
       label: item.translationKey ? tr[item.translationKey] : item.label,
       href: "/#courses",
-      onClick: scrollToSection("courses"),
+      onClick: scrollToSection(
+        "courses",
+        item.translationKey === "footerCourseKids" ? "audience=kids" : undefined
+      ),
       external: item.external,
     }));
 
@@ -301,6 +305,7 @@ export const Footer = ({ config }: FooterProps) => {
                   size="lg"
                   rounded="full"
                   variant="white"
+                  onClick={scrollToSection("consultation")}
                 >
                   {tr.leaveRequest}
                 </Button>

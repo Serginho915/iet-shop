@@ -1,0 +1,321 @@
+@use "../../../../styles/variables" as *;
+@use "../../../../styles/mixins" as *;
+
+.coursesSection {
+  scroll-margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+
+  @include desktop {
+    margin-bottom: 80px;
+  }
+}
+
+.container {
+  @include container;
+  padding: 40px 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f5f6fa;
+  border-radius: 24px;
+
+  @include tablet {
+    padding: 60px 44px;
+    border-radius: 48px;
+  }
+
+  @include desktop {
+    padding: 60px 44px;
+    border-radius: 48px;
+  }
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: center;
+}
+
+.title {
+  font-family: $font-roboto-flex;
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: 0.96px;
+  color: $color-black;
+  margin: 0;
+
+  @include tablet {
+    font-size: 2.5rem;
+  }
+
+  @include desktop {
+    font-size: 3rem;
+  }
+}
+
+.tipBlock {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.tipContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  max-width: 600px;
+  text-align: center;
+
+  @include tablet {
+    flex-direction: row;
+    text-align: left;
+  }
+
+  @include desktop {
+    flex-direction: row;
+    text-align: left;
+  }
+}
+
+.tipIcon {
+  color: #ef4444;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.tipText {
+  font-size: 1.125rem;
+  line-height: 1.4;
+  color: $color-black;
+  font-weight: 400;
+
+  @include desktop {
+    font-size: 1.5rem;
+  }
+}
+
+.tipTitle {
+  font-weight: 700;
+}
+
+.filterBar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 2rem;
+  margin-top: 2rem;
+
+  @include desktop {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 3.5rem;
+  }
+}
+
+.filterControls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  width: 100%;
+
+  @include desktop {
+    align-items: flex-start;
+  }
+}
+
+.audienceTabs {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+  justify-content: center;
+
+  @include desktop {
+    gap: 0.75rem;
+    justify-content: flex-start;
+  }
+}
+
+.audienceTab {
+  padding: 8px 16px;
+  border-radius: 12px;
+  background: #d7dfe9;
+  color: #22262f;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
+  max-width: 150px;
+
+  @include desktop {
+    padding: 10px 24px;
+    font-size: 20px;
+    flex: none;
+    max-width: none;
+  }
+
+  &.active {
+    background: #2d3139;
+    color: #ffffff;
+  }
+}
+
+.selectors {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+
+  @include tablet {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  @include desktop {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+.selector {
+  width: 100%;
+
+  @include tablet {
+    min-width: 200px;
+  }
+
+  @include desktop {
+    min-width: 250px;
+  }
+}
+
+.helpContact {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 530px;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 -2px 8px 0 #155dfc;
+  padding: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  min-height: auto;
+  text-align: center;
+
+  @include desktop {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 24px 150px 32px 32px;
+    min-height: 140px;
+    text-align: left;
+  }
+}
+
+.helpTextWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.helpSubtitle {
+  width: 100%;
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0;
+  color: $color-black;
+
+  @include desktop {
+    width: 360px;
+    font-size: 24px;
+  }
+}
+
+.helpDescription {
+  font-size: 1rem;
+  color: #64748b;
+  margin: 0;
+
+  @include desktop {
+    font-size: 1.125rem;
+  }
+}
+
+.helpIcon {
+  width: 80px;
+  height: auto;
+  pointer-events: none;
+
+  @include desktop {
+    width: 106px;
+  }
+}
+
+.helpLink {
+  @include flex-center;
+  width: 78px;
+  height: 55px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+
+  @include desktop {
+    position: absolute;
+    bottom: -1px;
+    right: -1px;
+  }
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.coursesGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  width: 100%;
+  margin-top: 2rem;
+
+  @include desktop {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+}
+
+.noResults {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.125rem;
+  color: #64748b;
+
+  @include desktop {
+    padding: 4rem;
+    font-size: 1.25rem;
+  }
+}

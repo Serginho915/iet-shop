@@ -1,0 +1,147 @@
+@use "../../../../styles/variables" as *;
+@use "../../../../styles/mixins" as *;
+
+.moduleSection {
+  padding: 44px 0;
+  background-color: #fff;
+  border-radius: 48px;
+  margin-bottom: 44px;
+}
+
+.container {
+  @include container;
+}
+
+.contentWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-start;
+
+
+  @include mobile {
+    flex-direction: column;
+    gap: 32px;
+  }
+}
+
+.sectionTitle {
+  font-family: var(--font-family-body, Rubik);
+  font-size: 56px;
+  font-weight: 400;
+  line-height: 1.1;
+  color: #1a1a1a;
+  margin: 0;
+  padding-right: 20px;
+
+  @include mobile {
+    font-size: 40px;
+    text-align: center;
+    width: 100%;
+    padding-right: 0;
+  }
+}
+
+.moduleWrapper {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 28px;
+  border: 2px solid #155dfc;
+  display: flex;
+  flex-direction: column;
+  padding: 4px; // Small gap for the double border effect
+  height: fit-content;
+  width: fit-content;
+  max-width: 100%;
+  background: #fff;
+
+  &.active {
+    border-width: 2px;
+    padding: 6px;
+    z-index: 10;
+
+    
+    min-width: 330px;
+
+    @include mobile {
+      width: 100%;
+      min-width: 0;
+    }
+  }
+}
+
+.modulePill {
+  display: flex;
+  padding: 10px 32px 10px 10px;
+  align-items: center;
+  gap: 16px;
+  background: #2c2f39;
+  border-radius: 48px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+
+  &:hover {
+    background: #1a1c22;
+  }
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  background: #fff;
+  border-radius: 50%;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.moduleTitle {
+  color: #fff;
+  font-family: var(--font-family-body, Rubik);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.2;
+  white-space: nowrap; // Prevents title from wrapping, forcing pill to grow
+
+  @include mobile {
+    font-size: 18px;
+    white-space: normal;
+  }
+}
+
+.descriptionList {
+  padding: 18px 32px;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.descriptionItem {
+  color: #000;
+  font-family: var(--font-family-body, Rubik);
+  font-size: var(--font-size-m, 24px);
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  white-space: nowrap;
+  
+
+  @include mobile {
+    font-size: 18px;
+    white-space: normal;
+  }
+}
+
+.noModules {
+  text-align: center;
+  width: 100%;
+  padding: 24px;
+}

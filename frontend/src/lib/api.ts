@@ -19,6 +19,15 @@ export interface Course {
   stripe_price_id?: number;
   tags: Tag[];
   audience?: "adults" | "kids";
+  about_title?: string;
+  about_description_top?: string;
+  about_description_bottom?: string;
+  about_image?: string;
+  audience_image?: string;
+  audience_tags?: [string, string],
+  instruments?: { name: string; icon?: string }[];
+  outcomes?: string[];
+  modules?: { title: string; description: string[] }[];
 }
 
 export interface Post {
@@ -40,7 +49,7 @@ export interface Event {
   tags: Tag[];
 }
 
-const API_BASE = "http://127.0.0.1:8000";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL; //|| "http://127.0.0.1:8000"
 const API_URL = `${API_BASE}/api`;
 
 const resolveUrl = (url?: string) => {
@@ -86,7 +95,7 @@ export async function getHomePageData() {
       ...c,
       image: resolveUrl(c.image),
       tags: mapTags(c.tags, allTags),
-      audience: c.tags?.some((t: any) => t === 4 || t.id === 4) ? "adults" : "kids"
+      audience: (c.age_group === "adult" || c.age_group === "Adult") ? "adults" : "kids"
     })),
     posts: (posts || []).map((p: any) => ({
       ...p,

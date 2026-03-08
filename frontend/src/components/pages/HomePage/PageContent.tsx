@@ -1,15 +1,15 @@
 "use client";
 
-import { HeroSection } from "@/components/sections/HeroSection/HeroSection";
-import { AchievementsSection } from "@/components/sections/AchievementsSection/AchievementsSection";
-import { EventsSection } from "@/components/sections/EventsSection/EventsSection";
-import { AdvantagesSection } from "@/components/sections/AdvantagesSection/AdvantagesSection";
-import { JourneySection } from "@/components/sections/JourneySection/JourneySection";
-import { CoursesSection } from "@/components/sections/CoursesSection/CoursesSection";
-import { ReviewsSection } from "@/components/sections/ReviewsSection/ReviewsSection";
-import { ConsultationSection } from "@/components/sections/ConsultationSection/ConsultationSection";
-import { BlogSection } from "@/components/sections/BlogSection/BlogSection";
-import { FAQSection } from "@/components/sections/FAQSection/FAQSection";
+import { HeroSection } from "@/components/sections/HomePage/HeroSection/HeroSection";
+import { AchievementsSection } from "@/components/sections/HomePage/AchievementsSection/AchievementsSection";
+import { EventsSection } from "@/components/sections/HomePage/EventsSection/EventsSection";
+import { AdvantagesSection } from "@/components/sections/HomePage/AdvantagesSection/AdvantagesSection";
+import { JourneySection } from "@/components/sections/HomePage/JourneySection/JourneySection";
+import { CoursesSection } from "@/components/sections/HomePage/CoursesSection/CoursesSection";
+import { ReviewsSection } from "@/components/sections/HomePage/ReviewsSection/ReviewsSection";
+import { ConsultationSection } from "@/components/sections/Generic/ConsultationSection/ConsultationSection";
+import { BlogSection } from "@/components/sections/HomePage/BlogSection/BlogSection";
+import { FAQSection } from "@/components/sections/HomePage/FAQSection/FAQSection";
 
 import { Header } from "@/components/header/Header/Header";
 import { Footer } from "@/components/footer/Footer/Footer";

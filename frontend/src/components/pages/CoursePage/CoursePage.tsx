@@ -1,15 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import { Header } from "@/components/header/Header/Header";
 import { Footer } from "@/components/footer/Footer/Footer";
-import { LocalizedLink as Link } from "@/components/ui/LocalizedLink/LocalizedLink";
 import { useTranslate } from "@/lib/useTranslate";
 import { translations } from "./translations";
 import styles from "./CoursePage.module.scss";
 import { Course, getCourseBySlug } from "@/lib/api";
 import { Breadcrumbs, BreadcrumbItem } from "@/components/ui/Breadcrumbs/Breadcrumbs";
+import { HeroSectionCourse } from "@/components/sections/CoursePage/HeroSectionCourse/HeroSectionCourse";
+
+import { AboutSection } from "@/components/sections/CoursePage/AboutSection/AboutSection";
+import { AudienceSection } from "@/components/sections/CoursePage/AudienceSection/AudienceSection";
+import { ModulesSection } from "@/components/sections/CoursePage/ModulesSection/ModuleSection";
+import { LearnSection } from "@/components/sections/CoursePage/LearnSection/LearnSection";
 
 interface CoursePageProps {
     course?: Course;
@@ -31,18 +35,13 @@ export const CoursePage = ({ course: initialCourse, slug }: CoursePageProps) => 
         { label: course?.title || slug }
     ];
 
-    const [formattedStart, setFormattedStart] = useState<string>("");
-
-    useEffect(() => {
-        if (course?.start) {
-            const locale = lang === "bg" ? "bg-BG" : "en-GB";
-            setFormattedStart(new Date(course.start).toLocaleDateString(locale, {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-            }));
-        }
-    }, [course?.start, lang]);
+    const formattedStart = course?.start
+        ? new Date(course.start).toLocaleDateString(lang === "bg" ? "bg-BG" : "en-GB", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+        })
+        : "";
 
     if (!course) {
         return (
@@ -65,37 +64,17 @@ export const CoursePage = ({ course: initialCourse, slug }: CoursePageProps) => 
             <main className={styles.coursePage}>
                 <div className={styles.container}>
                     <Breadcrumbs items={breadcrumbs} />
-                    {course.image && (
-                        <div className={styles.imageContainer}>
-                            <Image
-                                src={course.image}
-                                alt={course.title}
-                                width={1200}
-                                height={600}
-                                className={styles.courseImage}
-                                priority
-                            />
-                        </div>
-                    )}
-                    <h1>{course.title}</h1>
-                    <p className={styles.description}>{course.description}</p>
 
-                    <div className={styles.meta}>
-                        {formattedStart && (
-                            <span className={styles.metaItem}>📅 {t.start}: {formattedStart}</span>
-                        )}
-                        <span className={styles.metaItem}>⏱ {course.duration}</span>
-                        <span className={styles.metaItem}>🎓 {course.type}</span>
-                        <span className={styles.metaItem}>💶 {course.price} €</span>
-                    </div>
+                    <HeroSectionCourse
+                        course={course}
+                        formattedStart={formattedStart}
+                    />
 
-                    <div className={styles.tags}>
-                        {course.tags.map(tag => (
-                            <Link key={tag.id} href={`/?courseTag=${tag.name}#courses`} className={styles.tag}>
-                                {tag.name}
-                            </Link>
-                        ))}
-                    </div>
+                    <AboutSection course={course} />
+                    <AudienceSection course={course} />
+                    <ModulesSection course={course} />
+                    <LearnSection course={course} />
+
                 </div>
             </main>
             <Footer />

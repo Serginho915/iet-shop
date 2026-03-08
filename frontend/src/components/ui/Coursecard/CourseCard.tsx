@@ -90,7 +90,12 @@ export const CourseCard = ({ course }: CourseCardProps) => {
           className={styles.submitBtn}
           onClick={(e) => {
             e.stopPropagation();
-            // action for leave request
+            const el = document.getElementById("consultation");
+            if (el) {
+              el.scrollIntoView({ behavior: "smooth" });
+            } else {
+              router.push(`/${lang}/#consultation`);
+            }
           }}
         >
           {t.leaveRequest}

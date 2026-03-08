@@ -3,11 +3,11 @@
 import React from "react";
 import { Header } from "@/components/header/Header/Header";
 import { Footer } from "@/components/footer/Footer/Footer";
-import { LocalizedLink as Link } from "@/components/ui/LocalizedLink/LocalizedLink";
 import { Post, getPostBySlug } from "@/lib/api";
 import styles from "./BlogPage.module.scss";
 import { Breadcrumbs, BreadcrumbItem } from "@/components/ui/Breadcrumbs/Breadcrumbs";
 import { useTranslate } from "@/lib/useTranslate";
+import { HeroSectionBlog } from "@/components/sections/BlogPage/HeroSectionBlog/HeroSectionBlog";
 
 const translations = {
     en: { blog: "Blog" },
@@ -33,6 +33,7 @@ export const BlogPage = ({ post: initialPost, slug }: BlogPageProps) => {
         { label: t.blog, href: "/#blog" },
         { label: post?.title || slug }
     ];
+
     const [formattedDate, setFormattedDate] = React.useState<string>("");
 
     React.useEffect(() => {
@@ -67,20 +68,11 @@ export const BlogPage = ({ post: initialPost, slug }: BlogPageProps) => {
             <main className={styles.blogPage}>
                 <div className={styles.container}>
                     <Breadcrumbs items={breadcrumbs} />
-                    <div className={styles.header}>
-                        <div className={styles.tags}>
-                            {post.tags.map(tag => (
-                                <Link key={tag.id} href={`/?blogTag=${tag.name}#blog`} className={styles.tag}>
-                                    {tag.name}
-                                </Link>
-                            ))}
-                        </div>
-                        <h1 className={styles.title}>{post.title}</h1>
-                        <div className={styles.meta}>
-                            <span className={styles.author}>{post.author}</span>
-                            {formattedDate && <span className={styles.date}>{formattedDate}</span>}
-                        </div>
-                    </div>
+
+                    <HeroSectionBlog
+                        post={post}
+                        formattedDate={formattedDate}
+                    />
 
                     <div className={styles.content}>
                         {post.content}

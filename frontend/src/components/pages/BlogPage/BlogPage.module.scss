@@ -16,48 +16,6 @@
     padding: 0 20px;
 }
 
-.tags {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 20px;
-}
-
-.tag {
-    background-color: #f0f0f0;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 14px;
-    color: #333;
-}
-
-.title {
-    font-size: 40px;
-    font-weight: 700;
-    margin-bottom: 20px;
-}
-
-.header {
-    margin-bottom: 2rem;
-}
-
-.meta {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    color: #64748b;
-    font-size: 0.9375rem;
-    margin-bottom: 2.5rem;
-}
-
-.author {
-    font-weight: 500;
-    color: #334155;
-}
-
-.date {
-    opacity: 0.8;
-}
-
 .content {
     line-height: 1.8;
     font-size: 1.125rem;

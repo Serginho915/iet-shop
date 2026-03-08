@@ -1,0 +1,215 @@
+@use "../../../../styles/variables" as *;
+@use "../../../../styles/mixins" as *;
+
+.heroSection {
+  background: #dbe9ff
+    url("../../../../assets/CoursePage/Hero/backgroundHero.jpg") 0 0 / 100% 100%
+    no-repeat;
+  padding: 44px 68px 32px;
+  border-radius: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  color: #1a1a1a;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+
+  @include tablet {
+    padding: 80px 60px;
+  }
+}
+
+.topContent {
+  display: flex;
+  flex-direction: column;
+  padding: 0 44px 0;
+  gap: 40px;
+
+  @include desktop {
+    flex-direction: row;
+    // align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.leftColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 455px;
+}
+
+.highlightsBox {
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 24px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+
+  p {
+    font-size: 24px;
+    font-weight: 400;
+    margin: 0;
+
+    span {
+      color: #ff4d00;
+    }
+  }
+}
+
+.infoGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.infoPill {
+  color: #ffffff;
+  padding: 8px 12px;
+  border-radius: 16px;
+  background: #2c2f39;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+
+  color: #fffbfb;
+
+  font-family: $font-rubik;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  .icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    color: #ffffff;
+  }
+}
+
+.priceSection {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.priceLabel {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.priceBox {
+  border-radius: 28px;
+  background: #f2f7ff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 160px;
+  padding: 16px 24px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+
+  .eurPrice {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2c2f39;
+  }
+
+  .bgnPrice {
+    font-size: 0.875rem;
+    color: rgba(14, 14, 14, 0.5);
+  }
+}
+
+.rightColumn {
+  flex-shrink: 0;
+}
+
+.imageContainer {
+  position: relative;
+  width: 555px;
+  height: 359px;
+  display: block;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: -10px;
+    height: 100%;
+    background: #d2e4ff;
+    border-radius: 32px;
+    z-index: 1;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  &::after {
+    left: 24px;
+    right: 24px;
+    bottom: -20px;
+    z-index: 0;
+    opacity: 0.6;
+  }
+
+  @include mobile {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 555 / 359;
+  }
+}
+
+.courseImage {
+  position: relative;
+  z-index: 2;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border-radius: 32px;
+  display: block;
+  background: #ffffff;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.bottomContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
+}
+
+.title {
+  color: #2c2f39;
+  font-family: var(--font-family-title, Roboto);
+  font-size: var(--font-size-3xl, 56px);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 54px;
+  letter-spacing: 2px;
+
+  @include tablet {
+    font-size: 4rem;
+  }
+}
+
+.bookButton {
+  background: $color-accent;
+  color: #ffffff;
+  padding: 16px 48px;
+  border-radius: 16px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: $color-accent-hover;
+    transform: translateY(-2px);
+  }
+}

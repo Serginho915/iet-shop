@@ -1,0 +1,227 @@
+@use "../../../../styles/variables" as *;
+@use "../../../../styles/mixins" as *;
+
+.learnSection {
+  background: #f0f4ff;
+  border-radius: 48px;
+  overflow: hidden;
+  margin-bottom: 44px;
+}
+
+.instrumentsBlock {
+  padding: 44px;
+  border-bottom: none;
+}
+
+.instrumentsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 44px;
+  gap: 24px;
+  flex-wrap: wrap;
+
+  @include mobile {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.instrumentsTitle {
+  font-family: var(--font-family-body, Rubik);
+  font-size: 44px;
+  font-weight: 400;
+  color: #1a1a1a;
+  margin: 0;
+  line-height: 1.1;
+
+  @include mobile {
+    font-size: 32px;
+  }
+}
+
+.instrumentsRow {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  padding: 16px 0;
+  flex-wrap: wrap;
+
+  @include mobile {
+    gap: 24px;
+  }
+}
+
+.instrumentItem {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.instrumentIcon {
+  width: 80px;
+  height: 80px;
+  background: #f2f7ff;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.instrumentIconPlaceholder {
+  width: 100%;
+  height: 100%;
+  background: #cdd3de;
+  border-radius: 16px;
+}
+
+.instrumentName {
+  font-family: var(--font-family-body, Rubik);
+  font-size: 18px;
+  font-weight: 400;
+  color: #1a1a1a;
+}
+
+// ─── Part 2: Outcomes ────────────────────────────────────────────────────────
+
+.outcomesBlock {
+  padding: 44px 0;
+  //background: #fff;
+  border-radius: 24px;
+}
+
+.outcomesTitle {
+  font-family: var(--font-family-body, Rubik);
+  font-size: 36px;
+  font-weight: 400;
+  color: #1a1a1a;
+  margin: 0 0 32px 0;
+
+  @include mobile {
+    font-size: 26px;
+  }
+}
+
+.outcomesLayout {
+  display: flex;
+  gap: 32px;
+  align-items: stretch;
+
+  @include mobile {
+    flex-direction: column;
+  }
+}
+
+.photoBox {
+  position: relative;
+  flex-shrink: 0;
+  background: radial-gradient(77.94% 77.94% at 50.1% 50%,
+      rgba(255, 160, 119, 0.5) 0%,
+      rgba(194, 63, 255, 0.5) 73.93%,
+      rgba(90, 85, 244, 0.5) 100%);
+  width: 523px;
+  border-radius: 24px;
+
+  @include mobile {
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+}
+
+.humanImg {
+  width: 100%;
+  height: 648px;
+  border-radius: 32px;
+  object-fit: cover;
+  display: block;
+  align-self: stretch;
+}
+
+.likeImg {
+  position: absolute;
+  left: 15px;
+  top: 179px;
+  width: 126px;
+  height: 153px;
+  object-fit: contain;
+}
+
+.likeImg2 {
+  position: absolute;
+  left: auto;
+  right: -27px;
+  top: 80px;
+}
+
+.cardsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  flex: 1;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.outcomeCard {
+  position: relative;
+  background: #ddeaff;
+  border-radius: 48px;
+  padding: 60px 44px; // Right padding for cursor icon
+  min-height: 200px;
+  display: flex;
+  align-items: flex-start;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &.highlighted {
+    background: #155dfc;
+
+    .cardText {
+      color: #fff;
+    }
+  }
+}
+
+.cardText {
+  font-family: var(--font-family-body, Rubik);
+  font-size: 22px;
+  font-weight: 400;
+  color: #1a1a1a;
+  line-height: 1.4;
+  margin: 0;
+
+  @include mobile {
+    font-size: 18px;
+  }
+}
+
+.cursorIcon {
+  flex-shrink: 0;
+}
+
+.cursorWrapper {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  transform: translate(15%, 15%); // Slight offset to match design "popping" out
+  background: #f2f7ff;
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  border: 1px solid #559bff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}

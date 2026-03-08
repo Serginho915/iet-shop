@@ -11,13 +11,23 @@ export const RequestButton = () => {
     const { lang } = useLanguage();
     const tr = translations[lang];
 
+    const handleClick = () => {
+        const el = document.getElementById("consultation");
+        if (el) {
+            el.scrollIntoView({ behavior: "smooth" });
+        } else {
+            // Fallback for subpages
+            router.push(`/${lang}/#consultation`);
+        }
+    };
+
     return (
         <div className={styles.wrapper}>
             <Button
                 variant="primary"
                 size="lg"
                 rounded="xl"
-                onClick={() => router.push("/contact")}
+                onClick={handleClick}
             >
                 {tr.leaveRequest}
             </Button>

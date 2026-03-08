@@ -2,7 +2,9 @@
 @use "../../../../styles/mixins" as *;
 
 .heroSection {
-  background: #dbe9ff url("../../../../assets/CoursePage/Hero/backgroundHero.jpg") 0 0 / 100% 100% no-repeat;
+  background: #dbe9ff
+    url("../../../../assets/CoursePage/Hero/bgHero.png") 0 0 / 100% 100%
+    no-repeat;
   padding: 44px 68px 32px;
   border-radius: 48px;
   display: flex;
@@ -139,7 +141,7 @@
 
 .priceBox {
   border-radius: 28px;
-  background: #f2f7ff;
+  background: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -148,9 +150,12 @@
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
 
   .eurPrice {
-    font-size: 1.5rem;
-    font-weight: 700;
     color: #2c2f39;
+    font-family: var(--font-family-body, Rubik);
+    font-size: var(--font-size-m, 24px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
   }
 
   .bgnPrice {

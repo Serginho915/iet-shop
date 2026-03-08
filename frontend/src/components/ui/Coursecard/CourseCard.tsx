@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button/Button';
 import { IconHelpBtn, IconInfinity, IconLocationCourse, IconClock } from '@/components/icons';
 import styles from './CourseCard.module.scss';
 import { useTranslate } from "@/lib/useTranslate";
+import { useCourse } from "@/lib/CourseContext";
 import { useRouter } from 'next/navigation';
 import { Course } from "@/lib/api";
 import { translations } from "./translations";
@@ -17,6 +18,7 @@ interface CourseCardProps {
 export const CourseCard = ({ course }: CourseCardProps) => {
   const { t, lang } = useTranslate(translations);
   const router = useRouter();
+  const { setSelectedCourse } = useCourse();
 
   const title = course?.title ?? "Front End Development";
   const slug = course?.slug ?? "javascript-course";
@@ -33,6 +35,9 @@ export const CourseCard = ({ course }: CourseCardProps) => {
   const typeLabel = (t as any)[courseType] || courseType;
 
   const handleCardClick = () => {
+    if (course) {
+      setSelectedCourse(course);
+    }
     router.push(`/${lang}/courses/${slug}`);
   };
 

@@ -98,7 +98,7 @@
       "duration": "2 months",
       "type": "hybrid",
       "age_group": "adult",
-      "price": 0,
+      "price": 300,
       "is_active": true,
       "tags": [3]
     }

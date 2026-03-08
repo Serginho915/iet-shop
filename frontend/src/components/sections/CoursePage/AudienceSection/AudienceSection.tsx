@@ -29,12 +29,32 @@ export const AudienceSection = ({ course }: AudienceSectionProps) => {
         ["Marketing Professionals", "wanting to stay up-to-date"],
         ["Entrepreneurs", "seeking to grow their business"],
       ];
-  const getAgeLabel = (audience?: string) => {
-    const label = audience?.toLowerCase().startsWith("adult")
-      ? t.minimalAge
-      : t.maximalAge;
+  const getAgeLabel = (course: Course) => {
+    const isAdult = course.audience === "adults";
+    const label = isAdult ? t.minimalAge : t.maximalAge;
 
-    return `${label}: 15 + `;
+    // Look for a tag that looks like an age range, e.g. "7-14" or "15+"
+    const ageTag = course.tags.find((tag) =>
+      tag.name.match(/\d+-\d+/) || tag.name.match(/\d+\+/)
+    );
+
+    if (ageTag) {
+      const matchRange = ageTag.name.match(/(\d+)-(\d+)/);
+      if (matchRange) {
+        return isAdult
+          ? `${t.minimalAge}: ${matchRange[1]} +`
+          : `${t.maximalAge}: ${matchRange[2]}`;
+      }
+      const matchPlus = ageTag.name.match(/(\d+)\+/);
+      if (matchPlus) {
+        return isAdult
+          ? `${t.minimalAge}: ${matchPlus[1]} +`
+          : `${t.maximalAge}: ${matchPlus[1]}`;
+      }
+      return `${label}: ${ageTag.name}`;
+    }
+
+    return `${label}: ${isAdult ? "15 +" : "14"}`;
   };
 
   return (
@@ -45,7 +65,7 @@ export const AudienceSection = ({ course }: AudienceSectionProps) => {
           {/* Column 1: Image and Audience Label */}
           <div className={styles.imageBox}>
             <div className={styles.audienceBadge}>
-              {getAgeLabel(course.audience)}
+              {getAgeLabel(course)}
             </div>
             <Image
               src={image}

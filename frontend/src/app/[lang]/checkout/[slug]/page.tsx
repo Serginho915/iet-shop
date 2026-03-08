@@ -1,28 +1,18 @@
 import { CheckoutPage } from "@/components/pages/CheckoutPage/CheckoutPage";
-import { getCourses } from "@/lib/api";
-import { i18n } from "@/i18n-config";
-
-export async function generateStaticParams() {
-    const courses = await getCourses();
-    const paths: { lang: string; slug: string }[] = [];
-
-    i18n.locales.forEach((locale) => {
-        courses.forEach((course) => {
-            paths.push({ lang: locale, slug: course.slug });
-        });
-    });
-
-    return paths;
-}
+import { getCourseBySlug } from "@/lib/api";
 
 interface PageProps {
     params: Promise<{
         slug: string;
+        lang: string;
     }>;
 }
 
 export default async function Page({ params }: PageProps) {
     const { slug } = await params;
 
-    return <CheckoutPage slug={slug} />;
+    // Server-side fetch as primary source
+    const course = await getCourseBySlug(slug);
+
+    return <CheckoutPage slug={slug} course={course} />;
 }

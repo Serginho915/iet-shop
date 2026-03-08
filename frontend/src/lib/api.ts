@@ -15,8 +15,8 @@ export interface Course {
   type: "hybrid" | "online" | "offline";
   price: number;
   is_active: boolean;
-  stripe_product_id?: number;
-  stripe_price_id?: number;
+  stripe_product_id?: number | null;
+  stripe_price_id?: number | null;
   tags: Tag[];
   audience?: "adults" | "kids";
   about_title?: string;
@@ -49,7 +49,7 @@ export interface Event {
   tags: Tag[];
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL; //|| "http://127.0.0.1:8000"
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 const API_URL = `${API_BASE}/api`;
 
 const resolveUrl = (url?: string) => {
@@ -60,14 +60,22 @@ const resolveUrl = (url?: string) => {
 
 const mapTags = (tagIds: any[], allTags: Tag[]) => (tagIds || []).map(id => {
   if (typeof id === 'object') return id;
-  return allTags.find(t => t.id === Number(id)) || { id: Number(id), name: `Tag ${id}` };
+  const tagId = Number(id);
+  return allTags.find(t => t.id === tagId) || { id: tagId, name: `Tag ${tagId}` };
 });
 
 const safeFetch = async (endpoint: string) => {
   const url = `${API_URL}${endpoint}/`.replace(/\/+$/, '/');
   try {
-    const res = await fetch(url, { cache: 'no-store' });
-    if (!res.ok) return null;
+    const res = await fetch(url, {
+      cache: 'no-store',
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+    if (!res.ok) {
+      return null;
+    }
     return await res.json();
   } catch (err) {
     return null;
@@ -110,23 +118,25 @@ export async function getHomePageData() {
 }
 
 export async function getCourses(): Promise<Course[]> {
-  const { courses } = await getHomePageData();
-  return courses;
+  const data = await getHomePageData();
+  return data.courses;
 }
 
 export async function getPosts(): Promise<Post[]> {
-  const { posts } = await getHomePageData();
-  return posts;
+  const data = await getHomePageData();
+  return data.posts;
 }
 
 export async function getEvents(): Promise<Event[]> {
-  const { events } = await getHomePageData();
-  return events;
+  const data = await getHomePageData();
+  return data.events;
 }
 
 export async function getCourseBySlug(slug: string): Promise<Course | undefined> {
   const courses = await getCourses();
-  return courses.find(c => c.slug === slug);
+  if (!courses || courses.length === 0) return undefined;
+  const targetSlug = slug.toLowerCase().trim();
+  return courses.find(c => c.slug?.toLowerCase().trim() === targetSlug);
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | undefined> {

@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import { Course } from "@/lib/api";
@@ -6,6 +8,7 @@ import styles from "./HeroSectionCourse.module.scss";
 import { IconCalendarHero, IconLocation, IconInfinity, IconBeginner } from "@/components/icons";
 
 import { useTranslate } from "@/lib/useTranslate";
+import { useCourse } from "@/lib/CourseContext";
 import { translations } from "./translations";
 import { Button } from "@/components/ui/Button/Button";
 
@@ -19,6 +22,7 @@ export const HeroSectionCourse = ({
   formattedStart,
 }: HeroSectionCourseProps) => {
   const { t, lang } = useTranslate(translations);
+  const { setSelectedCourse } = useCourse();
 
   // Calculate converted price (mock logic  1 EUR ~ 1.95 BGN)
   const bgnPrice = (course.price * 1.95583).toFixed(2);
@@ -103,8 +107,13 @@ export const HeroSectionCourse = ({
 
       <div className={styles.bottomContent}>
         <h1 className={styles.title}>{renderTitle(course.title)}</h1>
-        <Link href={`/checkout/${course.slug}`}>
-          <Button variant="primary" size="lg" rounded="full">
+        <Link
+          href={`/checkout/${course.slug}`}
+          onClick={() => {
+            setSelectedCourse(course);
+          }}
+        >
+          <Button variant="primary" size="custom" rounded="xl" className={styles.bookButton}>
             {t.bookSpot}
           </Button>
         </Link>

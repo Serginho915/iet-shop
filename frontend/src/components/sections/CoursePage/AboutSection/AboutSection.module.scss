@@ -3,7 +3,7 @@
 
 .aboutSection {
   padding: 44px 0;
-  
+
 }
 
 .container {
@@ -13,11 +13,16 @@
 .grid {
   max-width: 1440px;
   margin: 0 auto;
-  //padding: 0 68px;
   display: flex;
   justify-content: space-between;
   align-items: stretch;
   gap: 40px;
+
+  @include tablet {
+    flex-direction: column;
+    padding: 0 40px;
+    gap: 24px;
+  }
 
   @include mobile {
     flex-direction: column;
@@ -33,15 +38,33 @@
   font-weight: 400;
   margin-bottom: 44px;
   color: #1a1a1a;
+
+  @include tablet {
+    font-size: 40px;
+  }
+
+  @include mobile {
+    font-size: 28px;
+    margin-bottom: 24px;
+  }
 }
 
 // Column 1
 .headingBox {
-  width: 246px;
-  flex-shrink: 0;
+  width: 100%;
+  max-width: 246px;
+  flex-shrink: 1;
   display: flex;
   align-items: center;
-  /* Vertical center */
+
+  @include tablet {
+    width: 180px;
+  }
+
+  @include mobile {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 .aboutH3 {
@@ -64,25 +87,49 @@
 .blocksBox {
   flex-shrink: 1;
   max-width: 579px;
+
+  @include tablet {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  @include mobile {
+    max-width: 100%;
+    width: 100%;
+  }
 }
 
 .cardsWrapper {
   background: #155dfc;
-  width: 567px;
+  width: 100%;
+  max-width: 567px;
   padding: 0 0 44px 0;
   border-radius: 64px;
-  // display: flex;
-  // flex-direction: column;
-  //
-  //overflow: hidden; // To clip the black card if needed
+
+  @include tablet {
+    width: 100%;
+  }
+
+  @include mobile {
+    width: 100%;
+    border-radius: 32px;
+  }
 }
 
 .blackCard {
   background: #2c2f39;
   border-radius: 64px 64px 0 64px;
   padding: 44px;
-  // margin: -44px -44px 0 -44px; // Expands to touch the top and side edges of the blue parent
-  // box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+
+  @include tablet {
+    padding: 32px;
+    border-radius: 48px 48px 0 48px;
+  }
+
+  @include mobile {
+    padding: 24px;
+    border-radius: 32px 32px 0 32px;
+  }
 }
 
 .textL {
@@ -107,8 +154,17 @@
 
 // Column 3
 .imageBox {
-  width: 342px;
-  flex-shrink: 0;
+  width: 100%;
+  max-width: 342px;
+  flex-shrink: 1;
+
+  @media (max-width: 1100px) {
+    display: none;
+  }
+
+  @include mobile {
+    display: none;
+  }
 }
 
 .imageFanned {
@@ -133,6 +189,10 @@
     top: 0;
     background: #cdd3de;
     opacity: 1;
+
+    @include tablet {
+      left: -20px;
+    }
   }
 
   // Middle layer
@@ -141,6 +201,10 @@
     top: 0;
     background: #8b93a1;
     opacity: 1;
+
+    @include tablet {
+      left: -10px;
+    }
   }
 }
 

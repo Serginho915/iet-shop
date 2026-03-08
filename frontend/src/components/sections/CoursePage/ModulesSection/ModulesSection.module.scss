@@ -34,6 +34,11 @@
   margin: 0;
   padding-right: 20px;
 
+  @include tablet {
+    font-size: 44px;
+    padding-right: 0;
+  }
+
   @include mobile {
     font-size: 40px;
     text-align: center;
@@ -59,7 +64,7 @@
     padding: 6px;
     z-index: 10;
 
-    
+
     min-width: 330px;
 
     @include mobile {
@@ -109,6 +114,11 @@
   line-height: 1.2;
   white-space: nowrap; // Prevents title from wrapping, forcing pill to grow
 
+  @include tablet {
+    font-size: 20px;
+    white-space: normal;
+  }
+
   @include mobile {
     font-size: 18px;
     white-space: normal;
@@ -132,7 +142,12 @@
   font-weight: 400;
   line-height: normal;
   white-space: nowrap;
-  
+
+
+  @include tablet {
+    font-size: 20px;
+    white-space: normal;
+  }
 
   @include mobile {
     font-size: 18px;

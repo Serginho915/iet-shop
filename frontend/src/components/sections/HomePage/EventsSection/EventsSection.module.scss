@@ -8,6 +8,10 @@
     align-items: center;
     position: relative;
 
+    @include mobile {
+        padding: 60px 1rem 32px 1rem;
+    }
+
     @include tablet {
         padding: 60px 1rem 40px 1rem;
     }
@@ -40,6 +44,14 @@
     border-radius: 20px;
     background: transparent;
     z-index: 10;
+
+    @include mobile {
+        position: relative;
+        top: 0;
+        right: auto;
+        transform: rotate(-5deg);
+        margin-bottom: 12px;
+    }
 
     @include desktop {
         top: -45px;
@@ -88,6 +100,10 @@
     -ms-overflow-style: none;
     /* IE and Edge */
     scrollbar-width: none;
+
+    @include mobile {
+        padding: 10px 16px;
+    }
 
     /* Firefox */
     &::-webkit-scrollbar {

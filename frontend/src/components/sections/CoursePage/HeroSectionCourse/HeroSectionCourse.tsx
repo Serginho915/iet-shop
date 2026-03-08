@@ -7,7 +7,7 @@ import { IconCalendarHero, IconLocation, IconInfinity, IconBeginner } from "@/co
 
 import { useTranslate } from "@/lib/useTranslate";
 import { translations } from "./translations";
-import { title } from "process";
+import { Button } from "@/components/ui/Button/Button";
 
 interface HeroSectionCourseProps {
   course: Course;
@@ -26,7 +26,7 @@ export const HeroSectionCourse = ({
   const renderTitle = (title: string) => {
     return title.replaceAll(' ', '_');
   }
-  
+
   const renderHighlightedDescription = (text: string) => {
     if (!text) return null;
     const words = text.trim().split(/\s+/);
@@ -103,19 +103,11 @@ export const HeroSectionCourse = ({
 
       <div className={styles.bottomContent}>
         <h1 className={styles.title}>{renderTitle(course.title)}</h1>
-        <button
-          className={styles.bookButton}
-          onClick={() => {
-            const el = document.getElementById("consultation");
-            if (el) {
-              el.scrollIntoView({ behavior: "smooth" });
-            } else {
-              window.location.href = `/${lang}/#consultation`;
-            }
-          }}
-        >
-          {t.bookSpot}
-        </button>
+        <Link href={`/checkout/${course.slug}`}>
+          <Button variant="primary" size="lg" rounded="full">
+            {t.bookSpot}
+          </Button>
+        </Link>
       </div>
     </section>
   );

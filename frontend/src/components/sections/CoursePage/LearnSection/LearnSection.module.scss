@@ -11,6 +11,10 @@
 .instrumentsBlock {
   padding: 44px;
   border-bottom: none;
+
+  @include tablet {
+    padding: 44px 24px;
+  }
 }
 
 .instrumentsHeader {
@@ -23,7 +27,7 @@
 
   @include mobile {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
   }
 }
 
@@ -35,8 +39,12 @@
   margin: 0;
   line-height: 1.1;
 
-  @include mobile {
+  @include tablet {
     font-size: 32px;
+  }
+
+  @include mobile {
+    font-size: 26px;
   }
 }
 
@@ -112,6 +120,10 @@
   gap: 32px;
   align-items: stretch;
 
+  @include tablet {
+    flex-direction: column;
+  }
+
   @include mobile {
     flex-direction: column;
   }
@@ -119,28 +131,45 @@
 
 .photoBox {
   position: relative;
-  flex-shrink: 0;
+  flex-shrink: 1;
   background: radial-gradient(77.94% 77.94% at 50.1% 50%,
       rgba(255, 160, 119, 0.5) 0%,
       rgba(194, 63, 255, 0.5) 73.93%,
       rgba(90, 85, 244, 0.5) 100%);
-  width: 523px;
+  width: 100%;
+  max-width: 523px;
   border-radius: 24px;
+
+  @include tablet {
+    max-width: 340px;
+  }
 
   @include mobile {
     width: 100%;
-    max-width: 360px;
+    max-width: 100%;
     margin: 0 auto;
   }
 }
 
 .humanImg {
   width: 100%;
-  height: 648px;
+  height: auto;
+  aspect-ratio: 523 / 648;
   border-radius: 32px;
   object-fit: cover;
+  object-position: center top;
   display: block;
   align-self: stretch;
+
+  @include tablet {
+    height: auto;
+    aspect-ratio: 340 / 450;
+  }
+
+  @include mobile {
+    height: auto;
+    aspect-ratio: 1/1;
+  }
 }
 
 .likeImg {
@@ -150,6 +179,16 @@
   width: 126px;
   height: 153px;
   object-fit: contain;
+
+  @include tablet {
+    width: 90px;
+    height: 110px;
+    top: 100px;
+  }
+
+  @include mobile {
+    display: none;
+  }
 }
 
 .likeImg2 {
@@ -157,6 +196,15 @@
   left: auto;
   right: -27px;
   top: 80px;
+
+  @include tablet {
+    right: 0;
+    scale: 0.8;
+  }
+
+  @include mobile {
+    display: none;
+  }
 }
 
 .cardsGrid {
@@ -164,6 +212,11 @@
   grid-template-columns: 1fr 1fr;
   gap: 16px;
   flex: 1;
+
+  @include tablet {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
 
   @include mobile {
     grid-template-columns: 1fr;
@@ -179,6 +232,18 @@
   display: flex;
   align-items: flex-start;
   transition: transform 0.2s ease;
+
+  @include tablet {
+    padding: 30px 24px;
+    border-radius: 32px;
+    min-height: 140px;
+  }
+
+  @include mobile {
+    padding: 24px 16px;
+    border-radius: 24px;
+    min-height: 120px;
+  }
 
   &:hover {
     transform: translateY(-2px);

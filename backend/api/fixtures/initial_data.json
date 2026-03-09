@@ -578,6 +578,26 @@
     }
   },
   {
+    "model": "api.eventrequest",
+    "pk": 1,
+    "fields": {
+      "name": "Georgi Ivanov",
+      "email": "georgi.ivanov@example.com",
+      "phone": "+359888112233",
+      "interested": 1
+    }
+  },
+  {
+    "model": "api.eventrequest",
+    "pk": 2,
+    "fields": {
+      "name": "Mila Petrova",
+      "email": "mila.petrova@example.com",
+      "phone": "+359887445566",
+      "interested": 2
+    }
+  },
+  {
     "model": "api.order",
     "pk": 1,
     "fields": {

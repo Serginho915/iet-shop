@@ -12,6 +12,7 @@ from .models import (
     CourseModuleDescription,
     CourseOutcome,
     Event,
+    EventRequest,
     Order,
     Post,
     Tag,
@@ -271,6 +272,24 @@ class PostAdmin(admin.ModelAdmin):
 
 @admin.register(Consultation)
 class ConsultationAdmin(admin.ModelAdmin):
+    list_display = ("name", "email", "phone", "interested")
+    search_fields = ("name", "email", "phone")
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_view_permission(self, request, obj=None):
+        return request.user.is_active and request.user.is_staff
+
+
+@admin.register(EventRequest)
+class EventRequestAdmin(admin.ModelAdmin):
     list_display = ("name", "email", "phone", "interested")
     search_fields = ("name", "email", "phone")
 

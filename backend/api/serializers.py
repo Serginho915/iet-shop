@@ -3,6 +3,7 @@ from rest_framework import serializers
 from .models import (
     Consultation,
     Course,
+    EventRequest,
     Event,
     Post,
     Tag,
@@ -209,4 +210,10 @@ class PostSerializer(BilingualSerializerMixin, serializers.ModelSerializer):
 class ConsultationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Consultation
+        fields = "__all__"
+
+
+class EventRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EventRequest
         fields = "__all__"

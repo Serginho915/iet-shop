@@ -130,6 +130,22 @@ class Consultation(models.Model):
         return self.name
 
 
+class EventRequest(models.Model):
+    name = models.CharField(max_length=255)
+    email = models.EmailField()
+    phone = models.CharField(max_length=30)
+    interested = models.ForeignKey(
+        Event,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="event_requests",
+    )
+
+    def __str__(self):
+        return self.name
+
+
 class CourseAudienceTagCard(models.Model):
     course = models.ForeignKey(
         Course,

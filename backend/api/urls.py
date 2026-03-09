@@ -5,6 +5,7 @@ from .views import (
     ConsultationViewSet,
     CourseViewSet,
     EventViewSet,
+    EventRequestViewSet,
     PostViewSet,
     TagViewSet,
     TestView,
@@ -17,6 +18,7 @@ router.register("courses", CourseViewSet, basename="course")
 router.register("events", EventViewSet, basename="event")
 router.register("posts", PostViewSet, basename="post")
 router.register("consultations", ConsultationViewSet, basename="consultation")
+router.register("event-requests", EventRequestViewSet, basename="event-request")
 
 
 urlpatterns = [

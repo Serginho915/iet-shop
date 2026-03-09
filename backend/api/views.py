@@ -2,11 +2,12 @@ from rest_framework.response import Response
 from rest_framework import permissions, viewsets
 from rest_framework.views import APIView
 
-from .models import Consultation, Course, Event, Post, Tag
+from .models import Consultation, Course, Event, EventRequest, Post, Tag
 from .serializers import (
     ConsultationSerializer,
     CourseSerializer,
     EventSerializer,
+    EventRequestSerializer,
     PostSerializer,
     TagSerializer,
 )
@@ -57,6 +58,17 @@ class PostViewSet(viewsets.ModelViewSet):
 class ConsultationViewSet(viewsets.ModelViewSet):
     queryset = Consultation.objects.all()
     serializer_class = ConsultationSerializer
+    permission_classes = [permissions.IsAdminUser]
+
+    def get_permissions(self):
+        if self.action == "create":
+            return [permissions.AllowAny()]
+        return [permissions.IsAdminUser()]
+
+
+class EventRequestViewSet(viewsets.ModelViewSet):
+    queryset = EventRequest.objects.all()
+    serializer_class = EventRequestSerializer
     permission_classes = [permissions.IsAdminUser]
 
     def get_permissions(self):

@@ -9,9 +9,12 @@ import Link from 'next/link';
 import { Course } from '@/lib/api';
 import { useFormLogic } from '@/lib/useFormLogic';
 
+import { PrivacyPolicyModal } from "@/components/ui/PrivacyPolicyModal/PrivacyPolicyModal";
+
 export const ConsultationSection = ({ courses = [] }: { courses?: Course[] }) => {
   const { t } = useTranslate(translations);
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
+  const [isPrivacyOpen, setIsPrivacyOpen] = React.useState(false);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
 
   const {
@@ -147,9 +150,9 @@ export const ConsultationSection = ({ courses = [] }: { courses?: Course[] }) =>
                   </div>
                   <span className={styles.privacyText}>
                     {t.privacyPrefix}
-                    <Link href="/privacy" className={styles.link} onClick={(e) => e.stopPropagation()}>
+                    <span className={styles.link} onClick={(e) => { e.stopPropagation(); setIsPrivacyOpen(true); }}>
                       {t.privacyLink}
-                    </Link>
+                    </span>
                     {t.privacySuffix}
                   </span>
                 </div>
@@ -174,6 +177,9 @@ export const ConsultationSection = ({ courses = [] }: { courses?: Course[] }) =>
           </>
         )}
       </div>
+
+      <PrivacyPolicyModal isOpen={isPrivacyOpen} onClose={() => setIsPrivacyOpen(false)} />
     </section>
   );
 };
+

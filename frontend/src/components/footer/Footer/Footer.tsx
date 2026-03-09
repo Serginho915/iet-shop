@@ -6,6 +6,8 @@ import Image from "next/image";
 import { Button } from "@/components/ui/Button/Button";
 import { NavLinks, type SimpleLink } from "@/components/ui/NavLinks/NavLinks";
 import { Modal } from "@/components/ui/Modal/Modal";
+import { PrivacyPolicyModal } from "@/components/ui/PrivacyPolicyModal/PrivacyPolicyModal";
+import { CookieSettingsModal } from "@/components/ui/CookieSettingsModal/CookieSettingsModal";
 import { useLanguage } from "@/lib/LanguageContext";
 import { translations } from "./translations";
 import styles from "./Footer.module.scss";
@@ -144,7 +146,9 @@ const mergeConfig = (custom?: Partial<FooterConfig>): FooterConfig => {
 export const Footer = ({ config }: FooterProps) => {
   const { lang } = useLanguage();
   const tr = translations[lang];
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEuModalOpen, setIsEuModalOpen] = useState(false);
+  const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
+  const [isCookieOpen, setIsCookieOpen] = useState(false);
   const [categories, setCategories] = useState<Tag[]>([]);
   const router = useRouter();
 
@@ -164,9 +168,19 @@ export const Footer = ({ config }: FooterProps) => {
     bottomText,
   } = mergeConfig(config);
 
-  const handleOpenModal = (e: React.MouseEvent) => {
+  const handleOpenEuModal = (e: React.MouseEvent) => {
     e.preventDefault();
-    setIsModalOpen(true);
+    setIsEuModalOpen(true);
+  };
+
+  const handleOpenPrivacy = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsPrivacyOpen(true);
+  };
+
+  const handleOpenCookie = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsCookieOpen(true);
   };
 
   const companyNameText = tr.footerCompanyName ?? companyName;
@@ -182,12 +196,19 @@ export const Footer = ({ config }: FooterProps) => {
   const emailText = tr.footerEmail ?? contact.email;
   const bottomTextText = tr.footerCopyright ?? bottomText;
 
-  const legalLinks: SimpleLink[] = legal.links.map((item) => ({
-    label: item.translationKey ? tr[item.translationKey] : item.label,
-    href: item.href,
-    external: item.external,
-    onClick: item.translationKey === "footerLegalEuInfo" ? handleOpenModal : undefined,
-  }));
+  const legalLinks: SimpleLink[] = legal.links.map((item) => {
+    let onClick = undefined;
+    if (item.translationKey === "footerLegalEuInfo") onClick = handleOpenEuModal;
+    else if (item.translationKey === "footerLegalPrivacy") onClick = handleOpenPrivacy;
+    else if (item.translationKey === "footerLegalCookies") onClick = handleOpenCookie;
+
+    return {
+      label: item.translationKey ? tr[item.translationKey] : item.label,
+      href: item.href,
+      external: item.external,
+      onClick,
+    };
+  });
 
   const scrollToSection = (sectionId: string, extraParams?: string) => (e: React.MouseEvent) => {
     e.preventDefault();
@@ -331,7 +352,7 @@ export const Footer = ({ config }: FooterProps) => {
           </div>
         </div>
       </footer>
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <Modal isOpen={isEuModalOpen} onClose={() => setIsEuModalOpen(false)}>
         <div style={{ textAlign: "center" }}>
           <Image
             src={euProjectImg}
@@ -340,6 +361,8 @@ export const Footer = ({ config }: FooterProps) => {
           />
         </div>
       </Modal>
+      <PrivacyPolicyModal isOpen={isPrivacyOpen} onClose={() => setIsPrivacyOpen(false)} />
+      <CookieSettingsModal isOpen={isCookieOpen} onClose={() => setIsCookieOpen(false)} />
     </>
   );
 };

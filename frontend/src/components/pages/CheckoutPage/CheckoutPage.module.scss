@@ -378,21 +378,63 @@
   width: 100%;
 }
 
-@include mobile {
+@include tablet {
   .title {
-    font-size: 32px;
+    font-size: 36px;
+    margin-bottom: 24px;
+  }
+
+  .form {
+    padding: 24px;
+  }
+
+  .courseThumb {
+    height: 160px;
   }
 
   .summaryTop {
     flex-direction: column;
+    gap: 16px;
+  }
+}
+
+@include mobile {
+  .title {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+
+  .form {
+    padding: 16px;
+  }
+
+  .summaryTop {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .courseThumb {
+    height: 140px;
+  }
+
+  .infoBox {
+    padding: 12px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .infoLabel {
+    text-align: left;
   }
 
   .buttons {
     flex-direction: column;
+    gap: 12px;
   }
 
   .payButton,
   .requestButton {
-    height: 60px;
+    height: 54px;
   }
 }

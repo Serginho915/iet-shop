@@ -11,6 +11,7 @@ import { HeroSectionBlog } from "@/components/sections/BlogPage/HeroSectionBlog/
 import { BlogCard } from "@/components/ui/BlogCard/BlogCard";
 import { CarouselNav } from "@/components/ui/CarouselNav/CarouselNav";
 import { translations } from "./translations";
+import { useBlog } from "@/lib/BlogContext";
 
 interface BlogPageProps {
     post?: Post;
@@ -19,36 +20,46 @@ interface BlogPageProps {
 
 export const BlogPage = ({ post: initialPost, slug }: BlogPageProps) => {
     const { t, lang } = useTranslate(translations);
-    const [post, setPost] = useState<Post | undefined>(initialPost);
-    const [relatedPosts, setRelatedPosts] = useState<Post[]>([]);
+    const { selectedBlog } = useBlog();
+
+    const [fetchedPost, setFetchedPost] = useState<Post | undefined>(undefined);
+    const post = React.useMemo(() => {
+        if (selectedBlog && selectedBlog.slug === slug) return selectedBlog;
+        return initialPost;
+    }, [selectedBlog, initialPost, slug]);
+
+    useEffect(() => {
+        if (!post && !fetchedPost) {
+            getPostBySlug(slug).then(setFetchedPost);
+        }
+    }, [post, fetchedPost, slug]);
+
+    const finalPost = post || fetchedPost;
+
+    useEffect(() => {
+        const loadRelated = async () => {
+            const allPosts = await getPosts();
+            setRelatedPosts(allPosts.filter(p => p.slug !== slug));
+        };
+        loadRelated();
+    }, [slug]);
 
     // Carousel state
     const [activeIndex, setActiveIndex] = useState(0);
     const carouselRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        const loadData = async () => {
-            if (!post) {
-                const fetchedPost = await getPostBySlug(slug);
-                setPost(fetchedPost);
-            }
-            const allPosts = await getPosts();
-            setRelatedPosts(allPosts.filter(p => p.slug !== slug));
-        };
-        loadData();
-    }, [slug, post]);
+    const [relatedPosts, setRelatedPosts] = useState<Post[]>([]);
 
     const breadcrumbs: BreadcrumbItem[] = [
         { label: t.blog, href: "/#blog" },
-        { label: post?.title || slug }
+        { label: finalPost?.title || slug }
     ];
 
     const [formattedDate, setFormattedDate] = useState<string>("");
 
     useEffect(() => {
-        if (post?.created_at) {
+        if (finalPost?.created_at) {
             const locale = lang === "bg" ? "bg-BG" : "en-GB";
-            setFormattedDate(new Date(post.created_at).toLocaleDateString(locale, {
+            setFormattedDate(new Date(finalPost.created_at).toLocaleDateString(locale, {
                 day: "2-digit",
                 month: "long",
                 year: "numeric",
@@ -88,7 +99,7 @@ export const BlogPage = ({ post: initialPost, slug }: BlogPageProps) => {
         scrollToStep(index);
     };
 
-    if (!post) {
+    if (!finalPost) {
         return (
             <div className={styles.blogPageWrapper}>
                 <Header />
@@ -115,14 +126,14 @@ export const BlogPage = ({ post: initialPost, slug }: BlogPageProps) => {
 
                 <div className={styles.container}>
                     <HeroSectionBlog
-                        post={post}
+                        post={finalPost}
                         formattedDate={formattedDate}
                     />
 
                     <div className={styles.articleContentWrapper}>
-                        <h1 className={styles.title}>{post.title}</h1>
+                        <h1 className={styles.title}>{finalPost.title}</h1>
                         <p className={styles.content}>
-                            {post.content}
+                            {finalPost.content}
                         </p>
                     </div>
                 </div>
@@ -147,6 +158,7 @@ export const BlogPage = ({ post: initialPost, slug }: BlogPageProps) => {
                                                 tags={p.tags}
                                                 created_at={p.created_at}
                                                 picture={p.picture}
+                                                fullPost={p}
                                             />
                                         </li>
                                     ))}

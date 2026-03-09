@@ -20,12 +20,15 @@ interface CheckoutPageProps {
   course?: Course;
 }
 
+import { PrivacyPolicyModal } from "@/components/ui/PrivacyPolicyModal/PrivacyPolicyModal";
+
 export const CheckoutPage = ({ slug, course: initialCourse }: CheckoutPageProps) => {
   const router = useRouter();
   const { t, lang } = useTranslate(translations);
   const { selectedCourse } = useCourse();
   const [fetchedCourse, setFetchedCourse] = useState<Course | undefined>(undefined);
   const [isFetching, setIsFetching] = useState(false);
+  const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
 
   // Use context data if available (fast transition) or prop from server or client-side fetch fallback
   const course = useMemo(() => {
@@ -237,7 +240,7 @@ export const CheckoutPage = ({ slug, course: initialCourse }: CheckoutPageProps)
                     </div>
                     <span className={styles.privacyText}>
                       {t.privacyPrefix}
-                      <Link href="/privacy" className={styles.privacyLink} onClick={(e) => e.stopPropagation()}>{t.privacyLink}</Link>
+                      <span className={styles.privacyLink} onClick={(e) => { e.stopPropagation(); setIsPrivacyOpen(true); }}>{t.privacyLink}</span>
                       {t.privacySuffix}
                     </span>
                   </div>
@@ -272,7 +275,9 @@ export const CheckoutPage = ({ slug, course: initialCourse }: CheckoutPageProps)
             </div>
           )}
         </div>
+        <PrivacyPolicyModal isOpen={isPrivacyOpen} onClose={() => setIsPrivacyOpen(false)} />
       </main>
     </div>
   );
 };
+

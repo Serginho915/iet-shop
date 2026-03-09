@@ -1,11 +1,11 @@
 import React from 'react';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import styles from './AdvantageCard.module.scss';
 
 export interface AdvantageCardProps {
     title: string;
     description: string;
-    image?: string;
+    image?: string | StaticImageData;
     bg?: string;
     index?: number;
     style?: React.CSSProperties;

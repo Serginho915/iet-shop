@@ -6,6 +6,7 @@ import { Header } from "@/components/header/Header/Header";
 import { Footer } from "@/components/footer/Footer/Footer";
 import { LanguageProvider } from "@/lib/LanguageContext";
 import { CourseProvider } from "@/lib/CourseContext";
+import { BlogProvider } from "@/lib/BlogContext";
 import { CookieBanner } from "@/components/ui/CookieBanner/CookieBanner";
 import { i18n } from "@/i18n-config";
 
@@ -49,10 +50,12 @@ export default async function RootLayout({
         className={`${roboto.variable} ${robotoFlex.variable} ${rubik.variable} antialiased text-gray-900 bg-gray-50`}
       >
         <LanguageProvider initialLang={lang as "en" | "bg"}>
-          <CourseProvider>
-            {children}
-            <CookieBanner />
-          </CourseProvider>
+          <BlogProvider>
+            <CourseProvider>
+              {children}
+              <CookieBanner />
+            </CourseProvider>
+          </BlogProvider>
         </LanguageProvider>
       </body>
     </html>

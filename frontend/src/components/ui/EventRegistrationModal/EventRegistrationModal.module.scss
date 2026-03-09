@@ -334,3 +334,55 @@
 .submitButton {
     min-width: 240px;
 }
+
+@include tablet {
+    .modalBody {
+        padding: 28px 32px !important;
+    }
+
+    .title {
+        font-size: 28px;
+    }
+
+    .formTitle {
+        font-size: 28px;
+    }
+}
+
+@include mobile {
+    .modalBody {
+        padding: 24px 20px !important;
+        border-radius: 24px !important;
+    }
+
+    .modalContent {
+        gap: 24px;
+    }
+
+    .formSection {
+        padding: 24px 16px;
+        border-radius: 24px;
+    }
+
+    .title {
+        font-size: 24px;
+    }
+
+    .formTitle {
+        font-size: 24px;
+    }
+
+    .topRow {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .dateRow {
+        font-size: 20px;
+        margin-top: 16px;
+    }
+
+    .submitButton {
+        min-width: 100%;
+    }
+}

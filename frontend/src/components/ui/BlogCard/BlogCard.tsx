@@ -8,6 +8,8 @@ import { useRouter } from 'next/navigation';
 import { Tag } from "@/lib/api";
 import Image from "next/image";
 import { useLanguage } from "@/lib/LanguageContext";
+import { useBlog } from "@/lib/BlogContext";
+import { Post } from "@/lib/api";
 
 export interface BlogCardProps {
   id: number;
@@ -18,6 +20,7 @@ export interface BlogCardProps {
   slug: string;
   created_at: string;
   picture?: string;
+  fullPost?: Post;
 }
 
 export const BlogCard = ({
@@ -28,11 +31,16 @@ export const BlogCard = ({
   slug,
   created_at,
   picture,
+  fullPost,
 }: BlogCardProps) => {
   const router = useRouter();
   const { lang } = useLanguage();
+  const { setSelectedBlog } = useBlog();
 
   const handleCardClick = () => {
+    if (fullPost) {
+      setSelectedBlog(fullPost);
+    }
     router.push(`/${lang}/blog/${slug}`);
   };
 

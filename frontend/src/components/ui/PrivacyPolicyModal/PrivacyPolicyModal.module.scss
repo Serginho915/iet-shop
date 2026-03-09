@@ -1,0 +1,59 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.modalBody {
+    max-width: 700px !important;
+    padding: 32px !important;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.title {
+    font-size: 28px;
+    font-weight: 600;
+    color: #22262F;
+    margin: 0;
+}
+
+.textBody {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #475569;
+
+    h3 {
+        font-size: 20px;
+        color: #22262F;
+        margin-top: 24px;
+        margin-bottom: 12px;
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+
+    p {
+        margin-bottom: 12px;
+    }
+}
+
+@include mobile {
+    .modalBody {
+        padding: 24px 20px !important;
+    }
+
+    .title {
+        font-size: 24px;
+    }
+
+    .textBody {
+        font-size: 14px;
+
+        h3 {
+            font-size: 18px;
+        }
+    }
+}

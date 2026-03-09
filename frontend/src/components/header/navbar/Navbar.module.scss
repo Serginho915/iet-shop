@@ -4,27 +4,49 @@
 .nav {
     display: flex;
     align-items: center;
+    width: 100%;
 }
 
 .navList {
-    @include flex-center;
-    gap: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
     list-style: none;
     margin: 0;
     padding: 0;
+    width: 100%;
+
+    @include desktop {
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+    }
 }
 
 .navLink {
     display: flex;
     align-items: center;
     gap: 0.25rem;
-    font-size: 15px;
-    font-weight: 700;
-    color: $color-black;
+    @include navbar-link-style;
     @include transition-standard;
     cursor: pointer;
+    padding: 16px 4px;
+    border-bottom: 1px solid #f1f5f9;
+    width: 100%;
+
+    @include desktop {
+        padding: 0;
+        border-bottom: none;
+        width: auto;
+    }
 
     &:hover {
-        color: $color-gray;
+        color: $color-accent;
+
+        @include desktop {
+            color: #3c3e3e;
+        }
     }
 }

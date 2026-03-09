@@ -1,41 +1,65 @@
 "use client";
 
-import Link from "next/link";
+import { LocalizedLink as Link } from "@/components/ui/LocalizedLink/LocalizedLink";
 import { CoursesDropdown } from "@/components/header/CoursesDropdown/CoursesDropdown";
 import { useLanguage } from "@/lib/LanguageContext";
-import { t } from "@/lib/translations";
 import { NavLinks, type SimpleLink } from "@/components/ui/NavLinks/NavLinks";
+import { translations } from "./translations";
 import styles from "./Navbar.module.scss";
 
+type NavKey = keyof typeof translations.en;
+
 interface NavLink {
-  key: keyof typeof t.en;
+  key: NavKey;
   href: string;
-  hasDropdown: boolean;
 }
 
 const navLinks: NavLink[] = [
-  { key: "courses", href: "/courses", hasDropdown: true },
-  { key: "events", href: "/events", hasDropdown: false },
-  { key: "blog", href: "/blog", hasDropdown: false },
-  { key: "contact", href: "/contact", hasDropdown: false },
+  { key: "events", href: "/#events" },
+  { key: "blog", href: "/#blog" },
+  { key: "contact", href: "/#consultation" },
 ];
 
-export const Navbar = () => {
-  const { lang } = useLanguage();
-  const tr = t[lang];
+interface NavbarProps {
+  onLinkClick?: () => void;
+}
 
-  const simpleLinks: SimpleLink[] = navLinks
-    .filter((link) => !link.hasDropdown)
-    .map((link) => ({
-      label: tr[link.key],
-      href: link.href,
-    }));
+export const Navbar = ({ onLinkClick }: NavbarProps) => {
+  const { lang } = useLanguage();
+  const tr = translations[lang];
+
+  const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    onLinkClick?.();
+
+    const [path, hash] = href.split('#');
+    if (!hash) return;
+
+    // Check if we are on the same page (considering the lang prefix)
+    const currentPurePath = window.location.pathname.replace(`/${lang}`, '') || '/';
+    const targetPurePath = path || '/';
+
+    if (currentPurePath === targetPurePath) {
+      const el = document.getElementById(hash);
+      if (el) {
+        e.preventDefault();
+        el.scrollIntoView({ behavior: 'smooth' });
+        // Update hash in URL without jump
+        window.history.pushState(null, '', href.startsWith('/') ? href : `/${lang}${href}`);
+      }
+    }
+  };
+
+  const simpleLinks: SimpleLink[] = navLinks.map((link) => ({
+    label: tr[link.key],
+    href: link.href,
+    onClick: (e: any) => handleAnchorClick(e, link.href),
+  }));
 
   return (
     <nav className={styles.nav}>
       <ul className={styles.navList}>
         <li>
-          <CoursesDropdown />
+          <CoursesDropdown onLinkClick={onLinkClick} />
         </li>
         <NavLinks links={simpleLinks} linkClassName={styles.navLink} asListItems />
       </ul>

@@ -1,0 +1,36 @@
+@use "../../../styles/variables" as *;
+
+.card {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.imageWrapper {
+    flex-shrink: 0;
+    line-height: 0;
+}
+
+.content {
+    border-radius: 44px 44px 44px 0;
+    background-color: #5A55F4;
+    padding: 31px 37px;
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 445px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.text {
+    font-size: 16px;
+    font-weight: 400;
+    opacity: 0.9;
+    margin: 0;
+}

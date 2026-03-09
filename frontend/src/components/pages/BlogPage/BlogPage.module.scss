@@ -1,0 +1,158 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.blogPageWrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding-top: 5rem; // compensate for fixed header height
+    background-color: #f2f7ff;
+}
+
+.blogPage {
+    flex: 1;
+    padding: 0;
+}
+
+.breadcrumbWrapper {
+    padding: 40px 0 24px 0;
+}
+
+.container {
+    @include container;
+    max-width: 1392px; // Desktop requirement
+    margin: 0 auto;
+}
+
+.articleContentWrapper {
+    max-width: 790px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.title {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: left;
+    color: #111827;
+    margin: 28px 0;
+
+    @include tablet {
+        font-size: 40px;
+    }
+
+    @include desktop {
+        font-size: 48px;
+    }
+}
+
+.content {
+    color: #1d1c1c;
+    font-family: var(--font-family-body, Rubik);
+    font-size: var(--font-size-m, 24px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.6;
+    text-align: left;
+    white-space: pre-wrap;
+    margin: 44px 0;
+
+    @include mobile {
+        font-size: 1rem;
+        margin: 20px 0 40px 0;
+    }
+}
+
+.loading {
+    padding: 80px 0;
+    text-align: center;
+    font-size: 1.25rem;
+    color: #64748b;
+}
+
+// Related Section
+.relatedSection {
+    background: #f2f7ff;
+    //padding: 80px 0;
+    // border-top: 1px solid rgba(0, 0, 0, 0.05);
+    padding-bottom: 50px;
+
+     @include tablet {
+        padding: 80px 0;
+    }
+
+     @include desktop {
+        padding: 80px 0;
+    }
+
+     @include mobile {
+        padding: 60px 0;
+    }
+    @include mobile {
+        padding: 60px 0;
+    }
+}
+
+.relatedHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.relatedTitle {
+    color: #101828;
+
+    text-align: center;
+    /* Title */
+    font-family: var(--font-family-body, Rubik);
+    font-size: var(--font-size-xl, 38px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: 44px;
+
+    @include tablet {
+        font-size: 36px;
+    }
+}
+
+.carouselWrapper {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 40px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.blogList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 24px;
+
+    li {
+        flex: 0 0 509px;
+
+        @include tablet {
+            flex: 0 0 400px;
+        }
+
+        @include mobile {
+            flex: 0 0 300px;
+        }
+    }
+}
+
+.carouselNavWrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+}

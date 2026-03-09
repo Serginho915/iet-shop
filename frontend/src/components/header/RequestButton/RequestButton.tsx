@@ -2,23 +2,34 @@
 
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/lib/LanguageContext";
-import { t } from "@/lib/translations";
 import { Button } from "@/components/ui/Button/Button";
+import { translations } from "./translations";
 import styles from "./RequestButton.module.scss";
 
 export const RequestButton = () => {
     const router = useRouter();
     const { lang } = useLanguage();
+    const tr = translations[lang];
+
+    const handleClick = () => {
+        const el = document.getElementById("consultation");
+        if (el) {
+            el.scrollIntoView({ behavior: "smooth" });
+        } else {
+            // Fallback for subpages
+            router.push(`/${lang}/#consultation`);
+        }
+    };
 
     return (
         <div className={styles.wrapper}>
             <Button
-                variant="dark-outline"
+                variant="primary"
                 size="lg"
-                rounded="full"
-                onClick={() => router.push("/contact")}
+                rounded="xl"
+                onClick={handleClick}
             >
-                {t[lang].leaveRequest}
+                {tr.leaveRequest}
             </Button>
         </div>
     );

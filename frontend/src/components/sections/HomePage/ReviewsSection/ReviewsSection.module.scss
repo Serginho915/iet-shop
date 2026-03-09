@@ -1,0 +1,252 @@
+@use "../../../../styles/variables" as *;
+@use "../../../../styles/mixins" as *;
+
+.section {
+    padding: 0 0 40px 0;
+
+    @include desktop {
+        padding: 0 0 80px 0;
+    }
+}
+
+.sectionLayout {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+    @include desktop {
+        gap: 40px;
+    }
+}
+
+.container {
+    @include container;
+    padding: 0 1rem;
+    border-radius: 24px;
+    background: linear-gradient(180deg, #DEE5FF -8.46%, #E5EFFD 54.11%, #FFF 94.79%);
+
+    @include desktop {
+        padding: 0 44px;
+        border-radius: 48px;
+    }
+}
+
+.mainLayout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+
+    @include desktop {
+        flex-direction: row;
+        align-items: stretch; // Ensure equal height
+        gap: 40px;
+    }
+}
+
+.titleWrapper {
+    width: 100%;
+    flex-shrink: 0;
+    padding: 30px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+
+    @include desktop {
+        width: 240px;
+        padding: 60px 0 30px; 
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 0;
+    }
+}
+
+.title {
+    font-size: 22px;
+    line-height: normal;
+    font-weight: 500;
+    color: #000;
+    margin: 0;
+    text-align: center;
+
+    @include tablet {
+        font-size: 28px;
+    }
+
+    @include desktop {
+        font-size: 38px;
+        text-align: left;
+    }
+}
+
+.highlight {
+    color: $color-accent;
+    display: block;
+}
+
+.navList {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    align-items: center;
+    gap: 8px;
+}
+
+.navArrow {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s;
+
+    &:hover {
+        opacity: 0.7;
+    }
+
+    &:first-child {
+        margin-right: 8px;
+
+        @include desktop {
+            margin-right: 14px;
+        }
+    }
+
+    &:last-child {
+        margin-left: 8px;
+
+        @include desktop {
+            margin-left: 14px;
+        }
+    }
+
+    svg {
+        display: block;
+        width: 32px;
+        height: 32px;
+
+        @include desktop {
+            width: auto;
+            height: auto;
+        }
+    }
+}
+
+.dot {
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #D9D9D9;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &.activeDot {
+        background-color: #212631;
+    }
+}
+
+.carouselContent {
+    flex-grow: 1;
+    overflow: hidden;
+    padding: 30px 0;
+    margin: -15px 0;
+    width: 100%;
+
+    @include desktop {
+        padding: 60px 0;
+        margin: -30px 0;
+    }
+}
+
+.reviewList {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    transition: transform 0.5s ease-in-out;
+}
+
+.reviewItem {
+    flex: 0 0 100%;
+    padding: 0 12px;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    transition: transform 0.5s ease-in-out;
+
+    @include tablet {
+        flex: 0 0 50%;
+    }
+
+    @include desktop {
+        flex: 0 0 calc(100% / 3);
+        align-items: flex-start;
+    }
+
+    &.rotated {
+        @include desktop {
+            transform: rotate(10.647deg);
+            z-index: 2;
+        }
+    }
+}
+
+.reminderBlock {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+
+    @include desktop {
+        margin-top: 40px;
+        flex-direction: row;
+        padding-top: 40px;
+        gap: 0;
+    }
+}
+
+.reminderLabel {
+    background-color: #5A55F4;
+    color: #FFF;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 500;
+    font-size: 16px;
+
+    @include desktop {
+        padding: 12px 24px;
+        border-top-right-radius: 24px;
+        border-bottom-right-radius: 24px;
+        border-top-left-radius: 24px;
+        border-bottom-left-radius: 0;
+        font-size: 20px;
+    }
+}
+
+.reminderText {
+    margin: 0;
+    color: #FFF;
+    font-size: 14px;
+    text-align: center;
+
+    @include desktop {
+        margin-left: 20px;
+        font-size: 16px;
+        text-align: left;
+    }
+}
+
+.reminderLayout {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+
+    @include desktop {
+        margin-top: 40px;
+    }
+}

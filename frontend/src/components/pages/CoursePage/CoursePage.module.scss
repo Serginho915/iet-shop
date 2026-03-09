@@ -1,0 +1,24 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.coursePageWrapper {
+    padding-top: 6rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #F2F7FF;
+}
+
+.coursePage {
+    flex: 1;
+    padding: 0 0 40px;
+}
+
+.container {
+    @include container;
+
+    @include mobile {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}

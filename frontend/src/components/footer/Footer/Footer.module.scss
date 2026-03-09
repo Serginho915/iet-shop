@@ -1,30 +1,54 @@
-@use "../../../styles/variables" as *;
 @use "../../../styles/mixins" as *;
+
+.wrapper {
+	background: linear-gradient(180deg, #D5E6FF 0%, rgba(255, 255, 255, 0.00) 100%);
+	padding-top: 60px;
+	margin-top: -60px;
+}
 
 
 .socialBtn {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background: #575757;
-	color: #bcbec4;
+	background: #3a3f47;
+	color: #fff;
 	border: none;
-	border-radius: 4px;
-	width: 40px;
-	height: 40px;
+	border-radius: 50%;
+	width: 48px;
+	height: 48px;
 	font-size: 16px;
 	text-decoration: none;
 	cursor: pointer;
-	transition: background 0.2s;
+	transition: all 0.2s;
+
+	&:hover {
+		background: #5A55F4;
+		transform: translateY(-2px);
+	}
 }
+
+.socialIcon {
+	width: 24px;
+	height: 24px;
+}
+
 .socialBtn:hover {
 	background: #6d6d6d;
 }
 
-.contact a {
+.contactLink {
 	color: #bcbec4;
-	text-decoration: underline;
-	word-break: break-all;
+	text-decoration: none;
+	display: block;
+	margin-bottom: 8px;
+	transition: color 0.2s;
+	word-break: break-word;
+
+	&:hover {
+		color: #fff;
+		text-decoration: underline;
+	}
 }
 
 .legal a,
@@ -35,6 +59,7 @@
 	margin-bottom: 4px;
 	transition: color 0.2s;
 }
+
 .legal a:hover,
 .courses a:hover {
 	color: #fff;
@@ -52,6 +77,7 @@
 	cursor: pointer;
 	transition: background 0.2s;
 }
+
 .leaveRequestBtn:hover {
 	background: #e6e6e6;
 }
@@ -59,50 +85,67 @@
 .footer {
 	background: #23262f;
 	color: #bcbec4;
-	border-radius: 56px;
-	padding: 32px 0 16px 0;
-	margin: 16px 0;
+	border-radius: 2rem;
+	padding: 2rem 1rem 1rem 1rem;
+	margin: 1rem 0;
 	font-family: inherit;
-	font-size: 16px;
+	font-size: 1rem;
+
+	@include desktop {
+		border-radius: 3.5rem;
+		padding: 2rem 0 1rem 0;
+	}
 }
 
 .container {
+	@include container;
+	padding: 0;
 	display: flex;
 	flex-direction: column;
-	gap: 32px;
-	max-width: 1400px;
-	margin: 0 auto;
-	padding: 0 32px;
+	gap: 2rem;
 }
 
 .top {
 	display: grid;
-	grid-template-columns: 2fr 1.6fr 1.6fr auto;
-	column-gap: 48px;
+	grid-template-columns: 1fr;
+	row-gap: 2rem;
 	align-items: flex-start;
+
+	@include tablet {
+		grid-template-columns: 1fr 1fr;
+		column-gap: 40px;
+	}
+
+	@include desktop {
+		grid-template-columns: 2fr 1.6fr 1.6fr auto;
+		column-gap: 48px;
+	}
 }
 
 .company {
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
+	align-items: center;
+	text-align: center;
+
+	@include desktop {
+		align-items: flex-start;
+		text-align: left;
+	}
 }
 
 .companyName {
-	font-size: 20px;
+	font-size: 18px;
 	color: #bcbec4;
+
+	@include desktop {
+		font-size: 20px;
+	}
 }
 
-.logo {
-	background: #575757;
-	color: #bcbec4;
-	border-radius: 16px;
-	width: 160px;
-	height: 40px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 20px;
+.footerLogo {
+	width: fit-content;
 	margin-bottom: 8px;
 }
 
@@ -110,109 +153,153 @@
 	display: flex;
 	gap: 12px;
 }
-.socials button {
-	background: #575757;
-	color: #bcbec4;
-	border: none;
-	border-radius: 4px;
-	width: 40px;
-	height: 40px;
-	font-size: 16px;
-	cursor: pointer;
-	transition: background 0.2s;
-}
-.socials button:hover {
-	background: #6d6d6d;
-}
+
 
 .partnered {
 	margin-top: 24px;
 	color: #bcbec4;
-	font-size: 15px;
+	font-size: 14px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	align-items: center;
+
+	@include desktop {
+		font-size: 15px;
+		align-items: flex-start;
+		margin-top: 0;
+	}
 }
+
+.partneredLabel {
+	color: #bcbec4;
+	font-size: 14px;
+	opacity: 0.8;
+}
+
 .partners {
 	display: flex;
-	gap: 8px;
-	margin-top: 8px;
+	gap: 16px;
+	margin-top: 0;
+	justify-content: center;
+	align-items: center;
+
+	@include desktop {
+		justify-content: flex-start;
+	}
 }
+
 .partnerLogo {
-	width: 40px;
-	height: 40px;
-	background: #d9d9d9;
-	border-radius: 2px;
+	width: auto;
+	height: 24px;
+	object-fit: contain;
+	opacity: 0.8;
+	transition: opacity 0.2s;
+
+	&:hover {
+		opacity: 1;
+	}
 }
 
 .companyColumn,
 .contactColumn,
 .coursesColumn,
 .actionColumn {
-	min-width: 200px;
+	width: 100%;
+
+	@include desktop {
+		min-width: 200px;
+	}
 }
 
-.contact, .legal {
+.contactColumn,
+.coursesColumn,
+.actionColumn {
+	text-align: center;
+
+	@include desktop {
+		text-align: left;
+	}
+}
+
+.contact,
+.legal {
 	margin-bottom: 16px;
 }
+
 .sectionTitle {
 	color: #fff;
 	font-size: 18px;
 	font-weight: 500;
-	margin-bottom: 8px;
+	margin-bottom: 12px;
 }
 
 .courses {
 	margin-bottom: 16px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	@include desktop {
+		align-items: flex-start;
+	}
 }
+
 .leaveRequest {
-	margin-top: 24px;
+	margin-top: 20px;
+
+	@include desktop {
+		margin-top: 24px;
+	}
 }
+
 .leaveRequest button {
 	background: #fff;
 	color: #23262f;
 	border: none;
 	border-radius: 24px;
-	padding: 12px 32px;
-	font-size: 18px;
+	padding: 10px 24px;
+	font-size: 16px;
 	font-weight: 500;
 	cursor: pointer;
 	transition: background 0.2s;
+
+	@include desktop {
+		padding: 12px 32px;
+		font-size: 18px;
+	}
 }
+
 .leaveRequest button:hover {
 	background: #e6e6e6;
 }
 
 .bottomRow {
 	display: flex;
-	justify-content: space-between;
+	flex-direction: column;
 	align-items: center;
-	margin-top: 16px;
-	gap: 24px;
+	margin-top: 20px;
+	gap: 20px;
+	padding-top: 20px;
+	padding-bottom: 8px;
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+	@include desktop {
+		flex-direction: row;
+		justify-content: space-between;
+		margin-top: 16px;
+		padding-top: 0;
+		border-top: none;
+	}
 }
 
 .bottom {
-	text-align: right;
+	text-align: center;
 	color: #bcbec4;
-	font-size: 15px;
-}
+	font-size: 14px;
 
-@media (max-width: 1024px) {
-	.container {
-		padding: 0 16px;
-	}
-	.top {
-		grid-template-columns: 1fr 1fr;
-		row-gap: 24px;
-	}
-	.actionColumn {
-		display: flex;
-		justify-content: flex-start;
-	}
-	.bottomRow {
-		flex-direction: column;
-		align-items: flex-start;
-	}
-	.bottom {
-		text-align: left;
+	@include desktop {
+		text-align: right;
+		font-size: 15px;
 	}
 }
-
-

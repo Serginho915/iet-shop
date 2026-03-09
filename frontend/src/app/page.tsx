@@ -1,10 +1,6 @@
-import { getProducts } from "@/lib/api";
-import { PageContent } from "@/components/PageContent/PageContent";
+import { redirect } from 'next/navigation';
+import { i18n } from '@/i18n-config';
 
-export default async function Home() {
-    const products = await getProducts();
-    return (
-        <PageContent products={products}></PageContent>
-
-    );
+export default function RootPage() {
+    redirect(`/${i18n.defaultLocale}`);
 }

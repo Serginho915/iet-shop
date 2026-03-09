@@ -1,0 +1,116 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.card {
+    background-color: #FFFFFF;
+    padding: 24px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 323px;
+    height: 100%;
+    min-height: 0;
+    border-radius: 32px;
+    background: #FFF;
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.25);
+    position: relative;
+
+    @include tablet {
+        padding: 28px 24px 24px;
+        max-width: 323px;
+        border-radius: 40px;
+    }
+
+    @include desktop {
+        padding: 32px 36px 28px;
+        max-width: 323px;
+        border-radius: 48px;
+    }
+}
+
+.quoteWrapper {
+    margin-bottom: 16px;
+}
+
+.quoteIcon {
+    width: 32px;
+    height: 32px;
+
+    @include tablet {
+        width: 40px;
+        height: 40px;
+    }
+
+    @include desktop {
+        width: 48px;
+        height: 48px;
+    }
+}
+
+.reviewText {
+    font-family: $font-rubik;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: #000;
+    margin: 0 0 24px 0;
+    flex-grow: 1;
+
+    @include tablet {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    @include desktop {
+        font-size: 20px;
+        line-height: 24px;
+        margin-bottom: 24px;
+    }
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.studentInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.status {
+    color: #ADAAAA;
+    font-family: $font-roboto;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.16px;
+    margin-bottom: 4px;
+}
+
+.name {
+    color: #000;
+    font-family: $font-rubik;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    margin: 0;
+}
+
+.googleWrapper {
+    width: 48px;
+    height: 48px;
+    background-color: #F8F9FA;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    object-fit: contain;
+    //box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    .googleIcon {
+        width: 24px;
+        height: 24px;
+    }
+}

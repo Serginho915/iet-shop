@@ -16,12 +16,66 @@
     transition: all 0.3s ease;
 }
 
+@mixin mobile {
+    @media (max-width: #{$breakpoint-mobile - 1}) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media (min-width: #{$breakpoint-mobile}) and (max-width: #{$breakpoint-tablet - 1}) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media (min-width: #{$breakpoint-tablet}) {
+        @content;
+    }
+}
+
 @mixin container {
     width: 100%;
     max-width: $container-max-width;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    margin: 0 auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+
+    @include desktop {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
 }
+
+@mixin subtitle {
+    font-family: $font-rubik;
+    font-size: 32px;
+    line-height: 36px;
+    color: #2D2C2C;
+    margin: 0;
+
+    @include mobile {
+        font-size: 24px;
+        line-height: 28px;
+    }
+}
+
+@mixin inner-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+
+    @include tablet {
+        padding-left: 4rem;
+        padding-right: 4rem;
+    }
+
+    @include desktop {
+        padding-left: 10rem;
+        padding-right: 10rem;
+    }
+}
+
+
 
 @mixin button-reset {
     background: none;
@@ -32,4 +86,13 @@
     font: inherit;
     color: inherit;
     outline: none;
+}
+
+@mixin navbar-link-style {
+    color: #000;
+    font-family: var(--font-family-title, "Roboto", sans-serif);
+    font-size: var(--font-size-xs, 18px);
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
 }

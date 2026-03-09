@@ -1,0 +1,52 @@
+@use "../../../../styles/variables" as *;
+@use "../../../../styles/mixins" as *;
+
+.section {
+    padding: 60px 0 80px;
+}
+
+.title {
+    font-family: var(--font-family-body, Rubik);
+    font-size: 44px;
+    font-weight: 400;
+    color: #1a1a1a;
+    text-align: center;
+    margin: 0 0 40px;
+
+    @include tablet {
+        font-size: 38px;
+        margin-bottom: 30px;
+    }
+
+    @include mobile {
+        font-size: 32px;
+    }
+}
+
+.scrollRow {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    padding-bottom: 16px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none; // Firefox
+
+    @include tablet {
+        gap: 16px;
+    }
+
+    &::-webkit-scrollbar {
+        display: none; // Chrome/Safari
+    }
+}
+
+.cardWrapper {
+    flex-shrink: 0;
+    width: 540px;
+    scroll-snap-align: start;
+
+    @include mobile {
+        width: 85vw;
+        min-width: 300px;
+    }
+}

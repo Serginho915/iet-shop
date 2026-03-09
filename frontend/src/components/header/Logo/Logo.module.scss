@@ -1,0 +1,22 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.logo {
+    @include flex-center;
+    width: 79px;
+    padding: 8px 10px 4px 10px;
+    border-radius: 12px;
+    background: #559aff;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+        opacity: 0.9;
+    }
+}
+
+.logoImage {
+    width: 100%;
+    height: auto;
+    display: block;
+}

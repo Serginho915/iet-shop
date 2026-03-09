@@ -31,19 +31,25 @@ class TagViewSet(viewsets.ModelViewSet):
 
 
 class CourseViewSet(viewsets.ModelViewSet):
-    queryset = Course.objects.all()
+    queryset = Course.objects.all().prefetch_related(
+        "tags",
+        "audience_tag_cards",
+        "instrument_cards",
+        "outcome_cards",
+        "module_cards__description_rows",
+    )
     serializer_class = CourseSerializer
     permission_classes = [IsAdminOrReadOnly]
 
 
 class EventViewSet(viewsets.ModelViewSet):
-    queryset = Event.objects.all()
+    queryset = Event.objects.all().prefetch_related("tags")
     serializer_class = EventSerializer
     permission_classes = [IsAdminOrReadOnly]
 
 
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().prefetch_related("tags")
     serializer_class = PostSerializer
     permission_classes = [IsAdminOrReadOnly]
 

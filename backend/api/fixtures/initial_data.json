@@ -21,21 +21,24 @@
     "model": "api.tag",
     "pk": 1,
     "fields": {
-      "name": "python"
+      "name_en": "python",
+      "name_bg": "python"
     }
   },
   {
     "model": "api.tag",
     "pk": 2,
     "fields": {
-      "name": "backend"
+      "name_en": "backend",
+      "name_bg": "backend"
     }
   },
   {
     "model": "api.tag",
     "pk": 3,
     "fields": {
-      "name": "education"
+      "name_en": "education",
+      "name_bg": "education"
     }
   },
   {
@@ -43,11 +46,20 @@
     "pk": 1,
     "fields": {
       "slug": "python-backend-pro",
-      "title": "Python Backend Pro",
+      "title_en": "Python Backend Pro",
+      "title_bg": "Python Backend Pro",
       "start": "2026-04-01",
       "image": "courses/python-backend-pro.jpg",
-      "description": "Практический курс по Django/DRF и REST API.",
-      "duration": "12 weeks",
+      "description_en": "Practical course on Django/DRF and REST API.",
+      "description_bg": "Практически курс по Django/DRF и REST API.",
+      "duration_en": "12 weeks",
+      "duration_bg": "12 weeks",
+      "about_title_en": "Who this course is for",
+      "about_title_bg": "За кого е този курс",
+      "about_description_top_en": "You will learn backend development from zero to production-ready APIs.",
+      "about_description_top_bg": "Ще изучите backend разработка от нулата до production API.",
+      "about_description_bottom_en": "The program is focused on practice, portfolio and interview preparation.",
+      "about_description_bottom_bg": "Програмата е фокусирана върху практика, портфолио и подготовка за интервю.",
       "type": "online",
       "audience": "adults",
       "price": 79000,
@@ -66,11 +78,20 @@
     "pk": 2,
     "fields": {
       "slug": "fullstack-essentials",
-      "title": "Fullstack Essentials",
+      "title_en": "Fullstack Essentials",
+      "title_bg": "Fullstack Essentials",
       "start": "2026-05-15",
       "image": "courses/fullstack-essentials.jpg",
-      "description": "Базовый курс по fullstack-разработке.",
-      "duration": "10 weeks",
+      "description_en": "Foundational fullstack development course.",
+      "description_bg": "Базов курс по fullstack разработка.",
+      "duration_en": "10 weeks",
+      "duration_bg": "10 weeks",
+      "about_title_en": "Build fullstack confidence",
+      "about_title_bg": "Изгради увереност във fullstack",
+      "about_description_top_en": "The course combines frontend and backend fundamentals in one track.",
+      "about_description_top_bg": "Курсът комбинира frontend и backend основи в една програма.",
+      "about_description_bottom_en": "Perfect for career switchers and junior developers.",
+      "about_description_bottom_bg": "Подходящ за хора, които сменят кариерата си, и junior разработчици.",
       "type": "hybrid",
       "audience": "adults",
       "price": 69000,
@@ -84,10 +105,402 @@
     }
   },
   {
+    "model": "api.courseaudiencetagcard",
+    "pk": 1,
+    "fields": {
+      "course": 1,
+      "order": 1,
+      "title_en": "Complete Beginners",
+      "title_bg": "Напълно начинаещи",
+      "text_en": "With no prior marketing experience",
+      "text_bg": "Без предишен опит в маркетинга"
+    }
+  },
+  {
+    "model": "api.courseaudiencetagcard",
+    "pk": 2,
+    "fields": {
+      "course": 1,
+      "order": 2,
+      "title_en": "Career Switchers",
+      "title_bg": "Хора с промяна в кариерата",
+      "text_en": "Professionals moving into tech",
+      "text_bg": "Професионалисти, които преминават към IT"
+    }
+  },
+  {
+    "model": "api.courseaudiencetagcard",
+    "pk": 3,
+    "fields": {
+      "course": 1,
+      "order": 3,
+      "title_en": "Students",
+      "title_bg": "Студенти",
+      "text_en": "Looking for practical backend projects",
+      "text_bg": "Търсят практически backend проекти"
+    }
+  },
+  {
+    "model": "api.courseaudiencetagcard",
+    "pk": 4,
+    "fields": {
+      "course": 1,
+      "order": 4,
+      "title_en": "Junior Developers",
+      "title_bg": "Junior разработчици",
+      "text_en": "Who want to level up in APIs",
+      "text_bg": "Които искат да повишат нивото си в API разработката"
+    }
+  },
+  {
+    "model": "api.courseaudiencetagcard",
+    "pk": 5,
+    "fields": {
+      "course": 2,
+      "order": 1,
+      "title_en": "Beginners",
+      "title_bg": "Начинаещи",
+      "text_en": "Want to understand the full stack",
+      "text_bg": "Искат да разберат целия fullstack процес"
+    }
+  },
+  {
+    "model": "api.courseaudiencetagcard",
+    "pk": 6,
+    "fields": {
+      "course": 2,
+      "order": 2,
+      "title_en": "Freelancers",
+      "title_bg": "Фрийлансъри",
+      "text_en": "Need end-to-end product skills",
+      "text_bg": "Нуждаят се от умения за цялостна разработка"
+    }
+  },
+  {
+    "model": "api.courseaudiencetagcard",
+    "pk": 7,
+    "fields": {
+      "course": 2,
+      "order": 3,
+      "title_en": "Designers",
+      "title_bg": "Дизайнери",
+      "text_en": "Who want to implement their own ideas",
+      "text_bg": "Които искат сами да реализират идеите си"
+    }
+  },
+  {
+    "model": "api.courseaudiencetagcard",
+    "pk": 8,
+    "fields": {
+      "course": 2,
+      "order": 4,
+      "title_en": "Junior Engineers",
+      "title_bg": "Junior инженери",
+      "text_en": "Looking for practical architecture patterns",
+      "text_bg": "Търсят практични архитектурни модели"
+    }
+  },
+  {
+    "model": "api.courseinstrument",
+    "pk": 1,
+    "fields": {
+      "course": 1,
+      "order": 1,
+      "name_en": "Django",
+      "name_bg": "Django",
+      "icon": null
+    }
+  },
+  {
+    "model": "api.courseinstrument",
+    "pk": 2,
+    "fields": {
+      "course": 1,
+      "order": 2,
+      "name_en": "Django REST Framework",
+      "name_bg": "Django REST Framework",
+      "icon": null
+    }
+  },
+  {
+    "model": "api.courseinstrument",
+    "pk": 3,
+    "fields": {
+      "course": 1,
+      "order": 3,
+      "name_en": "PostgreSQL",
+      "name_bg": "PostgreSQL",
+      "icon": null
+    }
+  },
+  {
+    "model": "api.courseinstrument",
+    "pk": 4,
+    "fields": {
+      "course": 2,
+      "order": 1,
+      "name_en": "Next.js",
+      "name_bg": "Next.js",
+      "icon": null
+    }
+  },
+  {
+    "model": "api.courseinstrument",
+    "pk": 5,
+    "fields": {
+      "course": 2,
+      "order": 2,
+      "name_en": "Node.js",
+      "name_bg": "Node.js",
+      "icon": null
+    }
+  },
+  {
+    "model": "api.courseoutcome",
+    "pk": 1,
+    "fields": {
+      "course": 1,
+      "order": 1,
+      "text_en": "Build and deploy production REST APIs",
+      "text_bg": "Създаване и деплой на production REST API"
+    }
+  },
+  {
+    "model": "api.courseoutcome",
+    "pk": 2,
+    "fields": {
+      "course": 1,
+      "order": 2,
+      "text_en": "Design clean database schemas",
+      "text_bg": "Проектиране на чисти бази данни"
+    }
+  },
+  {
+    "model": "api.courseoutcome",
+    "pk": 3,
+    "fields": {
+      "course": 1,
+      "order": 3,
+      "text_en": "Implement authentication and permissions",
+      "text_bg": "Имплементация на автентикация и права"
+    }
+  },
+  {
+    "model": "api.courseoutcome",
+    "pk": 4,
+    "fields": {
+      "course": 1,
+      "order": 4,
+      "text_en": "Write tests for backend services",
+      "text_bg": "Писане на тестове за backend услуги"
+    }
+  },
+  {
+    "model": "api.courseoutcome",
+    "pk": 5,
+    "fields": {
+      "course": 1,
+      "order": 5,
+      "text_en": "Work with Docker and CI basics",
+      "text_bg": "Работа с Docker и основи на CI"
+    }
+  },
+  {
+    "model": "api.courseoutcome",
+    "pk": 6,
+    "fields": {
+      "course": 1,
+      "order": 6,
+      "text_en": "Prepare a portfolio-ready final project",
+      "text_bg": "Подготовка на финален проект за портфолио"
+    }
+  },
+  {
+    "model": "api.courseoutcome",
+    "pk": 7,
+    "fields": {
+      "course": 2,
+      "order": 1,
+      "text_en": "Understand frontend and backend flow",
+      "text_bg": "Разбиране на frontend и backend процеса"
+    }
+  },
+  {
+    "model": "api.courseoutcome",
+    "pk": 8,
+    "fields": {
+      "course": 2,
+      "order": 2,
+      "text_en": "Create end-to-end web features",
+      "text_bg": "Създаване на end-to-end функционалности"
+    }
+  },
+  {
+    "model": "api.courseoutcome",
+    "pk": 9,
+    "fields": {
+      "course": 2,
+      "order": 3,
+      "text_en": "Build reusable UI components",
+      "text_bg": "Създаване на преизползваеми UI компоненти"
+    }
+  },
+  {
+    "model": "api.courseoutcome",
+    "pk": 10,
+    "fields": {
+      "course": 2,
+      "order": 4,
+      "text_en": "Design scalable API integration",
+      "text_bg": "Проектиране на мащабируема API интеграция"
+    }
+  },
+  {
+    "model": "api.courseoutcome",
+    "pk": 11,
+    "fields": {
+      "course": 2,
+      "order": 5,
+      "text_en": "Deploy fullstack app",
+      "text_bg": "Деплой на fullstack приложение"
+    }
+  },
+  {
+    "model": "api.courseoutcome",
+    "pk": 12,
+    "fields": {
+      "course": 2,
+      "order": 6,
+      "text_en": "Present project to hiring teams",
+      "text_bg": "Презентация на проект пред hiring екипи"
+    }
+  },
+  {
+    "model": "api.coursemodule",
+    "pk": 1,
+    "fields": {
+      "course": 1,
+      "order": 1,
+      "title_en": "Backend Foundations",
+      "title_bg": "Основи на backend"
+    }
+  },
+  {
+    "model": "api.coursemodule",
+    "pk": 2,
+    "fields": {
+      "course": 1,
+      "order": 2,
+      "title_en": "API Engineering",
+      "title_bg": "API инженеринг"
+    }
+  },
+  {
+    "model": "api.coursemodule",
+    "pk": 3,
+    "fields": {
+      "course": 2,
+      "order": 1,
+      "title_en": "Frontend Core",
+      "title_bg": "Frontend основи"
+    }
+  },
+  {
+    "model": "api.coursemodule",
+    "pk": 4,
+    "fields": {
+      "course": 2,
+      "order": 2,
+      "title_en": "Fullstack Integration",
+      "title_bg": "Fullstack интеграция"
+    }
+  },
+  {
+    "model": "api.coursemoduledescription",
+    "pk": 1,
+    "fields": {
+      "module": 1,
+      "order": 1,
+      "text_en": "Python basics",
+      "text_bg": "Основи на Python"
+    }
+  },
+  {
+    "model": "api.coursemoduledescription",
+    "pk": 2,
+    "fields": {
+      "module": 1,
+      "order": 2,
+      "text_en": "Django models",
+      "text_bg": "Django модели"
+    }
+  },
+  {
+    "model": "api.coursemoduledescription",
+    "pk": 3,
+    "fields": {
+      "module": 2,
+      "order": 1,
+      "text_en": "DRF serializers",
+      "text_bg": "DRF сериализатори"
+    }
+  },
+  {
+    "model": "api.coursemoduledescription",
+    "pk": 4,
+    "fields": {
+      "module": 2,
+      "order": 2,
+      "text_en": "Auth and permissions",
+      "text_bg": "Аутентикация и права"
+    }
+  },
+  {
+    "model": "api.coursemoduledescription",
+    "pk": 5,
+    "fields": {
+      "module": 3,
+      "order": 1,
+      "text_en": "React components",
+      "text_bg": "React компоненти"
+    }
+  },
+  {
+    "model": "api.coursemoduledescription",
+    "pk": 6,
+    "fields": {
+      "module": 3,
+      "order": 2,
+      "text_en": "State management",
+      "text_bg": "Управление на състояние"
+    }
+  },
+  {
+    "model": "api.coursemoduledescription",
+    "pk": 7,
+    "fields": {
+      "module": 4,
+      "order": 1,
+      "text_en": "API integration",
+      "text_bg": "API интеграция"
+    }
+  },
+  {
+    "model": "api.coursemoduledescription",
+    "pk": 8,
+    "fields": {
+      "module": 4,
+      "order": 2,
+      "text_en": "Deployment basics",
+      "text_bg": "Основи на деплой"
+    }
+  },
+  {
     "model": "api.event",
     "pk": 1,
     "fields": {
-      "title": "Open Day: Career in IT",
+      "title_en": "Open Day: Career in IT",
+      "title_bg": "Open Day: Career in IT",
       "date": "2026-03-20",
       "type": "offline",
       "tags": [
@@ -99,7 +512,8 @@
     "model": "api.event",
     "pk": 2,
     "fields": {
-      "title": "Django API Workshop",
+      "title_en": "Django API Workshop",
+      "title_bg": "Django API Workshop",
       "date": "2026-04-10",
       "type": "online",
       "tags": [
@@ -112,10 +526,12 @@
     "model": "api.post",
     "pk": 1,
     "fields": {
-      "title": "Почему DRF ускоряет разработку",
+      "title_en": "Why DRF speeds up development",
+      "title_bg": "Защо DRF ускорява разработката",
       "author": "IET Team",
       "slug": "pochemu-drf-uskorjaet-razrabotku",
-      "content": "Коротко о том, как DRF помогает быстрее запускать API.",
+      "content_en": "A quick overview of how DRF helps launch APIs faster.",
+      "content_bg": "Накратко за това как DRF помага за по-бързото стартиране на API.",
       "picture": "posts/drf-speed.jpg",
       "created_at": "2026-03-01T10:00:00Z",
       "tags": [
@@ -128,10 +544,12 @@
     "model": "api.post",
     "pk": 2,
     "fields": {
-      "title": "Как выбрать IT-курс в 2026",
+      "title_en": "How to choose an IT course in 2026",
+      "title_bg": "Как да изберем IT курс през 2026",
       "author": "IET Team",
       "slug": "kak-vybrat-it-kurs-v-2026",
-      "content": "Сравнение форматов обучения и практические рекомендации.",
+      "content_en": "Comparison of learning formats and practical recommendations.",
+      "content_bg": "Сравнение на форматите за обучение и практически препоръки.",
       "picture": "posts/course-choice.jpg",
       "created_at": "2026-03-02T12:30:00Z",
       "tags": [

@@ -106,12 +106,13 @@ export interface Event {
   image_2?: string;
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
 const API_URL = `${API_BASE}/api`;
 
 const resolveUrl = (url?: string) => {
   if (!url) return undefined;
   if (url.startsWith('http')) return url;
+  if (!API_BASE && url.startsWith('/')) return url;
   return `${API_BASE}${url.startsWith('/') ? '' : '/'}${url}`;
 };
 
@@ -266,7 +267,8 @@ export async function getCourseBySlug(slug: string): Promise<Course | undefined>
 
 export async function getPostBySlug(slug: string): Promise<Post | undefined> {
   const posts = await getPosts();
-  return posts.find(p => p.slug === slug);
+  const targetSlug = slug.toLowerCase().trim();
+  return posts.find(p => p.slug?.toLowerCase().trim() === targetSlug);
 }
 
 export async function getEventBySlug(title: string): Promise<Event | undefined> {

@@ -1,5 +1,5 @@
 import Image, { StaticImageData } from 'next/image';
-import reminderDefault from '@/assets/Reviews/Reminder.png';
+import reminderDefault from '@/assets/emojii/reminderMascot.png';
 import styles from './ReminderCard.module.scss';
 
 interface ReminderCardProps {

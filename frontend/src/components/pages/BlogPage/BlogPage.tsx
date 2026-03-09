@@ -22,19 +22,20 @@ export const BlogPage = ({ post: initialPost, slug }: BlogPageProps) => {
     const { t, lang } = useTranslate(translations);
     const { selectedBlog } = useBlog();
 
-    const [fetchedPost, setFetchedPost] = useState<Post | undefined>(undefined);
-    const post = React.useMemo(() => {
-        if (selectedBlog && selectedBlog.slug === slug) return selectedBlog;
+    const [fetchedPost, setFetchedPost] = useState<Post | undefined | null>(undefined);
+    const postFromSource = React.useMemo(() => {
+        const targetSlug = slug.toLowerCase().trim();
+        if (selectedBlog && selectedBlog.slug?.toLowerCase().trim() === targetSlug) return selectedBlog;
         return initialPost;
     }, [selectedBlog, initialPost, slug]);
 
     useEffect(() => {
-        if (!post && !fetchedPost) {
-            getPostBySlug(slug).then(setFetchedPost);
+        if (!postFromSource && fetchedPost === undefined) {
+            getPostBySlug(slug).then(res => setFetchedPost(res || null));
         }
-    }, [post, fetchedPost, slug]);
+    }, [postFromSource, fetchedPost, slug]);
 
-    const finalPost = post || fetchedPost;
+    const finalPost = postFromSource || (fetchedPost === null ? undefined : fetchedPost);
 
     useEffect(() => {
         const loadRelated = async () => {
@@ -49,8 +50,19 @@ export const BlogPage = ({ post: initialPost, slug }: BlogPageProps) => {
     const carouselRef = useRef<HTMLDivElement>(null);
     const [relatedPosts, setRelatedPosts] = useState<Post[]>([]);
 
-    const postTitle = lang === 'bg' ? finalPost?.title_bg || finalPost?.title : finalPost?.title_en || finalPost?.title;
-    const postContent = lang === 'bg' ? finalPost?.content_bg || finalPost?.content : finalPost?.content_en || finalPost?.content;
+    const postTitle = (function () {
+        const title = finalPost?.title;
+        if (typeof title === 'string') return title;
+        if (title && typeof title === 'object') return title[lang as keyof typeof title] || title.en || title.bg || "";
+        return "";
+    })();
+
+    const postContent = (function () {
+        const content = finalPost?.content;
+        if (typeof content === 'string') return content;
+        if (content && typeof content === 'object') return content[lang as keyof typeof content] || content.en || content.bg || "";
+        return "";
+    })();
 
     const breadcrumbs: BreadcrumbItem[] = [
         { label: t.blog, href: "/#blog" },
@@ -151,8 +163,18 @@ export const BlogPage = ({ post: initialPost, slug }: BlogPageProps) => {
                             <div className={styles.carouselWrapper} ref={carouselRef}>
                                 <ul className={styles.blogList}>
                                     {relatedPosts.map((p) => {
-                                        const pTitle = lang === 'bg' ? p.title_bg || p.title : p.title_en || p.title;
-                                        const pContent = lang === 'bg' ? p.content_bg || p.content : p.content_en || p.content;
+                                        const pTitle = (function () {
+                                            const title = p.title;
+                                            if (typeof title === 'string') return title;
+                                            if (title && typeof title === 'object') return title[lang as keyof typeof title] || title.en || title.bg || "";
+                                            return "";
+                                        })();
+                                        const pContent = (function () {
+                                            const content = p.content;
+                                            if (typeof content === 'string') return content;
+                                            if (content && typeof content === 'object') return content[lang as keyof typeof content] || content.en || content.bg || "";
+                                            return "";
+                                        })();
                                         return (
                                             <li key={p.id}>
                                                 <BlogCard

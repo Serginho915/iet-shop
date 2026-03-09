@@ -8,7 +8,7 @@ import styles from "./HeroSection.module.scss";
 
 // Images from assets/HeroSection
 import heroMain from "@/assets/HeroSection/HeroMain.jpg";
-import heroGeorge from "@/assets/HeroSection/heroGeorge.png";
+import heroGeorge from "@/assets/emojii/GeorgeAvatar.png";
 import beginnerFriendly from "@/assets/HeroSection/beginnerFriendly.svg";
 import checkLabel from "@/assets/HeroSection/checkLabel.svg";
 import student1 from "@/assets/HeroSection/student1.png";

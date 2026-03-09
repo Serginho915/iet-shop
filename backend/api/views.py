@@ -51,4 +51,9 @@ class PostViewSet(viewsets.ModelViewSet):
 class ConsultationViewSet(viewsets.ModelViewSet):
     queryset = Consultation.objects.all()
     serializer_class = ConsultationSerializer
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [permissions.IsAdminUser]
+
+    def get_permissions(self):
+        if self.action == "create":
+            return [permissions.AllowAny()]
+        return [permissions.IsAdminUser()]

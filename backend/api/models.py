@@ -16,23 +16,32 @@ class Course(models.Model):
 		ONLINE = "online", "Online"
 		OFFLINE = "offline", "Offline"
 
-	class AgeType(models.TextChoices):
-		MINOR = "minor", "Minor"
-		ADULT = "adult", "Adult"
+	class AudienceType(models.TextChoices):
+		ADULTS = "adults", "Adults"
+		KIDS = "kids", "Kids"
 
 	slug = models.SlugField(max_length=255, unique=True, blank=True, editable=False)
 	title = models.CharField(max_length=255)
 	start = models.DateField()
-	image = models.ImageField(upload_to="courses/")
+	image = models.ImageField(upload_to="courses/", null=True, blank=True)
 	description = models.TextField()
 	duration = models.CharField(max_length=100)
 	type = models.CharField(max_length=10, choices=CourseType.choices)
-	age_group = models.CharField(max_length=10, choices=AgeType.choices)
+	audience = models.CharField(max_length=10, choices=AudienceType.choices, null=True, blank=True)
 	price = models.PositiveIntegerField()
 	is_active = models.BooleanField(default=True)
 	stripe_product_id = models.BigIntegerField(null=True, blank=True)
 	stripe_price_id = models.BigIntegerField(null=True, blank=True)
 	tags = models.ManyToManyField(Tag, related_name="courses", blank=True)
+	about_title = models.CharField(max_length=255, null=True, blank=True)
+	about_description_top = models.TextField(null=True, blank=True)
+	about_description_bottom = models.TextField(null=True, blank=True)
+	about_image = models.ImageField(upload_to="courses/about/", null=True, blank=True)
+	audience_image = models.ImageField(upload_to="courses/audience/", null=True, blank=True)
+	audience_tags = models.JSONField(null=True, blank=True)
+	instruments = models.JSONField(null=True, blank=True)
+	outcomes = models.JSONField(null=True, blank=True)
+	modules = models.JSONField(null=True, blank=True)
 
 	def save(self, *args, **kwargs):
 		if not self.slug:
@@ -79,7 +88,7 @@ class Post(models.Model):
 	title = models.CharField(max_length=255)
 	author = models.CharField(max_length=255)
 	content = models.TextField()
-	picture = models.ImageField(upload_to="posts/")
+	picture = models.ImageField(upload_to="posts/", null=True, blank=True)
 	created_at = models.DateTimeField(auto_now_add=True)
 	tags = models.ManyToManyField(Tag, related_name="posts", blank=True)
 

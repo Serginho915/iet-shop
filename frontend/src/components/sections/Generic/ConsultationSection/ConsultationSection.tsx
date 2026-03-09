@@ -12,7 +12,7 @@ import { useFormLogic } from '@/lib/useFormLogic';
 import { PrivacyPolicyModal } from "@/components/ui/PrivacyPolicyModal/PrivacyPolicyModal";
 
 export const ConsultationSection = ({ courses = [] }: { courses?: Course[] }) => {
-  const { t } = useTranslate(translations);
+  const { t, lang } = useTranslate(translations);
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
   const [isPrivacyOpen, setIsPrivacyOpen] = React.useState(false);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
@@ -111,7 +111,14 @@ export const ConsultationSection = ({ courses = [] }: { courses?: Course[] }) =>
                   <span className={styles.selectValue}>
                     {formData.interested === 0
                       ? (t.selectCoursePlaceholder || t.interestPlaceholder)
-                      : courses.find(c => c.id === formData.interested)?.title}
+                      : (function () {
+                        const course = courses.find(c => c.id === formData.interested);
+                        if (!course) return "";
+                        const title = typeof course.title === 'object' && course.title
+                          ? ((course.title as any)[lang] || (course.title as any).en || (course.title as any).bg || "")
+                          : course.title;
+                        return String(title || "");
+                      })()}
                   </span>
                   <svg
                     className={`${styles.chevronIcon} ${isDropdownOpen ? styles.open : ''}`}
@@ -122,18 +129,23 @@ export const ConsultationSection = ({ courses = [] }: { courses?: Course[] }) =>
                 </div>
                 {isDropdownOpen && (
                   <ul className={styles.dropdownList}>
-                    {courses.map((course) => (
-                      <li
-                        key={course.id}
-                        className={`${styles.dropdownItem} ${formData.interested === course.id ? styles.selected : ''}`}
-                        onClick={() => {
-                          setField('interested', course.id);
-                          setIsDropdownOpen(false);
-                        }}
-                      >
-                        {course.title}
-                      </li>
-                    ))}
+                    {courses.map((course) => {
+                      const courseTitle = typeof course.title === 'object' && course.title
+                        ? ((course.title as any)[lang] || (course.title as any).en || (course.title as any).bg || "")
+                        : course.title;
+                      return (
+                        <li
+                          key={course.id}
+                          className={`${styles.dropdownItem} ${formData.interested === course.id ? styles.selected : ''}`}
+                          onClick={() => {
+                            setField('interested', course.id);
+                            setIsDropdownOpen(false);
+                          }}
+                        >
+                          {String(courseTitle || "")}
+                        </li>
+                      );
+                    })}
                   </ul>
                 )}
                 {errors.interested && <span className={styles.errorText}>{t.errorInterest}</span>}

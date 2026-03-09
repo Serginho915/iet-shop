@@ -19,39 +19,60 @@ interface AudienceSectionProps {
 const icons = [vec0, vec1, vec2, vec3];
 
 export const AudienceSection = ({ course }: AudienceSectionProps) => {
-  const { t } = useTranslate(translations);
+  const { t, lang } = useTranslate(translations);
+
+  const audienceImage = course.audience_image || image;
+
   const audienceTags =
-    course.audience_tags && course.audience_tags.length > 0
-      ? [course.audience_tags] // If it's a single tuple from API
+    course.extra_audience_tags && course.extra_audience_tags.length > 0
+      ? course.extra_audience_tags.map(card => {
+        const cardTitle = typeof card.title === 'object' && card.title
+          ? ((card.title as any)[lang] || (card.title as any).en || (card.title as any).bg || "")
+          : card.title;
+        const cardText = typeof card.text === 'object' && card.text
+          ? ((card.text as any)[lang] || (card.text as any).en || (card.text as any).bg || "")
+          : card.text;
+        return [String(cardTitle || ""), String(cardText || "")];
+      })
       : [
         ["Complete Beginners", "with no prior marketing experience"],
         ["Career Switchers", "looking for a new direction"],
         ["Marketing Professionals", "wanting to stay up-to-date"],
         ["Entrepreneurs", "seeking to grow their business"],
       ];
+
   const getAgeLabel = (course: Course) => {
     const isAdult = course.audience === "adults";
     const label = isAdult ? t.minimalAge : t.maximalAge;
 
     // Look for a tag that looks like an age range, e.g. "7-14" or "15+"
-    const ageTag = course.tags.find((tag) =>
-      tag.name.match(/\d+-\d+/) || tag.name.match(/\d+\+/)
-    );
+    const ageTag = course.tags.find((tag) => {
+      const tagName = typeof tag === 'object' && tag
+        ? ((tag as any).name?.[lang] || (tag as any)[lang] || (tag as any).name_en || (tag as any).name_bg || (tag as any).name || "")
+        : tag;
+      const tagStr = String(tagName || "");
+      return tagStr?.match(/\d+-\d+/) || tagStr?.match(/\d+\+/);
+    });
 
     if (ageTag) {
-      const matchRange = ageTag.name.match(/(\d+)-(\d+)/);
+      const tagName = typeof ageTag === 'object' && ageTag
+        ? ((ageTag as any).name?.[lang] || (ageTag as any)[lang] || (ageTag as any).name_en || (ageTag as any).name_bg || (ageTag as any).name || "")
+        : ageTag;
+      if (!tagName) return `${label}: ${isAdult ? "15 +" : "14"}`;
+
+      const matchRange = tagName.match(/(\d+)-(\d+)/);
       if (matchRange) {
         return isAdult
           ? `${t.minimalAge}: ${matchRange[1]} +`
           : `${t.maximalAge}: ${matchRange[2]}`;
       }
-      const matchPlus = ageTag.name.match(/(\d+)\+/);
+      const matchPlus = tagName.match(/(\d+)\+/);
       if (matchPlus) {
         return isAdult
           ? `${t.minimalAge}: ${matchPlus[1]} +`
           : `${t.maximalAge}: ${matchPlus[1]}`;
       }
-      return `${label}: ${ageTag.name}`;
+      return `${label}: ${tagName}`;
     }
 
     return `${label}: ${isAdult ? "15 +" : "14"}`;
@@ -68,7 +89,7 @@ export const AudienceSection = ({ course }: AudienceSectionProps) => {
               {getAgeLabel(course)}
             </div>
             <Image
-              src={image}
+              src={audienceImage}
               alt="Course Audience"
               width={624}
               height={502}
@@ -80,7 +101,7 @@ export const AudienceSection = ({ course }: AudienceSectionProps) => {
           {/* Column 2: Checkmark List */}
           {audienceTags.length > 0 && (
             <ul className={styles.audienceList}>
-              {audienceTags.map((tag, index) => (
+              {audienceTags.map((tag: any, index: number) => (
                 <li key={index} className={styles.audienceItem}>
                   <div className={styles.iconWrapper}>
                     <Image

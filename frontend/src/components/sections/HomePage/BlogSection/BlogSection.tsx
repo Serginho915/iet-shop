@@ -14,7 +14,7 @@ interface BlogSectionProps {
 }
 
 const BlogContent = ({ posts = [] }: BlogSectionProps) => {
-    const { t: tTitle } = useTranslate(translationsTitle);
+    const { t: tTitle, lang } = useTranslate(translationsTitle);
     const searchParams = useSearchParams();
 
     const [activeIndex, setActiveIndex] = useState(0);
@@ -29,7 +29,10 @@ const BlogContent = ({ posts = [] }: BlogSectionProps) => {
 
     const displayPosts = activeTagName === "all"
         ? posts
-        : posts.filter(p => p.tags.some(tag => tag.name === activeTagName));
+        : posts.filter(p => p.tags.some(tag => {
+            const tagName = lang === 'bg' ? tag.name_bg || tag.name : tag.name_en || tag.name;
+            return tagName === activeTagName;
+        }));
 
     const total = displayPosts.length - 1;
 
@@ -82,20 +85,24 @@ const BlogContent = ({ posts = [] }: BlogSectionProps) => {
 
                 <div className={styles.scrollWrapper} ref={containerRef}>
                     <ul className={styles.blogList}>
-                        {displayPosts.map((post) => (
-                            <BlogCard
-                                key={post.id}
-                                id={post.id}
-                                author={post.author}
-                                title={post.title}
-                                excerpt={post.content.length > 150 ? post.content.slice(0, 150) + "…" : post.content}
-                                slug={post.slug}
-                                tags={post.tags}
-                                created_at={post.created_at}
-                                picture={post.picture}
-                                fullPost={post}
-                            />
-                        ))}
+                        {displayPosts.map((post) => {
+                            const pTitle = lang === 'bg' ? post.title_bg || post.title : post.title_en || post.title;
+                            const pContent = lang === 'bg' ? post.content_bg || post.content : post.content_en || post.content;
+                            return (
+                                <BlogCard
+                                    key={post.id}
+                                    id={post.id}
+                                    author={post.author}
+                                    title={pTitle || ""}
+                                    excerpt={(pContent || "").length > 150 ? (pContent || "").slice(0, 150) + "…" : pContent}
+                                    slug={post.slug}
+                                    tags={post.tags}
+                                    created_at={post.created_at}
+                                    picture={post.picture}
+                                    fullPost={post}
+                                />
+                            );
+                        })}
                     </ul>
                 </div>
             </div>

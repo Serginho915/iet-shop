@@ -52,7 +52,16 @@ export const CoursePage = ({ course: initialCourse, slug }: CoursePageProps) => 
 
     const breadcrumbs: BreadcrumbItem[] = [
         { label: t.course, href: "/#courses" },
-        { label: finalCourse?.title || slug }
+        {
+            label: (function () {
+                if (lang === 'bg' && finalCourse?.title_bg) return String(finalCourse.title_bg);
+                if (lang === 'en' && finalCourse?.title_en) return String(finalCourse.title_en);
+                if (typeof finalCourse?.title === 'object' && finalCourse.title) {
+                    return String((finalCourse.title as any)[lang] || (finalCourse.title as any).en || (finalCourse.title as any).bg || "");
+                }
+                return String(finalCourse?.title || slug);
+            })()
+        }
     ];
 
     const formattedStart = finalCourse?.start

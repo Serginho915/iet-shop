@@ -41,7 +41,7 @@ export const useFormLogic = (initialInterested: number = 0, requireInterested: b
     const [isSuccess, setIsSuccess] = useState(false);
     const [submitError, setSubmitError] = useState("");
 
-    // Sync interested if it changes from outside (e.g. course loading)
+
     useEffect(() => {
         if (initialInterested !== 0) {
             setFormData(prev => ({ ...prev, interested: initialInterested }));
@@ -80,7 +80,7 @@ export const useFormLogic = (initialInterested: number = 0, requireInterested: b
         return !Object.values(newErrors).some((val) => val === true);
     }, [formData, requireInterested]);
 
-    const handleSubmit = async (e?: React.FormEvent) => {
+    const handleSubmit = async (e?: React.FormEvent, onSubmit?: (data: any) => Promise<any>) => {
         if (e) e.preventDefault();
         setSubmitError("");
 
@@ -89,7 +89,8 @@ export const useFormLogic = (initialInterested: number = 0, requireInterested: b
         if (isValid) {
             setIsSubmitting(true);
             try {
-                await submitConsultation({
+                const submitFn = onSubmit || submitConsultation;
+                await submitFn({
                     name: formData.name,
                     email: formData.email,
                     phone: formatPhoneForSubmit(formData.phone),

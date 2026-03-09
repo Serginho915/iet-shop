@@ -49,9 +49,12 @@ export const BlogPage = ({ post: initialPost, slug }: BlogPageProps) => {
     const carouselRef = useRef<HTMLDivElement>(null);
     const [relatedPosts, setRelatedPosts] = useState<Post[]>([]);
 
+    const postTitle = lang === 'bg' ? finalPost?.title_bg || finalPost?.title : finalPost?.title_en || finalPost?.title;
+    const postContent = lang === 'bg' ? finalPost?.content_bg || finalPost?.content : finalPost?.content_en || finalPost?.content;
+
     const breadcrumbs: BreadcrumbItem[] = [
         { label: t.blog, href: "/#blog" },
-        { label: finalPost?.title || slug }
+        { label: postTitle || slug }
     ];
 
     const [formattedDate, setFormattedDate] = useState<string>("");
@@ -65,7 +68,7 @@ export const BlogPage = ({ post: initialPost, slug }: BlogPageProps) => {
                 year: "numeric",
             }));
         }
-    }, [post?.created_at, lang]);
+    }, [finalPost?.created_at, lang]);
 
     // Carousel handlers
     const cardWidth = 509;
@@ -131,9 +134,9 @@ export const BlogPage = ({ post: initialPost, slug }: BlogPageProps) => {
                     />
 
                     <div className={styles.articleContentWrapper}>
-                        <h1 className={styles.title}>{finalPost.title}</h1>
+                        <h1 className={styles.title}>{postTitle}</h1>
                         <p className={styles.content}>
-                            {finalPost.content}
+                            {postContent}
                         </p>
                     </div>
                 </div>
@@ -147,21 +150,25 @@ export const BlogPage = ({ post: initialPost, slug }: BlogPageProps) => {
 
                             <div className={styles.carouselWrapper} ref={carouselRef}>
                                 <ul className={styles.blogList}>
-                                    {relatedPosts.map((p) => (
-                                        <li key={p.id}>
-                                            <BlogCard
-                                                id={p.id}
-                                                author={p.author}
-                                                title={p.title}
-                                                excerpt={p.content.length > 150 ? p.content.slice(0, 150) + "…" : p.content}
-                                                slug={p.slug}
-                                                tags={p.tags}
-                                                created_at={p.created_at}
-                                                picture={p.picture}
-                                                fullPost={p}
-                                            />
-                                        </li>
-                                    ))}
+                                    {relatedPosts.map((p) => {
+                                        const pTitle = lang === 'bg' ? p.title_bg || p.title : p.title_en || p.title;
+                                        const pContent = lang === 'bg' ? p.content_bg || p.content : p.content_en || p.content;
+                                        return (
+                                            <li key={p.id}>
+                                                <BlogCard
+                                                    id={p.id}
+                                                    author={p.author}
+                                                    title={pTitle || ""}
+                                                    excerpt={(pContent || "").length > 150 ? (pContent || "").slice(0, 150) + "…" : pContent}
+                                                    slug={p.slug}
+                                                    tags={p.tags}
+                                                    created_at={p.created_at}
+                                                    picture={p.picture}
+                                                    fullPost={p}
+                                                />
+                                            </li>
+                                        );
+                                    })}
                                 </ul>
                             </div>
 

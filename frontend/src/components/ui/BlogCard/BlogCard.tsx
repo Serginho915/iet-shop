@@ -48,11 +48,14 @@ export const BlogCard = ({
     <div className={styles.card} onClick={handleCardClick} style={{ cursor: 'pointer' }}>
       <div className={styles.top}>
         <div className={styles.tags}>
-          {tags.map((tag) => (
-            <span key={tag.id} className={styles.tag}>
-              {tag.name}
-            </span>
-          ))}
+          {tags.map((tag) => {
+            const tagName = lang === 'bg' ? tag.name_bg || tag.name : tag.name_en || tag.name;
+            return (
+              <span key={tag.id} className={styles.tag}>
+                {tagName}
+              </span>
+            );
+          })}
         </div>
         <Link
           href={`/blog/${slug}`}

@@ -1,17 +1,25 @@
 // ─── Interfaces ─────────────────────────────────────────────────────────────
 export interface Tag {
   id: number;
-  name: string;
+  name?: string;
+  name_en?: string;
+  name_bg?: string;
 }
 
 export interface Course {
   id: number;
   slug: string;
-  title: string;
+  title?: string;
+  title_en?: string;
+  title_bg?: string;
   start: string;
   image?: string;
-  description: string;
-  duration: string;
+  description?: string;
+  description_en?: string;
+  description_bg?: string;
+  duration?: string;
+  duration_en?: string;
+  duration_bg?: string;
   type: "hybrid" | "online" | "offline";
   price: number;
   is_active: boolean;
@@ -20,21 +28,45 @@ export interface Course {
   tags: Tag[];
   audience?: "adults" | "kids";
   about_title?: string;
+  about_title_en?: string;
+  about_title_bg?: string;
   about_description_top?: string;
+  about_description_top_en?: string;
+  about_description_top_bg?: string;
   about_description_bottom?: string;
+  about_description_bottom_en?: string;
+  about_description_bottom_bg?: string;
   about_image?: string;
   audience_image?: string;
-  audience_tags?: [string, string],
 
+  extra_audience_tags?: {
+    title?: any;
+    title_en?: string;
+    title_bg?: string;
+    text?: any;
+    text_en?: string;
+    text_bg?: string;
+  }[];
 
+  instruments?: {
+    name_en?: string;
+    name_bg?: string;
+    icon?: string;
+  }[];
 
-  audience_tag1?: string[];
-  audience_tag2?: string[];
-  audience_tag3?: string[];
-  audience_tag4?: string[];
-  instruments?: { name: string; icon?: string }[];
-  outcomes?: string[];
-  modules?: { title: string; description: string[] }[];
+  outcomes?: {
+    text_en?: string;
+    text_bg?: string;
+  }[];
+
+  modules?: {
+    title_en?: string;
+    title_bg?: string;
+    descriptions?: {
+      text_en?: string;
+      text_bg?: string;
+    }[];
+  }[];
 }
 // type: "hybrid" | "online" | "offline";
 //audience_tags?: "hybrid" | "adults" | "kids";
@@ -42,9 +74,13 @@ export interface Course {
 export interface Post {
   id: number;
   slug: string;
-  title: string;
+  title?: string;
+  title_en?: string;
+  title_bg?: string;
   author: string;
-  content: string;
+  content?: string;
+  content_en?: string;
+  content_bg?: string;
   picture?: string;
   created_at: string;
   tags: Tag[];
@@ -53,6 +89,8 @@ export interface Post {
 export interface Event {
   id: number;
   title: string;
+  title_en?: string;
+  title_bg?: string;
   date: string;
   description: string;
   type: "online" | "offline" | "hybrid";
@@ -70,10 +108,24 @@ const resolveUrl = (url?: string) => {
   return `${API_BASE}${url.startsWith('/') ? '' : '/'}${url}`;
 };
 
+const localize = (value: any) => {
+  if (!value) return "";
+  if (typeof value === 'string') return value;
+  if (typeof value === 'object') {
+    // If it's a bilingual object from backend
+    if ('en' in value || 'bg' in value) {
+      return value; // Keep as object, components will handle it with useTranslate/lang
+    }
+  }
+  return value;
+};
+
 const mapTags = (tagIds: any[], allTags: Tag[]) => (tagIds || []).map(id => {
   if (typeof id === 'object') return id;
   const tagId = Number(id);
-  return allTags.find(t => t.id === tagId) || { id: tagId, name: `Tag ${tagId}` };
+  const found = allTags.find(t => t.id === tagId);
+  if (found) return found;
+  return { id: tagId, name_en: `Tag ${tagId}`, name_bg: `Таг ${tagId}` };
 });
 
 const safeFetch = async (endpoint: string) => {
@@ -96,7 +148,7 @@ const safeFetch = async (endpoint: string) => {
 
 export async function getTags(): Promise<Tag[]> {
   const tags = await safeFetch('/tags');
-  return tags || [];
+  return (tags || []).map((t: any) => flattenData(t));
 }
 
 const flattenData = (item: any) => {
@@ -107,7 +159,7 @@ const flattenData = (item: any) => {
     };
   }
   return item;
-};
+}
 
 export async function getHomePageData() {
   const [tags, courses, posts, events] = await Promise.all([
@@ -125,15 +177,40 @@ export async function getHomePageData() {
       const flat = flattenData(c);
       return {
         ...flat,
+        title: flat.title, // Now a {en, bg} object from DRF
+        description: flat.description,
+        duration: flat.duration,
+        about_title: flat.about_title,
+        about_description_top: flat.about_description_top,
+        about_description_bottom: flat.about_description_bottom,
         image: resolveUrl(flat.image),
+        about_image: resolveUrl(flat.about_image),
+        audience_image: resolveUrl(flat.audience_image),
         tags: mapTags(flat.tags, allTags),
-        audience: (flat.age_group === "adult" || flat.age_group === "Adult") ? "adults" : "kids"
+        audience: flat.audience ?? ((flat.age_group === "adult" || flat.age_group === "Adult") ? "adults" : "kids"),
+
+        // Map related cards
+        extra_audience_tags: (flat.audience_tags || []).map((card: any) => ({
+          title: card.title,
+          text: card.text
+        })),
+        instruments: (flat.instruments || []).map((instr: any) => ({
+          name: instr.name,
+          icon: resolveUrl(instr.icon)
+        })),
+        outcomes: (flat.outcomes || []).map((out: any) => out),
+        modules: (flat.modules || []).map((mod: any) => ({
+          title: mod.title,
+          description: mod.description
+        }))
       };
     }),
     posts: (posts || []).map((p: any) => {
       const flat = flattenData(p);
       return {
         ...flat,
+        title: flat.title,
+        content: flat.content,
         picture: resolveUrl(flat.picture),
         tags: mapTags(flat.tags, allTags)
       };
@@ -161,17 +238,17 @@ export async function getHomePageData() {
 
 export async function getCourses(): Promise<Course[]> {
   const data = await getHomePageData();
-  return data.courses;
+  return data.courses as any;
 }
 
 export async function getPosts(): Promise<Post[]> {
   const data = await getHomePageData();
-  return data.posts;
+  return data.posts as any;
 }
 
 export async function getEvents(): Promise<Event[]> {
   const data = await getHomePageData();
-  return data.events;
+  return data.events as any;
 }
 
 export async function getCourseBySlug(slug: string): Promise<Course | undefined> {
@@ -188,7 +265,7 @@ export async function getPostBySlug(slug: string): Promise<Post | undefined> {
 
 export async function getEventBySlug(title: string): Promise<Event | undefined> {
   const events = await getEvents();
-  return events.find(e => e.title === title);
+  return events.find(e => e.title === title || (typeof e.title === 'object' && e.title && ((e.title as any).en === title || (e.title as any).bg === title)));
 }
 
 export async function submitConsultation(data: { name: string; email: string; phone: string; interested: number }) {
@@ -203,6 +280,23 @@ export async function submitConsultation(data: { name: string; email: string; ph
 
   if (!res.ok) {
     throw new Error('Failed to submit consultation');
+  }
+
+  return await res.json();
+}
+
+export async function submitEventRequest(data: { name: string; email: string; phone: string; interested: number }) {
+  const url = `${API_URL}/event-requests/`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to submit event request');
   }
 
   return await res.json();

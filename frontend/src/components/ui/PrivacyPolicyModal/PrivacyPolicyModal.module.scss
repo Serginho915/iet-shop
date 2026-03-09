@@ -38,6 +38,16 @@
     p {
         margin-bottom: 12px;
     }
+
+    ul {
+        margin-bottom: 16px;
+        padding-left: 20px;
+        list-style-type: disc;
+
+        li {
+            margin-bottom: 8px;
+        }
+    }
 }
 
 @include mobile {

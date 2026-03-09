@@ -38,7 +38,10 @@ const CoursesContent = ({ courses = [], tags: initialTags = [] }: CoursesSection
 
   const tags = [
     { id: 'all', name: lang === 'bg' ? 'Всички категории' : 'All Categories' },
-    ...dbTags.map(tag => ({ id: tag.id.toString(), name: tag.name }))
+    ...dbTags.map(tag => {
+      const name = lang === 'bg' ? tag.name_bg || tag.name : tag.name_en || tag.name;
+      return { id: tag.id.toString(), name: name || "" };
+    })
   ];
 
   const tagFromUrl = searchParams.get("courseTag");
@@ -73,7 +76,10 @@ const CoursesContent = ({ courses = [], tags: initialTags = [] }: CoursesSection
 
 
   const filteredCourses = courses.filter((course) => {
-    const matchesTag = activeTag === "all" || course.tags.some(tag => tag.name.toLowerCase() === activeTag.toLowerCase() || tag.id.toString() === activeTag);
+    const matchesTag = activeTag === "all" || course.tags.some(tag => {
+      const tagName = (lang === 'bg' ? tag.name_bg || tag.name : tag.name_en || tag.name) || "";
+      return tagName.toLowerCase() === activeTag.toLowerCase() || tag.id.toString() === activeTag;
+    });
     const matchesType = activeType === "all" || course.type === activeType;
     const matchesAudience = activeAudience === "all" || course.audience === activeAudience;
     return matchesTag && matchesType && matchesAudience;

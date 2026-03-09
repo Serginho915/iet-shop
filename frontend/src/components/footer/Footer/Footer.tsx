@@ -227,11 +227,14 @@ export const Footer = ({ config }: FooterProps) => {
   };
 
   const coursesLinks: SimpleLink[] = categories.length > 0
-    ? categories.map(tag => ({
-      label: tag.name,
-      href: `/#courses`,
-      onClick: scrollToSection("courses", `courseTag=${tag.id}`),
-    }))
+    ? categories.map(tag => {
+      const label = lang === 'bg' ? tag.name_bg || tag.name : tag.name_en || tag.name;
+      return {
+        label: label || "",
+        href: `/#courses`,
+        onClick: scrollToSection("courses", `courseTag=${tag.id}`),
+      };
+    })
     : courses.links.map((item) => ({
       label: item.translationKey ? tr[item.translationKey] : item.label,
       href: "/#courses",

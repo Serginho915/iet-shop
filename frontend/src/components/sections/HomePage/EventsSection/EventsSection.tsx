@@ -57,12 +57,25 @@ export const EventsSection = ({ events = [] }: EventsSectionProps) => {
                 })
                 : event.date;
 
+              // Robust localization for title
+              const title = typeof event.title === 'object' && event.title
+                ? ((event.title as any)[lang] || (event.title as any).en || (event.title as any).bg || "")
+                : event.title;
+
+              // Robust localization for tags
+              const eventTags = event.tags.map(tag => {
+                if (typeof tag === 'object' && tag) {
+                  return (tag as any).name?.[lang] || (tag as any)[lang] || (tag as any).name_en || (tag as any).name_bg || (tag as any).name || "";
+                }
+                return tag;
+              });
+
               return (
                 <EventCard
                   key={event.id}
-                  title={event.title}
+                  title={String(title || "")}
                   date={formattedDate}
-                  tags={event.tags.map(tag => tag.name)}
+                  tags={eventTags.map(String)}
                   location={event.type}
                   description={event.description}
                   image1={event.image_1}

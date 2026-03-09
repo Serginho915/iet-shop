@@ -20,16 +20,40 @@ export const CourseCard = ({ course }: CourseCardProps) => {
   const router = useRouter();
   const { setSelectedCourse } = useCourse();
 
-  const title = course?.title ?? "Front End Development";
+  const title = (function () {
+    if (lang === 'bg' && course?.title_bg) return String(course.title_bg);
+    if (lang === 'en' && course?.title_en) return String(course.title_en);
+    if (typeof course?.title === 'object' && course.title) {
+      return String((course.title as any)[lang] || (course.title as any).en || (course.title as any).bg || "");
+    }
+    return String(course?.title || "Front End Development");
+  })();
+
   const slug = course?.slug ?? "javascript-course";
   const courseType = course?.type ?? "hybrid";
-  const duration = course?.duration ?? "2 months";
-  const description = course?.description;
+
+  const duration = (function () {
+    if (lang === 'bg' && course?.duration_bg) return String(course.duration_bg);
+    if (lang === 'en' && course?.duration_en) return String(course.duration_en);
+    if (typeof course?.duration === 'object' && course.duration) {
+      return String((course.duration as any)[lang] || (course.duration as any).en || (course.duration as any).bg || "");
+    }
+    return String(course?.duration || "2 months");
+  })();
+
+  const description = (function () {
+    if (lang === 'bg' && course?.description_bg) return String(course.description_bg);
+    if (lang === 'en' && course?.description_en) return String(course.description_en);
+    if (typeof course?.description === 'object' && course.description) {
+      return String((course.description as any)[lang] || (course.description as any).en || (course.description as any).bg || "");
+    }
+    return String(course?.description || "");
+  })();
   const imageUrl = course?.image;
 
   const startDateLabel = t.start;
   const startDate = course?.start
-    ? new Date(course.start).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })
+    ? new Date(course.start).toLocaleDateString(lang === 'bg' ? "bg-BG" : "en-GB", { day: "numeric", month: "short", year: "numeric" })
     : "12 May 2026";
 
   const typeLabel = (t as any)[courseType] || courseType;

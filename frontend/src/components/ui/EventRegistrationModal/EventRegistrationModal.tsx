@@ -8,10 +8,8 @@ import { Modal } from "@/components/ui/Modal/Modal";
 import { Button } from "@/components/ui/Button/Button";
 import { IconClock, IconLocation } from "@/components/icons";
 import { useFormLogic } from "@/lib/useFormLogic";
-import { Event } from "@/lib/api";
+import { Event, submitEventRequest } from "@/lib/api";
 import { useTranslate } from "@/lib/useTranslate";
-
-// Inline translations for the modal
 import { PrivacyPolicyModal } from "@/components/ui/PrivacyPolicyModal/PrivacyPolicyModal";
 
 const modalTranslations = {
@@ -58,7 +56,7 @@ interface EventRegistrationModalProps {
 }
 
 export const EventRegistrationModal = ({ isOpen, onClose, event }: EventRegistrationModalProps) => {
-    const { t } = useTranslate(modalTranslations);
+    const { t, lang } = useTranslate(modalTranslations);
     const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
     const {
         formData,
@@ -75,12 +73,12 @@ export const EventRegistrationModal = ({ isOpen, onClose, event }: EventRegistra
 
     // Reset form when modal opens
     useEffect(() => {
-        if (isOpen) {
+        if (isOpen && event) {
             setFormData({
                 name: "",
                 email: "",
                 phone: "",
-                interested: 0,
+                interested: event.id,
                 privacyAccepted: false,
             });
             setErrors({
@@ -91,19 +89,28 @@ export const EventRegistrationModal = ({ isOpen, onClose, event }: EventRegistra
                 privacy: false,
             });
         }
-    }, [isOpen, setFormData, setErrors]);
+    }, [isOpen, event, setFormData, setErrors]);
 
     if (!event) return null;
+
+    // Localize event title
+    const eventTitle = typeof event.title === 'object' && event.title
+        ? ((event.title as any)[lang] || (event.title as any).en || (event.title as any).bg || "")
+        : event.title;
 
     // Formatting date
     const dateObj = new Date(event.date);
     const formattedDate = !isNaN(dateObj.getTime())
-        ? dateObj.toLocaleDateString('en-GB', {
+        ? dateObj.toLocaleDateString(lang === 'bg' ? 'bg-BG' : 'en-GB', {
             day: 'numeric',
             month: 'short',
             year: 'numeric'
         })
         : event.date;
+
+    const handleFormSubmit = (e: React.FormEvent) => {
+        handleSubmit(e, submitEventRequest);
+    };
 
     return (
         <>
@@ -139,13 +146,16 @@ export const EventRegistrationModal = ({ isOpen, onClose, event }: EventRegistra
                                 </div>
                             </div>
 
-                            <h2 className={styles.title}>{event.title}</h2>
+                            <h2 className={styles.title}>{String(eventTitle || "")}</h2>
 
                             <div className={styles.tagsRow}>
                                 <span className={styles.tag}>Free</span>
-                                {event.tags && event.tags.map((tag: any, idx) => (
-                                    <span key={idx} className={styles.tag}>{typeof tag === 'string' ? tag : tag.name}</span>
-                                ))}
+                                {event.tags && event.tags.map((tag: any, idx) => {
+                                    const tagName = typeof tag === 'object' && tag
+                                        ? (tag.name?.[lang] || tag[lang] || tag.name || tag.name_en || tag.name_bg || "")
+                                        : tag;
+                                    return <span key={idx} className={styles.tag}>{String(tagName || "")}</span>;
+                                })}
                                 <span className={`${styles.tag} ${styles.typeTag}`}>
                                     <IconLocation className={styles.icon} />
                                     {event.type === 'hybrid' ? 'Online/Offline' : event.type === 'online' ? 'Online' : 'Offline'}
@@ -160,7 +170,7 @@ export const EventRegistrationModal = ({ isOpen, onClose, event }: EventRegistra
                                 <span className={styles.contactsText}>{t.yourContacts}</span>
                             </h3>
 
-                            <form className={styles.form} onSubmit={handleSubmit} noValidate>
+                            <form className={styles.form} onSubmit={handleFormSubmit} noValidate>
                                 {/* Inputs reused from ConsultationSection styling matching */}
                                 <div className={styles.inputGroup}>
                                     <input

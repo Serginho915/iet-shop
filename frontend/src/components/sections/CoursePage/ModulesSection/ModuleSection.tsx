@@ -19,34 +19,37 @@ interface ModulesSectionProps {
 
 const MOCK_MODULES = [
   {
-    title: "Marketing Foundations",
-    description: "Digital marketing basics\nSocial media ecosystem\nContent strategy"
+    title_en: "Marketing Foundations",
+    title_bg: "Основи на маркетинга",
+    descriptions: [
+      { text_en: "Digital marketing basics", text_bg: "Основи на дигиталния маркетинг" },
+      { text_en: "Social media ecosystem", text_bg: "Социални медии" },
+      { text_en: "Content strategy", text_bg: "Контент стратегия" }
+    ]
   },
   {
-    title: "SEO basics",
-    description: "Search engine optimization\nKeyword research\nOn-page SEO"
+    title_en: "SEO basics",
+    title_bg: "Основи на SEO",
+    descriptions: [
+      { text_en: "Search engine optimization", text_bg: "Оптимизация за търсачки" },
+      { text_en: "Keyword research", text_bg: "Проучване на ключови думи" },
+      { text_en: "On-page SEO", text_bg: "On-page SEO" }
+    ]
   },
   {
-    title: "Facebook & Ads Manager",
-    description: "Ad campaigns\nTargeting\nBudgeting"
-  },
-  {
-    title: "Instagram Marketing",
-    description: "Profile optimization\nStories and Reels\nInfluencer marketing"
-  },
-  {
-    title: "Content & Copywriting",
-    description: "Writing for the web\nStorytelling\nEditing"
-  },
-  {
-    title: "Analytics & Optimization",
-    description: "Data analysis\nTesting\nReporting"
+    title_en: "Facebook & Ads Manager",
+    title_bg: "Facebook & Ads Manager",
+    descriptions: [
+      { text_en: "Ad campaigns", text_bg: "Рекламни кампании" },
+      { text_en: "Targeting", text_bg: "Таргетиране" },
+      { text_en: "Budgeting", text_bg: "Бюджетиране" }
+    ]
   }
 ];
 
 export const ModulesSection = ({ course }: ModulesSectionProps) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const { t } = useTranslate(translations);
+  const { t, lang } = useTranslate(translations);
 
   const toggleModule = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
@@ -61,13 +64,13 @@ export const ModulesSection = ({ course }: ModulesSectionProps) => {
         <div className={styles.contentWrapper}>
           <h2 className={styles.sectionTitle}>{t.title}</h2>
 
-          {displayModules.map((module: ModuleItem, index: number) => {
+          {displayModules.map((module: any, index: number) => {
             const isActive = activeIndex === index;
-            const descriptionText = Array.isArray(module.description)
-              ? module.description.join('\n')
-              : (module.description || "");
+            const title = typeof module.title === 'object' && module.title
+              ? ((module.title as any)[lang] || (module.title as any).en || (module.title as any).bg || "")
+              : (module.title_en || module.title_bg || module.title || "");
 
-            const descriptionItems = descriptionText.split('\n').filter((i: string) => i.trim());
+            const descriptions = module.description || module.descriptions || [];
 
             return (
               <div
@@ -86,16 +89,25 @@ export const ModulesSection = ({ course }: ModulesSectionProps) => {
                       height={24}
                     />
                   </div>
-                  <span className={styles.moduleTitle}>{module.title}</span>
+                  <span className={styles.moduleTitle}>{String(title || "")}</span>
                 </div>
 
-                {isActive && descriptionItems.length > 0 && (
+                {isActive && (Array.isArray(descriptions) ? descriptions.length > 0 : !!descriptions) && (
                   <ul className={styles.descriptionList}>
-                    {descriptionItems.map((item: string, idx: number) => (
-                      <li key={idx} className={styles.descriptionItem}>
-                        {item}
+                    {Array.isArray(descriptions) ? descriptions.map((desc: any, idx: number) => {
+                      const text = typeof desc === 'object' && desc
+                        ? (desc[lang] || desc.text || desc.text_en || desc.text_bg || "")
+                        : desc;
+                      return (
+                        <li key={idx} className={styles.descriptionItem}>
+                          {String(text || "")}
+                        </li>
+                      );
+                    }) : (
+                      <li className={styles.descriptionItem}>
+                        {String(descriptions || "")}
                       </li>
-                    ))}
+                    )}
                   </ul>
                 )}
               </div>

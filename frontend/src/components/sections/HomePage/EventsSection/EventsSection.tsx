@@ -3,7 +3,7 @@
 import React, { useRef, useState } from "react";
 import styles from "./EventsSection.module.scss";
 import { useTranslate } from "@/lib/useTranslate";
-import { translations } from "./translations";
+import { translations, type EventsTranslations } from "./translations";
 import { EventCard } from "@/components/ui/EventCard/EventCard";
 import { IconArrowDown } from "@/components/icons";
 import { useVerticalScroll } from "@/lib/useVerticalScroll";
@@ -15,7 +15,7 @@ interface EventsSectionProps {
 }
 
 export const EventsSection = ({ events = [] }: EventsSectionProps) => {
-  const { t, lang } = useTranslate(translations);
+  const { t, lang } = useTranslate<EventsTranslations>(translations);
 
   const { containerRef, scrollNext } = useVerticalScroll({
     cardHeight: 180,
@@ -59,15 +59,16 @@ export const EventsSection = ({ events = [] }: EventsSectionProps) => {
 
               // Robust localization for title
               const title = typeof event.title === 'object' && event.title
-                ? ((event.title as any)[lang] || (event.title as any).en || (event.title as any).bg || "")
+                ? (event.title[lang === 'bg' ? 'bg' : 'en'] || event.title.en || event.title.bg || "")
                 : event.title;
 
               // Robust localization for tags
               const eventTags = event.tags.map(tag => {
-                if (typeof tag === 'object' && tag) {
-                  return (tag as any).name?.[lang] || (tag as any)[lang] || (tag as any).name_en || (tag as any).name_bg || (tag as any).name || "";
+                const tagName = tag.name;
+                if (typeof tagName === 'object' && tagName) {
+                  return tagName[lang === 'bg' ? 'bg' : 'en'] || tagName.en || tagName.bg || "";
                 }
-                return tag;
+                return tagName || "";
               });
 
               return (

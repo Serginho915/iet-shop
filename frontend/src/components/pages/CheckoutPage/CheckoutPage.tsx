@@ -9,7 +9,7 @@ import { Breadcrumbs } from "@/components/ui/Breadcrumbs/Breadcrumbs";
 import { Course, getCourseBySlug, submitConsultation } from "@/lib/api";
 import { useTranslate } from "@/lib/useTranslate";
 import { useCourse } from "@/lib/CourseContext";
-import { translations } from "./translations";
+import { translations, type CheckoutTranslations } from "./translations";
 import { LanguageDropdown } from "@/components/header/LanguageDropdown/LanguageDropdown";
 import { useFormLogic } from "@/lib/useFormLogic";
 import { Button } from "@/components/ui/Button/Button";
@@ -91,8 +91,9 @@ export const CheckoutPage = ({ slug, course: initialCourse }: CheckoutPageProps)
     if (!course) return slug;
     if (lang === 'bg' && course.title_bg) return String(course.title_bg);
     if (lang === 'en' && course.title_en) return String(course.title_en);
-    if (typeof course.title === 'object' && course.title) {
-      return String((course.title as any)[lang] || (course.title as any).en || (course.title as any).bg || "");
+    const rawTitle = course.title;
+    if (typeof rawTitle === 'object' && rawTitle) {
+      return String(rawTitle[lang === 'bg' ? 'bg' : 'en'] || rawTitle.en || rawTitle.bg || "");
     }
     return String(course.title || slug);
   }, [course, lang, slug]);

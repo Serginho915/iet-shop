@@ -1,7 +1,9 @@
 
+export type LocalizedValue = string | { en?: string; bg?: string };
+
 export interface Tag {
   id: number;
-  name?: string;
+  name?: LocalizedValue;
   name_en?: string;
   name_bg?: string;
 }
@@ -9,15 +11,15 @@ export interface Tag {
 export interface Course {
   id: number;
   slug: string;
-  title?: string;
+  title?: LocalizedValue;
   title_en?: string;
   title_bg?: string;
   start: string;
   image?: string;
-  description?: string;
+  description?: LocalizedValue;
   description_en?: string;
   description_bg?: string;
-  duration?: string;
+  duration?: LocalizedValue;
   duration_en?: string;
   duration_bg?: string;
   type: "hybrid" | "online" | "offline";
@@ -27,57 +29,63 @@ export interface Course {
   stripe_price_id?: number | null;
   tags: Tag[];
   audience?: "adults" | "kids";
-  about_title?: string;
+  about_title?: LocalizedValue;
   about_title_en?: string;
   about_title_bg?: string;
-  about_description_top?: string;
+  about_description_top?: LocalizedValue;
   about_description_top_en?: string;
   about_description_top_bg?: string;
-  about_description_bottom?: string;
+  about_description_bottom?: LocalizedValue;
   about_description_bottom_en?: string;
   about_description_bottom_bg?: string;
   about_image?: string;
   audience_image?: string;
 
   extra_audience_tags?: {
-    title?: any;
+    title?: LocalizedValue;
     title_en?: string;
     title_bg?: string;
-    text?: any;
+    text?: LocalizedValue;
     text_en?: string;
     text_bg?: string;
   }[];
 
   instruments?: {
+    name?: LocalizedValue;
     name_en?: string;
     name_bg?: string;
     icon?: string;
   }[];
 
   outcomes?: {
+    text?: LocalizedValue;
     text_en?: string;
     text_bg?: string;
   }[];
 
   modules?: {
+    title?: LocalizedValue;
     title_en?: string;
     title_bg?: string;
+    description?: LocalizedValue;
+    description_en?: string;
+    description_bg?: string;
+    // For components that might still look for 'descriptions' array or object
     descriptions?: {
       text_en?: string;
       text_bg?: string;
-
-    }
+    };
   }[];
 }
 
 export interface Post {
   id: number;
   slug: string;
-  title?: string;
+  title?: LocalizedValue;
   title_en?: string;
   title_bg?: string;
   author: string;
-  content?: string;
+  content?: LocalizedValue;
   content_en?: string;
   content_bg?: string;
   picture?: string;
@@ -87,7 +95,7 @@ export interface Post {
 
 export interface Event {
   id: number;
-  title: string;
+  title: LocalizedValue;
   title_en?: string;
   title_bg?: string;
   date: string;

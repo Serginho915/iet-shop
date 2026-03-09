@@ -17,10 +17,14 @@ import {
   IconLinkedIn,
   IconYouTube
 } from "@/components/icons";
-import logoImg from "@/assets/logo-iet.jpg";
+import { Logo } from "@/components/header/Logo/Logo";
 import { getTags, type Tag } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+
+import ciscoLogo from "@/assets/Partners/cisco.png";
+import microsoftLogo from "@/assets/Partners/microsoft.png";
+import autodeskLogo from "@/assets/Partners/autodesc.png";
 
 type FooterLink = {
   label: string;
@@ -225,9 +229,7 @@ export const Footer = ({ config }: FooterProps) => {
           <div className={styles.top}>
             <div className={styles.companyColumn}>
               <div className={styles.company}>
-                <Link href="/" className={styles.logo}>
-                  <Image src={logoImg} alt="IET Logo" width={160} height={40} className={styles.logoImg} />
-                </Link>
+                <Logo className={styles.footerLogo} />
                 <div className={styles.companyName}>{companyNameText}</div>
                 {socials.length > 0 && (
                   <div className={styles.socials}>
@@ -315,10 +317,11 @@ export const Footer = ({ config }: FooterProps) => {
 
           <div className={styles.bottomRow}>
             <div className={styles.partnered}>
-              <div>{partneredText}</div>
+              <div className={styles.partneredLabel}>{partneredText}</div>
               <div className={styles.partners}>
-                <div className={styles.partnerLogo} />
-                <div className={styles.partnerLogo} />
+                <Image src={ciscoLogo} alt="Cisco" height={24} className={styles.partnerLogo} />
+                <Image src={microsoftLogo} alt="Microsoft" height={24} className={styles.partnerLogo} />
+                <Image src={autodeskLogo} alt="Autodesk" height={24} className={styles.partnerLogo} />
               </div>
             </div>
 

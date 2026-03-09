@@ -144,6 +144,7 @@
       "title": "IET Tech Meetup",
       "date": "2026-04-15",
       "type": "hybrid",
+      "description": "Join us for the IET Tech Meetup, where industry experts will share insights on the latest trends in technology and innovation.",
       "tags": [1, 2]
     }
   },
@@ -154,6 +155,7 @@
       "title": "React Masterclass",
       "date": "2026-05-10",
       "type": "online",
+      "description": "Join our React Masterclass to learn how to build dynamic and responsive web applications using the latest features of React.",
       "tags": [2, 3]
     }
   },
@@ -164,6 +166,7 @@
       "title": "Design Patterns Seminar",
       "date": "2026-06-20",
       "type": "offline",
+      "description": "Join us for an in-depth seminar on software design patterns, covering best practices and real-world applications.",
       "tags": [3, 4]
     }
   },

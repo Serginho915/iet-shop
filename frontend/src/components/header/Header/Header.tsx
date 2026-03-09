@@ -7,7 +7,7 @@ import { Navbar } from "@/components/header/navbar/navbar";
 import { IconUser, IconMenu, IconClose } from "@/components/icons";
 import { RequestButton } from "@/components/header/RequestButton/RequestButton";
 import { LanguageDropdown } from "@/components/header/LanguageDropdown/LanguageDropdown";
-import logo from "@/assets/logo-iet.jpg";
+import { Logo } from "@/components/header/Logo/Logo";
 import styles from "./Header.module.scss";
 
 export const Header = () => {
@@ -55,13 +55,7 @@ export const Header = () => {
           <div className={styles.inner}>
             {/* LOGO + NAV */}
             <div className={styles.left}>
-              <Link href="/" className={styles.logo} onClick={closeMenu}>
-                <Image
-                  src={logo}
-                  className={styles.logoImage}
-                  alt="IET Shop Logo"
-                />
-              </Link>
+              <Logo onClick={closeMenu} />
 
               <div className={styles.navbarDesktop}>
                 <Navbar />

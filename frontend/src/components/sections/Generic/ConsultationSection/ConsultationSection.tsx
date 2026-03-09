@@ -1,38 +1,29 @@
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslate } from "@/lib/useTranslate";
 import { translations } from "./translations";
 import styles from "./ConsultationSection.module.scss";
 import { Button } from "@/components/ui/Button/Button";
 import Link from 'next/link';
-import { submitConsultation, Course } from '@/lib/api';
+import { Course } from '@/lib/api';
+import { useFormLogic } from '@/lib/useFormLogic';
 
 export const ConsultationSection = ({ courses = [] }: { courses?: Course[] }) => {
   const { t } = useTranslate(translations);
-
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    interested: 0,
-    privacyAccepted: false
-  });
-
-  const [errors, setErrors] = useState({
-    name: false,
-    email: false,
-    phone: false,
-    interested: false,
-    privacy: false
-  });
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [submitError, setSubmitError] = useState('');
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
+  const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
+
+  const {
+    formData,
+    errors,
+    isSubmitting,
+    isSuccess,
+    submitError,
+    handleChange,
+    setField,
+    handleSubmit
+  } = useFormLogic(0);
 
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -45,75 +36,6 @@ export const ConsultationSection = ({ courses = [] }: { courses?: Course[] }) =>
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target;
-
-    // Type narrowing for checkbox Support
-    const checked = type === 'checkbox' ? (e.target as HTMLInputElement).checked : undefined;
-
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : (name === 'interested' ? Number(value) : value)
-    }));
-
-    if (errors[name as keyof typeof errors]) {
-      setErrors(prev => ({ ...prev, [name]: false }));
-    }
-    setSubmitError('');
-  };
-
-  const validateEmail = (email: string) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  };
-
-  const validateBGPhone = (phone: string) => {
-    const cleaned = phone.replace(/[\s\-\(\)]/g, '');
-    return /^\d{7}$/.test(cleaned);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitError('');
-
-    const newErrors = {
-      name: formData.name.trim() === '',
-      email: !validateEmail(formData.email),
-      phone: !validateBGPhone(formData.phone),
-      interested: formData.interested === 0,
-      privacy: !formData.privacyAccepted
-    };
-
-    setErrors(newErrors);
-
-    const hasNoErrors = !Object.values(newErrors).some(val => val === true);
-
-    if (hasNoErrors) {
-      setIsSubmitting(true);
-      try {
-        await submitConsultation({
-          name: formData.name,
-          email: formData.email,
-          phone: `+359${formData.phone.replace(/[\s\-\(\)]/g, '')}`,
-          interested: formData.interested
-        });
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          interested: 0,
-          privacyAccepted: false
-        });
-        setIsSuccess(true);
-      } catch (err) {
-        setSubmitError('An error occurred. Please try again.');
-        console.error('Consultation submit error:', err);
-      } finally {
-        setIsSubmitting(false);
-      }
-    }
-  };
-
 
   return (
     <section id="consultation" className={styles.section}>
@@ -202,11 +124,8 @@ export const ConsultationSection = ({ courses = [] }: { courses?: Course[] }) =>
                         key={course.id}
                         className={`${styles.dropdownItem} ${formData.interested === course.id ? styles.selected : ''}`}
                         onClick={() => {
-                          setFormData(prev => ({ ...prev, interested: course.id }));
+                          setField('interested', course.id);
                           setIsDropdownOpen(false);
-                          if (errors.interested) {
-                            setErrors(prev => ({ ...prev, interested: false }));
-                          }
                         }}
                       >
                         {course.title}
@@ -218,7 +137,7 @@ export const ConsultationSection = ({ courses = [] }: { courses?: Course[] }) =>
               </div>
 
               <div className={styles.privacyGroup}>
-                <div className={styles.privacy} onClick={() => setFormData(p => ({ ...p, privacyAccepted: !p.privacyAccepted }))}>
+                <div className={styles.privacy} onClick={() => setField('privacyAccepted', !formData.privacyAccepted)}>
                   <div className={`${styles.checkboxWrapper} ${formData.privacyAccepted ? styles.checked : ''} ${errors.privacy ? styles.hasError : ''}`}>
                     {formData.privacyAccepted && (
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className={styles.checkIcon}>

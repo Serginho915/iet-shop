@@ -87,3 +87,12 @@
     color: inherit;
     outline: none;
 }
+
+@mixin navbar-link-style {
+    color: #000;
+    font-family: var(--font-family-title, "Roboto", sans-serif);
+    font-size: var(--font-size-xs, 18px);
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}

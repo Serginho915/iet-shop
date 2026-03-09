@@ -25,10 +25,19 @@ export interface Course {
   about_image?: string;
   audience_image?: string;
   audience_tags?: [string, string],
+
+
+
+  audience_tag1?: string[];
+  audience_tag2?: string[];
+  audience_tag3?: string[];
+  audience_tag4?: string[];
   instruments?: { name: string; icon?: string }[];
   outcomes?: string[];
   modules?: { title: string; description: string[] }[];
 }
+// type: "hybrid" | "online" | "offline";
+//audience_tags?: "hybrid" | "adults" | "kids";
 
 export interface Post {
   id: number;
@@ -45,8 +54,11 @@ export interface Event {
   id: number;
   title: string;
   date: string;
+  description: string;
   type: "online" | "offline" | "hybrid";
   tags: Tag[];
+  image_1?: string;
+  image_2?: string;
 }
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
@@ -87,6 +99,16 @@ export async function getTags(): Promise<Tag[]> {
   return tags || [];
 }
 
+const flattenData = (item: any) => {
+  if (item && item.fields) {
+    return {
+      id: item.pk,
+      ...item.fields
+    };
+  }
+  return item;
+};
+
 export async function getHomePageData() {
   const [tags, courses, posts, events] = await Promise.all([
     getTags(),
@@ -99,21 +121,41 @@ export async function getHomePageData() {
 
   return {
     tags: allTags,
-    courses: (courses || []).map((c: any) => ({
-      ...c,
-      image: resolveUrl(c.image),
-      tags: mapTags(c.tags, allTags),
-      audience: (c.age_group === "adult" || c.age_group === "Adult") ? "adults" : "kids"
-    })),
-    posts: (posts || []).map((p: any) => ({
-      ...p,
-      picture: resolveUrl(p.picture),
-      tags: mapTags(p.tags, allTags)
-    })),
-    events: (events || []).map((e: any) => ({
-      ...e,
-      tags: mapTags(e.tags, allTags)
-    }))
+    courses: (courses || []).map((c: any) => {
+      const flat = flattenData(c);
+      return {
+        ...flat,
+        image: resolveUrl(flat.image),
+        tags: mapTags(flat.tags, allTags),
+        audience: (flat.age_group === "adult" || flat.age_group === "Adult") ? "adults" : "kids"
+      };
+    }),
+    posts: (posts || []).map((p: any) => {
+      const flat = flattenData(p);
+      return {
+        ...flat,
+        picture: resolveUrl(flat.picture),
+        tags: mapTags(flat.tags, allTags)
+      };
+    }),
+    events: (events || []).map((e: any) => {
+      const flat = flattenData(e);
+
+      const mappedEvent = {
+        ...flat,
+        id: flat.id,
+        title: flat.title,
+        // Fallback mock description if not present in API
+        description: flat.description || "Join us for this exciting event where we discuss the latest trends and innovations in the industry.",
+        date: flat.date,
+        type: flat.type,
+        image_1: resolveUrl(flat.image_1),
+        image_2: resolveUrl(flat.image_2),
+        tags: mapTags(flat.tags, allTags)
+      };
+
+      return mappedEvent;
+    })
   };
 }
 

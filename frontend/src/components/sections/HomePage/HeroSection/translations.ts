@@ -18,6 +18,7 @@ export const translations = {
         expertiseProgramming: "Programming",
         expertiseRobotics: "Robotics & Embedded Systems",
         expertiseGameDev: "Game Development",
+        partneredWith: "Partnered with",
     },
     bg: {
         heroTitle: "Започни своето пътешествие в",
@@ -38,5 +39,6 @@ export const translations = {
         expertiseProgramming: "Програмиране",
         expertiseRobotics: "Роботика и вградени системи",
         expertiseGameDev: "Разработка на игри",
+        partneredWith: "Партнираме си с",
     },
 };

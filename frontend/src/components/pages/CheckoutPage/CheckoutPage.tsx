@@ -1,16 +1,19 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { LocalizedLink as Link } from "@/components/ui/LocalizedLink/LocalizedLink";
-import logo from "@/assets/logo-iet.jpg";
 import styles from "./CheckoutPage.module.scss";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs/Breadcrumbs";
-import { Course } from "@/lib/api";
+import { Course, getCourseBySlug, submitConsultation } from "@/lib/api";
 import { useTranslate } from "@/lib/useTranslate";
 import { useCourse } from "@/lib/CourseContext";
 import { translations } from "./translations";
 import { LanguageDropdown } from "@/components/header/LanguageDropdown/LanguageDropdown";
+import { useFormLogic } from "@/lib/useFormLogic";
+import { Button } from "@/components/ui/Button/Button";
+import { Logo } from "@/components/header/Logo/Logo";
 
 interface CheckoutPageProps {
   slug: string;
@@ -18,31 +21,55 @@ interface CheckoutPageProps {
 }
 
 export const CheckoutPage = ({ slug, course: initialCourse }: CheckoutPageProps) => {
+  const router = useRouter();
   const { t, lang } = useTranslate(translations);
   const { selectedCourse } = useCourse();
+  const [fetchedCourse, setFetchedCourse] = useState<Course | undefined>(undefined);
+  const [isFetching, setIsFetching] = useState(false);
 
-  // Use context data if available (fast transition) or prop from server
+  // Use context data if available (fast transition) or prop from server or client-side fetch fallback
   const course = useMemo(() => {
     if (selectedCourse && selectedCourse.slug === slug) return selectedCourse;
-    return initialCourse;
-  }, [selectedCourse, initialCourse, slug]);
+    if (initialCourse) return initialCourse;
+    return fetchedCourse;
+  }, [selectedCourse, initialCourse, fetchedCourse, slug]);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    privacyAccepted: false,
-  });
+  useEffect(() => {
+    if (!course && slug) {
+      const fetchFallback = async () => {
+        setIsFetching(true);
+        try {
+          const data = await getCourseBySlug(slug);
+          setFetchedCourse(data);
+        } catch (err) {
+          console.error("Failed to fetch course fallback:", err);
+        } finally {
+          setIsFetching(false);
+        }
+      };
+      fetchFallback();
+    }
+  }, [course, slug]);
 
-  const [errors, setErrors] = useState({
-    name: false,
-    email: false,
-    phone: false,
-    privacy: false,
-  });
+  const {
+    formData,
+    errors,
+    isSubmitting,
+    isSuccess,
+    submitError,
+    handleChange,
+    setField,
+    handleSubmit,
+    validateForm,
+    setFormData,
+    setErrors
+  } = useFormLogic(course?.id || 0);
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const handlePayNow = () => {
+    if (validateForm()) {
+      router.push(`/${lang}/#consultation`);
+    }
+  };
 
   const formattedDate = useMemo(() => {
     const dateValue = course?.start;
@@ -70,62 +97,14 @@ export const CheckoutPage = ({ slug, course: initialCourse }: CheckoutPageProps)
     return (price * 1.6627).toFixed(2);
   }, [course?.price]);
 
-  const validateEmail = (email: string) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  };
-
-  const validateBGPhone = (phone: string) => {
-    const cleaned = phone.replace(/[\s\-\(\)]/g, "");
-    return cleaned.length >= 7;
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-    if (errors[name as keyof typeof errors]) {
-      setErrors((prev) => ({ ...prev, [name]: false }));
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const newErrors = {
-      name: formData.name.trim() === "",
-      email: !validateEmail(formData.email),
-      phone: !validateBGPhone(formData.phone),
-      privacy: !formData.privacyAccepted,
-    };
-
-    setErrors(newErrors);
-
-    if (!Object.values(newErrors).some((v) => v)) {
-      setIsSubmitting(true);
-      try {
-        setIsSuccess(true);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setIsSubmitting(false);
-      }
-    }
-  };
-
   return (
     <div className={styles.wrapper}>
       <header className={styles.header}>
         <div className={styles.containerHeader}>
           <div className={styles.inner}>
-            <Link href="/" className={styles.logo}>
-              <Image
-                src={logo}
-                className={styles.logoImage}
-                alt="IET Shop Logo"
-              />
-            </Link>
-            <div className={styles.headerActions}>
+            <Logo />
+
+            <div className={styles.navbarDesktop}>
               <LanguageDropdown />
             </div>
           </div>
@@ -133,7 +112,8 @@ export const CheckoutPage = ({ slug, course: initialCourse }: CheckoutPageProps)
       </header>
 
       <main className={styles.main}>
-        <div className={styles.container}>
+        <div className={styles.topContent}>
+
           <Breadcrumbs
             items={[
               { label: t.breadcrumbsCourses, href: "/#courses" },
@@ -141,9 +121,15 @@ export const CheckoutPage = ({ slug, course: initialCourse }: CheckoutPageProps)
               { label: t.breadcrumbsCheckout },
             ]}
           />
+        </div>
+        <div className={styles.container}>
           <h1 className={styles.title}>{t.title}</h1>
 
-          {isSuccess ? (
+          {isFetching && !course ? (
+            <div className={styles.loadingWrapper}>
+              <p>{t.loadingLabel}</p>
+            </div>
+          ) : isSuccess ? (
             <div className={styles.successWrapper}>
               <p className={styles.successMessage}>{t.successMessage}</p>
             </div>
@@ -191,7 +177,7 @@ export const CheckoutPage = ({ slug, course: initialCourse }: CheckoutPageProps)
                 </div>
               </div>
 
-              <form className={styles.form} onSubmit={handleSubmit}>
+              <form className={styles.form} onSubmit={handleSubmit} noValidate>
                 <div className={styles.inputGroup}>
                   <input
                     type="text"
@@ -234,21 +220,15 @@ export const CheckoutPage = ({ slug, course: initialCourse }: CheckoutPageProps)
                       className={styles.phoneInput}
                       value={formData.phone}
                       onChange={handleChange}
+                      maxLength={7}
                     />
                   </div>
                   {errors.phone && <span className={styles.errorText}>{t.errorPhone}</span>}
                 </div>
 
                 <div className={styles.privacyGroup}>
-                  <label className={styles.privacyLabel}>
+                  <div className={styles.privacyLabel} onClick={() => setField('privacyAccepted', !formData.privacyAccepted)}>
                     <div className={`${styles.checkbox} ${formData.privacyAccepted ? styles.checked : ""} ${errors.privacy ? styles.errorCheck : ""}`}>
-                      <input
-                        type="checkbox"
-                        name="privacyAccepted"
-                        checked={formData.privacyAccepted}
-                        onChange={handleChange}
-                        className={styles.hiddenCheck}
-                      />
                       {formData.privacyAccepted && (
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className={styles.checkIcon}>
                           <polyline points="20 6 9 17 4 12" />
@@ -257,20 +237,36 @@ export const CheckoutPage = ({ slug, course: initialCourse }: CheckoutPageProps)
                     </div>
                     <span className={styles.privacyText}>
                       {t.privacyPrefix}
-                      <Link href="/privacy" className={styles.privacyLink}>{t.privacyLink}</Link>
+                      <Link href="/privacy" className={styles.privacyLink} onClick={(e) => e.stopPropagation()}>{t.privacyLink}</Link>
                       {t.privacySuffix}
                     </span>
-                  </label>
+                  </div>
                   {errors.privacy && <span className={styles.errorText}>{t.errorPrivacy}</span>}
                 </div>
 
+                {submitError && <div className={styles.errorText} style={{ textAlign: 'center', marginTop: '10px', fontSize: '14px' }}>{submitError}</div>}
+
                 <div className={styles.buttons}>
-                  <button type="submit" className={isSubmitting ? styles.loading : styles.payButton} disabled={isSubmitting}>
+                  <Button
+                    type="button"
+                    className={styles.payButton}
+                    isLoading={isSubmitting}
+                    variant="dark-outline"
+                    size="custom"
+                    onClick={handlePayNow}
+                  >
                     {t.payNowButton}
-                  </button>
-                  <button type="button" className={styles.requestButton} onClick={handleSubmit} disabled={isSubmitting}>
+                  </Button>
+                  <Button
+                    type="submit"
+                    className={styles.requestButton}
+                    onClick={handleSubmit}
+                    isLoading={isSubmitting}
+                    variant="primary"
+                    size="custom"
+                  >
                     {t.leaveRequestButton}
-                  </button>
+                  </Button>
                 </div>
               </form>
             </div>

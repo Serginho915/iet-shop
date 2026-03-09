@@ -144,23 +144,9 @@
 	}
 }
 
-.logo {
+.footerLogo {
 	width: fit-content;
-	height: 48px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	padding: 8px 10px 4px 10px;
-	border-radius: 12px;
-	background: #559aff;
 	margin-bottom: 8px;
-	overflow: hidden;
-}
-
-.logoImg {
-	height: 100%;
-	width: auto;
-	object-fit: contain;
 }
 
 .socials {
@@ -173,17 +159,30 @@
 	margin-top: 24px;
 	color: #bcbec4;
 	font-size: 14px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	align-items: center;
 
 	@include desktop {
 		font-size: 15px;
+		align-items: flex-start;
+		margin-top: 0;
 	}
+}
+
+.partneredLabel {
+	color: #bcbec4;
+	font-size: 14px;
+	opacity: 0.8;
 }
 
 .partners {
 	display: flex;
-	gap: 8px;
-	margin-top: 8px;
+	gap: 16px;
+	margin-top: 0;
 	justify-content: center;
+	align-items: center;
 
 	@include desktop {
 		justify-content: flex-start;
@@ -191,10 +190,15 @@
 }
 
 .partnerLogo {
-	width: 40px;
-	height: 40px;
-	background: #d9d9d9;
-	border-radius: 2px;
+	width: auto;
+	height: 24px;
+	object-fit: contain;
+	opacity: 0.8;
+	transition: opacity 0.2s;
+
+	&:hover {
+		opacity: 1;
+	}
 }
 
 .companyColumn,
@@ -277,6 +281,7 @@
 	margin-top: 20px;
 	gap: 20px;
 	padding-top: 20px;
+	padding-bottom: 8px;
 	border-top: 1px solid rgba(255, 255, 255, 0.1);
 
 	@include desktop {

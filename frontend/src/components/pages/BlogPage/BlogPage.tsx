@@ -1,18 +1,16 @@
 "use client";
 
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Header } from "@/components/header/Header/Header";
 import { Footer } from "@/components/footer/Footer/Footer";
-import { Post, getPostBySlug } from "@/lib/api";
+import { Post, getPostBySlug, getPosts } from "@/lib/api";
 import styles from "./BlogPage.module.scss";
 import { Breadcrumbs, BreadcrumbItem } from "@/components/ui/Breadcrumbs/Breadcrumbs";
 import { useTranslate } from "@/lib/useTranslate";
 import { HeroSectionBlog } from "@/components/sections/BlogPage/HeroSectionBlog/HeroSectionBlog";
-
-const translations = {
-    en: { blog: "Blog" },
-    bg: { blog: "Блог" }
-};
+import { BlogCard } from "@/components/ui/BlogCard/BlogCard";
+import { CarouselNav } from "@/components/ui/CarouselNav/CarouselNav";
+import { translations } from "./translations";
 
 interface BlogPageProps {
     post?: Post;
@@ -21,12 +19,23 @@ interface BlogPageProps {
 
 export const BlogPage = ({ post: initialPost, slug }: BlogPageProps) => {
     const { t, lang } = useTranslate(translations);
-    const [post, setPost] = React.useState<Post | undefined>(initialPost);
+    const [post, setPost] = useState<Post | undefined>(initialPost);
+    const [relatedPosts, setRelatedPosts] = useState<Post[]>([]);
 
-    React.useEffect(() => {
-        if (!post) {
-            getPostBySlug(slug).then(setPost);
-        }
+    // Carousel state
+    const [activeIndex, setActiveIndex] = useState(0);
+    const carouselRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const loadData = async () => {
+            if (!post) {
+                const fetchedPost = await getPostBySlug(slug);
+                setPost(fetchedPost);
+            }
+            const allPosts = await getPosts();
+            setRelatedPosts(allPosts.filter(p => p.slug !== slug));
+        };
+        loadData();
     }, [slug, post]);
 
     const breadcrumbs: BreadcrumbItem[] = [
@@ -34,9 +43,9 @@ export const BlogPage = ({ post: initialPost, slug }: BlogPageProps) => {
         { label: post?.title || slug }
     ];
 
-    const [formattedDate, setFormattedDate] = React.useState<string>("");
+    const [formattedDate, setFormattedDate] = useState<string>("");
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (post?.created_at) {
             const locale = lang === "bg" ? "bg-BG" : "en-GB";
             setFormattedDate(new Date(post.created_at).toLocaleDateString(locale, {
@@ -47,6 +56,38 @@ export const BlogPage = ({ post: initialPost, slug }: BlogPageProps) => {
         }
     }, [post?.created_at, lang]);
 
+    // Carousel handlers
+    const cardWidth = 509;
+    const gap = 24;
+
+    const scrollToStep = (index: number) => {
+        if (carouselRef.current) {
+            carouselRef.current.scrollTo({
+                left: (cardWidth + gap) * index,
+                behavior: 'smooth'
+            });
+        }
+    };
+
+    const handleNext = () => {
+        if (relatedPosts.length <= 1) return;
+        const nextIndex = (activeIndex + 1) % (relatedPosts.length);
+        setActiveIndex(nextIndex);
+        scrollToStep(nextIndex);
+    };
+
+    const handlePrev = () => {
+        if (relatedPosts.length <= 1) return;
+        const prevIndex = (activeIndex - 1 + relatedPosts.length) % relatedPosts.length;
+        setActiveIndex(prevIndex);
+        scrollToStep(prevIndex);
+    };
+
+    const handleGoTo = (index: number) => {
+        setActiveIndex(index);
+        scrollToStep(index);
+    };
+
     if (!post) {
         return (
             <div className={styles.blogPageWrapper}>
@@ -54,7 +95,7 @@ export const BlogPage = ({ post: initialPost, slug }: BlogPageProps) => {
                 <main className={styles.blogPage}>
                     <div className={styles.container}>
                         <Breadcrumbs items={breadcrumbs} />
-                        <div style={{ padding: '40px 0', textAlign: 'center' }}>Loading post data...</div>
+                        <div className={styles.loading}>{t.loading}</div>
                     </div>
                 </main>
                 <Footer />
@@ -66,18 +107,64 @@ export const BlogPage = ({ post: initialPost, slug }: BlogPageProps) => {
         <div className={styles.blogPageWrapper}>
             <Header />
             <main className={styles.blogPage}>
-                <div className={styles.container}>
-                    <Breadcrumbs items={breadcrumbs} />
+                <div className={styles.breadcrumbWrapper}>
+                    <div className={styles.container}>
+                        <Breadcrumbs items={breadcrumbs} />
+                    </div>
+                </div>
 
+                <div className={styles.container}>
                     <HeroSectionBlog
                         post={post}
                         formattedDate={formattedDate}
                     />
 
-                    <div className={styles.content}>
-                        {post.content}
+                    <div className={styles.articleContentWrapper}>
+                        <h1 className={styles.title}>{post.title}</h1>
+                        <p className={styles.content}>
+                            {post.content}
+                        </p>
                     </div>
                 </div>
+
+                {relatedPosts.length > 0 && (
+                    <section className={styles.relatedSection}>
+                        <div className={styles.container}>
+                            <div className={styles.relatedHeader}>
+                                <h2 className={styles.relatedTitle}>{t.relatedArticles}</h2>
+                            </div>
+
+                            <div className={styles.carouselWrapper} ref={carouselRef}>
+                                <ul className={styles.blogList}>
+                                    {relatedPosts.map((p) => (
+                                        <li key={p.id}>
+                                            <BlogCard
+                                                id={p.id}
+                                                author={p.author}
+                                                title={p.title}
+                                                excerpt={p.content.length > 150 ? p.content.slice(0, 150) + "…" : p.content}
+                                                slug={p.slug}
+                                                tags={p.tags}
+                                                created_at={p.created_at}
+                                                picture={p.picture}
+                                            />
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            <div className={styles.carouselNavWrapper}>
+                                <CarouselNav
+                                    currentIndex={activeIndex}
+                                    totalSteps={relatedPosts.length - 1}
+                                    onNext={handleNext}
+                                    onPrev={handlePrev}
+                                    onGoTo={handleGoTo}
+                                />
+                            </div>
+                        </div>
+                    </section>
+                )}
             </main>
             <Footer />
         </div>

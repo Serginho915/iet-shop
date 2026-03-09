@@ -6,8 +6,7 @@
     display: flex;
     align-items: center;
     gap: 0.25rem;
-    font-size: 15px;
-    font-weight: 700;
+    @include navbar-link-style;
     color: $color-accent;
     @include transition-standard;
     cursor: pointer;
@@ -17,10 +16,8 @@
     padding: 16px 4px;
     border-bottom: 1px solid #f1f5f9;
     width: 100%;
-    font-size: 17px;
 
     @include desktop {
-        font-size: 15px;
         padding: 0;
         border-bottom: none;
         width: auto;

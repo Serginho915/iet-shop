@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useState } from "react";
 import styles from "./EventsSection.module.scss";
 import { useTranslate } from "@/lib/useTranslate";
 import { translations } from "./translations";
@@ -8,6 +8,7 @@ import { EventCard } from "@/components/ui/EventCard/EventCard";
 import { IconArrowDown } from "@/components/icons";
 import { useVerticalScroll } from "@/lib/useVerticalScroll";
 import { Event } from "@/lib/api";
+import { EventRegistrationModal } from "@/components/ui/EventRegistrationModal/EventRegistrationModal";
 
 interface EventsSectionProps {
   events?: Event[];
@@ -20,6 +21,19 @@ export const EventsSection = ({ events = [] }: EventsSectionProps) => {
     cardHeight: 180,
     gap: 24,
   });
+
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleJoinClick = (event: Event) => {
+    setSelectedEvent(event);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedEvent(null);
+  };
 
   return (
     <section className={styles.section} id="events">
@@ -50,10 +64,11 @@ export const EventsSection = ({ events = [] }: EventsSectionProps) => {
                   date={formattedDate}
                   tags={event.tags.map(tag => tag.name)}
                   location={event.type}
+                  description={event.description}
+                  image1={event.image_1}
+                  image2={event.image_2}
                   joinBtnText={t.joinBtn}
-                  onJoin={() => {
-                    // Logic for joining event could be added here
-                  }}
+                  onJoin={() => handleJoinClick(event)}
                 />
               );
             })}
@@ -67,6 +82,12 @@ export const EventsSection = ({ events = [] }: EventsSectionProps) => {
           </button>
         )}
       </div>
+
+      <EventRegistrationModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        event={selectedEvent}
+      />
     </section>
   );
 };

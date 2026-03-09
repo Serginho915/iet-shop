@@ -11,6 +11,12 @@
   padding: 1.5rem 0;
 }
 
+.topContent {
+  @include container;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 .containerHeader {
   @include container;
   display: flex;
@@ -61,6 +67,11 @@
   max-width: 760px !important;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
+
+  &>nav {
+    align-self: flex-start;
+  }
 }
 
 .title {
@@ -270,6 +281,9 @@
 
 .privacyGroup {
   margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .privacyLabel {
@@ -330,12 +344,7 @@
 .payButton {
   flex: 1;
   height: 68px;
-  border: 2px solid #1a1a1a;
-  border-radius: 20px;
   background: #f0f7ff;
-  font-size: 17px;
-  font-weight: 600;
-  cursor: pointer;
 
   &:hover {
     background: #e1f0ff;
@@ -345,17 +354,6 @@
 .requestButton {
   flex: 1;
   height: 68px;
-  border: none;
-  border-radius: 20px;
-  background: #ff4d4d;
-  color: #fff;
-  font-size: 17px;
-  font-weight: 600;
-  cursor: pointer;
-
-  &:hover {
-    background: #e64545;
-  }
 }
 
 .successWrapper {
@@ -370,6 +368,14 @@
   font-size: 26px;
   color: #00966e;
   font-weight: 600;
+}
+
+.loadingWrapper {
+  background: #fff;
+  padding: 60px;
+  border-radius: 40px;
+  text-align: center;
+  width: 100%;
 }
 
 @include mobile {

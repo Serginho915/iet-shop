@@ -21,6 +21,7 @@ export type CheckoutTranslations = {
     errorPhone: string;
     errorPrivacy: string;
     successMessage: string;
+    loadingLabel: string;
 };
 
 export const translations: Record<Lang, CheckoutTranslations> = {
@@ -34,7 +35,7 @@ export const translations: Record<Lang, CheckoutTranslations> = {
         currencyBgn: "лв",
         namePlaceholder: "Name",
         emailPlaceholder: "Email",
-        phonePlaceholder: "Phone",
+        phonePlaceholder: "XXXXXXX",
         privacyPrefix: "I agree to the ",
         privacyLink: "Privacy Policy",
         privacySuffix: " and personal data processing.",
@@ -42,30 +43,32 @@ export const translations: Record<Lang, CheckoutTranslations> = {
         leaveRequestButton: "Leave Request",
         errorName: "Please enter your name",
         errorEmail: "Please enter a valid email",
-        errorPhone: "Please enter a valid phone number",
+        errorPhone: "Please enter 7 digits after +359.",
         errorPrivacy: "You must agree to the privacy policy",
-        successMessage: "Thank you! Your request has been received.",
+        successMessage: "Your request has been successfully sent! We will contact you soon.",
+        loadingLabel: "Loading course details...",
     },
     bg: {
         breadcrumbsCourses: "Курсове",
-        breadcrumbsCheckout: "Чекаут",
-        title: "Запишете се",
+        breadcrumbsCheckout: "Количка",
+        title: "Оформяне на поръчка",
         startLabel: "Начало",
         priceLabel: "Цена",
         currency: "€",
         currencyBgn: "лв",
         namePlaceholder: "Име",
         emailPlaceholder: "Имейл",
-        phonePlaceholder: "Телефон",
+        phonePlaceholder: "XXXXXXX",
         privacyPrefix: "Съгласен съм с ",
-        privacyLink: "Политиката за поверителност",
-        privacySuffix: " и обработката на лични данни.",
+        privacyLink: "общи условия",
+        privacySuffix: " и обработка на лични данни.",
         payNowButton: "Плати сега",
-        leaveRequestButton: "Остави запитване",
-        errorName: "Моля, въведете вашето име",
-        errorEmail: "Моля, въведете валиден имейл",
-        errorPhone: "Моля, въведете валиден телефонен номер",
-        errorPrivacy: "Трябва да се съгласите с политиката за поверителност",
-        successMessage: "Благодарим ви! Вашата заявка беше получена.",
+        leaveRequestButton: "Остави заявка",
+        errorName: "Моля, въведете вашето име.",
+        errorEmail: "Моля, въведете валиден имейл.",
+        errorPhone: "Моля, въведете 7 цифри след +359.",
+        errorPrivacy: "Трябва да се съгласите с политиката.",
+        successMessage: "Вашата заявка е изпратена успешно! Ще се свържем с вас скоро.",
+        loadingLabel: "Зареждане на детайли...",
     },
 };

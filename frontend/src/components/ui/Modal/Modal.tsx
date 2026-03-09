@@ -7,9 +7,11 @@ interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
     children: React.ReactNode;
+    className?: string;
+    contentClassName?: string;
 }
 
-export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
+export const Modal = ({ isOpen, onClose, children, className = '', contentClassName = '' }: ModalProps) => {
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
@@ -25,11 +27,11 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
 
     return (
         <div className={styles.overlay} onClick={onClose}>
-            <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+            <div className={`${styles.modal} ${className}`} onClick={(e) => e.stopPropagation()}>
                 <button className={styles.closeButton} onClick={onClose}>
                     &times;
                 </button>
-                <div className={styles.content}>
+                <div className={`${styles.content} ${contentClassName}`}>
                     {children}
                 </div>
             </div>

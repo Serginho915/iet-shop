@@ -13,25 +13,6 @@ import humanImg from "@/assets/Learnsection/human.png";
 import likeImg from "@/assets/Learnsection/like.png";
 import cursorSvg from "@/assets/Learnsection/cursor.svg";
 
-// ─── Mock Data (TODO: Remove when API data is ready) ──────────────────────────
-// ─── Mock Data (TODO: Remove when API data is ready) ──────────────────────────
-const MOCK_INSTRUMENTS: any[] = [
-  { name_en: "Name", name_bg: "Име", icon: null },
-  { name_en: "Name", name_bg: "Име", icon: null },
-  { name_en: "Name", name_bg: "Име", icon: null },
-  { name_en: "Name", name_bg: "Име", icon: null },
-];
-
-const MOCK_OUTCOMES: any[] = [
-  { text_en: "Build a sustainable online business channel.", text_bg: "Изградете устойчив канал за онлайн бизнес." },
-  { text_en: "Create engaging social media content.", text_bg: "Създавайте ангажиращо съдържание за социални медии." },
-  { text_en: "Analyze performance and optimize campaigns.", text_bg: "Анализирайте представянето и оптимизирайте кампаниите." },
-  { text_en: "Generate leads and increase conversions.", text_bg: "Генерирайте потенциални клиенти и увеличете конверсиите." },
-  { text_en: "Work with Meta Business Suite.", text_bg: "Работа с Meta Business Suite." },
-  { text_en: "Launch and manage paid ad campaigns.", text_bg: "Стартиране и управление на платени рекламни кампании." },
-];
-// ─────────────────────────────────────────────────────────────────────────────
-
 interface LearnSectionProps {
   course: Course;
 }
@@ -39,16 +20,8 @@ interface LearnSectionProps {
 export const LearnSection = ({ course }: LearnSectionProps) => {
   const { t, lang } = useTranslate(translations);
 
-  // Use API data if available, otherwise fall back to mock data
-  const instruments =
-    course.instruments && course.instruments.length > 0
-      ? course.instruments
-      : MOCK_INSTRUMENTS;
-
-  const outcomes =
-    course.outcomes && course.outcomes.length > 0
-      ? course.outcomes
-      : MOCK_OUTCOMES;
+  const instruments = course.instruments || [];
+  const outcomes = course.outcomes || [];
 
   return (
     <section className={styles.learnSection}>

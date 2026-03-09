@@ -17,36 +17,6 @@ interface ModulesSectionProps {
 
 
 
-const MOCK_MODULES = [
-  {
-    title_en: "Marketing Foundations",
-    title_bg: "Основи на маркетинга",
-    descriptions: [
-      { text_en: "Digital marketing basics", text_bg: "Основи на дигиталния маркетинг" },
-      { text_en: "Social media ecosystem", text_bg: "Социални медии" },
-      { text_en: "Content strategy", text_bg: "Контент стратегия" }
-    ]
-  },
-  {
-    title_en: "SEO basics",
-    title_bg: "Основи на SEO",
-    descriptions: [
-      { text_en: "Search engine optimization", text_bg: "Оптимизация за търсачки" },
-      { text_en: "Keyword research", text_bg: "Проучване на ключови думи" },
-      { text_en: "On-page SEO", text_bg: "On-page SEO" }
-    ]
-  },
-  {
-    title_en: "Facebook & Ads Manager",
-    title_bg: "Facebook & Ads Manager",
-    descriptions: [
-      { text_en: "Ad campaigns", text_bg: "Рекламни кампании" },
-      { text_en: "Targeting", text_bg: "Таргетиране" },
-      { text_en: "Budgeting", text_bg: "Бюджетиране" }
-    ]
-  }
-];
-
 export const ModulesSection = ({ course }: ModulesSectionProps) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const { t, lang } = useTranslate(translations);
@@ -55,8 +25,7 @@ export const ModulesSection = ({ course }: ModulesSectionProps) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
 
-  const hasExternalModules = course.modules && course.modules.length > 0;
-  const displayModules = hasExternalModules ? course.modules! : MOCK_MODULES;
+  const displayModules = course.modules || [];
 
   return (
     <section className={styles.moduleSection}>

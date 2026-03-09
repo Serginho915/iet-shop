@@ -32,7 +32,7 @@ export const AboutSection = ({ course }: AboutSectionProps) => {
     if (typeof course.about_title === 'object' && course.about_title) {
       return String((course.about_title as any)[lang] || (course.about_title as any).en || (course.about_title as any).bg || "");
     }
-    return String(course.about_title || "Start your career in digital marketing");
+    return String(course.about_title || "");
   })();
 
   const descriptionTop = (function () {
@@ -41,7 +41,7 @@ export const AboutSection = ({ course }: AboutSectionProps) => {
     if (typeof course.about_description_top === 'object' && course.about_description_top) {
       return String((course.about_description_top as any)[lang] || (course.about_description_top as any).en || (course.about_description_top as any).bg || "");
     }
-    return String(course.about_description_top || "This 5-week online masterclass teaches you how to build and grow brands in social media, create high-converting ads and work with real clients.");
+    return String(course.about_description_top || "");
   })();
 
   const descriptionBottom = (function () {
@@ -50,7 +50,7 @@ export const AboutSection = ({ course }: AboutSectionProps) => {
     if (typeof course.about_description_bottom === 'object' && course.about_description_bottom) {
       return String((course.about_description_bottom as any)[lang] || (course.about_description_bottom as any).en || (course.about_description_bottom as any).bg || "");
     }
-    return String(course.about_description_bottom || "You'll learn both organic growth and paid advertising strategies, including full campaign setup and optimization.");
+    return String(course.about_description_bottom || "");
   })();
 
   return (

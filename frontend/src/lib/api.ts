@@ -1,4 +1,4 @@
-// ─── Interfaces ─────────────────────────────────────────────────────────────
+
 export interface Tag {
   id: number;
   name?: string;
@@ -65,11 +65,10 @@ export interface Course {
     descriptions?: {
       text_en?: string;
       text_bg?: string;
-    }[];
+
+    }
   }[];
 }
-// type: "hybrid" | "online" | "offline";
-//audience_tags?: "hybrid" | "adults" | "kids";
 
 export interface Post {
   id: number;
@@ -125,7 +124,7 @@ const mapTags = (tagIds: any[], allTags: Tag[]) => (tagIds || []).map(id => {
   const tagId = Number(id);
   const found = allTags.find(t => t.id === tagId);
   if (found) return found;
-  return { id: tagId, name_en: `Tag ${tagId}`, name_bg: `Таг ${tagId}` };
+  return { id: tagId };
 });
 
 const safeFetch = async (endpoint: string) => {
@@ -222,8 +221,7 @@ export async function getHomePageData() {
         ...flat,
         id: flat.id,
         title: flat.title,
-        // Fallback mock description if not present in API
-        description: flat.description || "Join us for this exciting event where we discuss the latest trends and innovations in the industry.",
+        description: flat.description,
         date: flat.date,
         type: flat.type,
         image_1: resolveUrl(flat.image_1),

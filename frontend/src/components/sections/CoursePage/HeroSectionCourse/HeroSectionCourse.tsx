@@ -2,8 +2,8 @@
 
 import React from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Course } from "@/lib/api";
-import { LocalizedLink as Link } from "@/components/ui/LocalizedLink/LocalizedLink";
 import styles from "./HeroSectionCourse.module.scss";
 import { IconCalendarHero, IconLocation, IconInfinity, IconBeginner } from "@/components/icons";
 
@@ -23,6 +23,7 @@ export const HeroSectionCourse = ({
 }: HeroSectionCourseProps) => {
   const { t, lang } = useTranslate(translations);
   const { setSelectedCourse } = useCourse();
+  const router = useRouter();
 
   const title = (function () {
     if (lang === 'bg' && course.title_bg) return String(course.title_bg);
@@ -51,12 +52,9 @@ export const HeroSectionCourse = ({
     return String(course.duration || "");
   })();
 
-  // Calculate converted price (mock logic  1 EUR ~ 1.95 BGN)
-  const bgnPrice = (course.price * 1.95583).toFixed(2);
-
-  const renderTitle = (t: string) => {
-    return (t || "").replaceAll(' ', '_');
-  }
+  // Price calculation (EUR to BGN conversion)
+  // For now, we only show EUR as stored in the database.
+  // BGN price should ideally come from backend or a real exchange rate service.
 
   const renderHighlightedDescription = (text: string) => {
     if (!text) return null;
@@ -72,6 +70,13 @@ export const HeroSectionCourse = ({
         {initialPart} <span style={{ color: '#ff4d00' }}>{lastPart}</span>
       </>
     );
+  };
+
+  const handleBookSpot = () => {
+    if (course) {
+      setSelectedCourse(course);
+      router.push(`/${lang}/checkout/${course.slug}`);
+    }
   };
 
   return (
@@ -111,7 +116,6 @@ export const HeroSectionCourse = ({
             <span className={styles.priceLabel}>{t.price}:</span>
             <div className={styles.priceBox}>
               <span className={styles.eurPrice}>€ {course.price}</span>
-              <span className={styles.bgnPrice}>{bgnPrice} лв</span>
             </div>
           </div>
         </div>
@@ -133,17 +137,16 @@ export const HeroSectionCourse = ({
       </div>
 
       <div className={styles.bottomContent}>
-        <h1 className={styles.title}>{renderTitle(title || "")}</h1>
-        <Link
-          href={`/checkout/${course.slug}`}
-          onClick={() => {
-            setSelectedCourse(course);
-          }}
+        <h1 className={styles.title}>{title || ""}</h1>
+        <Button
+          variant="primary"
+          size="custom"
+          rounded="xl"
+          className={styles.bookButton}
+          onClick={handleBookSpot}
         >
-          <Button variant="primary" size="custom" rounded="xl" className={styles.bookButton}>
-            {t.bookSpot}
-          </Button>
-        </Link>
+          {t.bookSpot}
+        </Button>
       </div>
     </section>
   );

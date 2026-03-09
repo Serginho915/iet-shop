@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useLanguage } from "@/lib/LanguageContext";
 import { IconFlagUK, IconFlagBG } from "@/components/icons";
 import styles from "./LanguageDropdown.module.scss";
@@ -15,6 +15,7 @@ export const LanguageDropdown = () => {
     const { lang, setLang } = useLanguage();
     const pathname = usePathname();
     const router = useRouter();
+    const searchParams = useSearchParams();
     const [isOpen, setIsOpen] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
 
@@ -26,7 +27,9 @@ export const LanguageDropdown = () => {
         if (!pathname) return "/";
         const segments = pathname.split("/");
         segments[1] = locale;
-        return segments.join("/");
+        const path = segments.join("/");
+        const query = searchParams.toString();
+        return query ? `${path}?${query}` : path;
     };
 
     // Close on outside click

@@ -34,12 +34,7 @@ export const AudienceSection = ({ course }: AudienceSectionProps) => {
           : card.text;
         return [String(cardTitle || ""), String(cardText || "")];
       })
-      : [
-        ["Complete Beginners", "with no prior marketing experience"],
-        ["Career Switchers", "looking for a new direction"],
-        ["Marketing Professionals", "wanting to stay up-to-date"],
-        ["Entrepreneurs", "seeking to grow their business"],
-      ];
+      : [];
 
   const getAgeLabel = (course: Course) => {
     const isAdult = course.audience === "adults";
@@ -58,24 +53,10 @@ export const AudienceSection = ({ course }: AudienceSectionProps) => {
       const tagName = typeof ageTag === 'object' && ageTag
         ? ((ageTag as any).name?.[lang] || (ageTag as any)[lang] || (ageTag as any).name_en || (ageTag as any).name_bg || (ageTag as any).name || "")
         : ageTag;
-      if (!tagName) return `${label}: ${isAdult ? "15 +" : "14"}`;
-
-      const matchRange = tagName.match(/(\d+)-(\d+)/);
-      if (matchRange) {
-        return isAdult
-          ? `${t.minimalAge}: ${matchRange[1]} +`
-          : `${t.maximalAge}: ${matchRange[2]}`;
-      }
-      const matchPlus = tagName.match(/(\d+)\+/);
-      if (matchPlus) {
-        return isAdult
-          ? `${t.minimalAge}: ${matchPlus[1]} +`
-          : `${t.maximalAge}: ${matchPlus[1]}`;
-      }
-      return `${label}: ${tagName}`;
+      return label;
     }
-
-    return `${label}: ${isAdult ? "15 +" : "14"}`;
+    // If no specific age tag is found, return the default label.
+    return label;
   };
 
   return (

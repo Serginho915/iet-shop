@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { LocalizedLink as Link } from "@/components/ui/LocalizedLink/LocalizedLink";
 import styles from "./CheckoutPage.module.scss";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs/Breadcrumbs";
@@ -24,11 +24,15 @@ import { PrivacyPolicyModal } from "@/components/ui/PrivacyPolicyModal/PrivacyPo
 
 export const CheckoutPage = ({ slug, course: initialCourse }: CheckoutPageProps) => {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const { t, lang } = useTranslate(translations);
   const { selectedCourse } = useCourse();
   const [fetchedCourse, setFetchedCourse] = useState<Course | undefined>(undefined);
   const [isFetching, setIsFetching] = useState(false);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
+
+  const isSuccessParam = searchParams.get('success') === 'true';
 
   // Use context data if available (fast transition) or prop from server or client-side fetch fallback
   const course = useMemo(() => {
@@ -62,17 +66,36 @@ export const CheckoutPage = ({ slug, course: initialCourse }: CheckoutPageProps)
     submitError,
     handleChange,
     setField,
-    handleSubmit,
+    handleSubmit: originalHandleSubmit,
     validateForm,
     setFormData,
     setErrors
   } = useFormLogic(course?.id || 0);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    const success = await originalHandleSubmit(e);
+    if (success) {
+      router.push(`${pathname}?success=true`, { scroll: false });
+    }
+  };
+
+  const showSuccess = isSuccess || isSuccessParam;
 
   const handlePayNow = () => {
     if (validateForm()) {
       router.push(`/${lang}/#consultation`);
     }
   };
+
+  const courseTitle = useMemo(() => {
+    if (!course) return slug;
+    if (lang === 'bg' && course.title_bg) return String(course.title_bg);
+    if (lang === 'en' && course.title_en) return String(course.title_en);
+    if (typeof course.title === 'object' && course.title) {
+      return String((course.title as any)[lang] || (course.title as any).en || (course.title as any).bg || "");
+    }
+    return String(course.title || slug);
+  }, [course, lang, slug]);
 
   const formattedDate = useMemo(() => {
     const dateValue = course?.start;
@@ -120,7 +143,7 @@ export const CheckoutPage = ({ slug, course: initialCourse }: CheckoutPageProps)
           <Breadcrumbs
             items={[
               { label: t.breadcrumbsCourses, href: "/#courses" },
-              { label: course?.title || slug, href: `/courses/${slug}` },
+              { label: courseTitle, href: `/courses/${slug}` },
               { label: t.breadcrumbsCheckout },
             ]}
           />
@@ -132,7 +155,7 @@ export const CheckoutPage = ({ slug, course: initialCourse }: CheckoutPageProps)
             <div className={styles.loadingWrapper}>
               <p>{t.loadingLabel}</p>
             </div>
-          ) : isSuccess ? (
+          ) : showSuccess ? (
             <div className={styles.successWrapper}>
               <p className={styles.successMessage}>{t.successMessage}</p>
             </div>
@@ -144,7 +167,7 @@ export const CheckoutPage = ({ slug, course: initialCourse }: CheckoutPageProps)
                     {course?.image ? (
                       <Image
                         src={course.image}
-                        alt={course.title || "Course"}
+                        alt={courseTitle}
                         width={400}
                         height={300}
                         className={styles.thumbImage}
@@ -175,7 +198,7 @@ export const CheckoutPage = ({ slug, course: initialCourse }: CheckoutPageProps)
                 <div className={styles.summaryCourse}>
                   <div className={styles.dot} />
                   <span className={styles.summaryTitle}>
-                    {course?.title || slug}
+                    {courseTitle}
                   </span>
                 </div>
               </div>

@@ -4,6 +4,6 @@ backend/api/__pycache__/
 backend/db.sqlite3
 backend/api/migrations/__pycache__/
 backend/core/__pycache__/
-courses/
+
 
 frontend/node_modules/

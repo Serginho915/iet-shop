@@ -86,10 +86,15 @@
 	background: #23262f;
 	color: #bcbec4;
 	border-radius: 2rem;
-	padding: 2rem 1rem 1rem 1rem;
+	padding: 2rem 12px 1rem 12px;
 	margin: 1rem 0;
 	font-family: inherit;
 	font-size: 1rem;
+
+	@include mobile {
+		padding: 1.5rem 8px 1rem 8px;
+		border-radius: 1.5rem;
+	}
 
 	@include desktop {
 		border-radius: 3.5rem;
@@ -180,9 +185,14 @@
 .partners {
 	display: flex;
 	gap: 16px;
+	flex-wrap: wrap;
 	margin-top: 0;
 	justify-content: center;
 	align-items: center;
+
+	@include mobile {
+		gap: 12px;
+	}
 
 	@include desktop {
 		justify-content: flex-start;
@@ -193,6 +203,11 @@
 	width: auto;
 	height: 24px;
 	object-fit: contain;
+
+	@include mobile {
+		height: 18px;
+	}
+
 	opacity: 0.8;
 	transition: opacity 0.2s;
 

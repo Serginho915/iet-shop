@@ -120,9 +120,8 @@ const localize = (value: any) => {
   if (!value) return "";
   if (typeof value === 'string') return value;
   if (typeof value === 'object') {
-    // If it's a bilingual object from backend
     if ('en' in value || 'bg' in value) {
-      return value; // Keep as object, components will handle it with useTranslate/lang
+      return value; 
     }
   }
   return value;

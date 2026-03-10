@@ -81,6 +81,8 @@ class Event(models.Model):
 
     title_en = models.CharField(max_length=255, null=True, blank=True)
     title_bg = models.CharField(max_length=255, null=True, blank=True)
+    description_en = models.TextField(null=True, blank=True)
+    description_bg = models.TextField(null=True, blank=True)
     date = models.DateField()
     type = models.CharField(max_length=10, choices=EventType.choices)
     tags = models.ManyToManyField(Tag, related_name="events", blank=True)

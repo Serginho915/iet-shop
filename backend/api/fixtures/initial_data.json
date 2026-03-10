@@ -501,6 +501,8 @@
     "fields": {
       "title_en": "Open Day: Career in IT",
       "title_bg": "Open Day: Career in IT",
+      "description_en": "Meet mentors, explore learning tracks, and ask career questions live.",
+      "description_bg": "Запознайте се с ментори, разгледайте програмите и задайте въпроси за кариера в IT.",
       "date": "2026-03-20",
       "type": "offline",
       "tags": [
@@ -514,6 +516,8 @@
     "fields": {
       "title_en": "Django API Workshop",
       "title_bg": "Django API Workshop",
+      "description_en": "Hands-on workshop on building and documenting REST APIs with Django REST Framework.",
+      "description_bg": "Практически уъркшоп за създаване и документиране на REST API с Django REST Framework.",
       "date": "2026-04-10",
       "type": "online",
       "tags": [

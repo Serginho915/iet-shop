@@ -56,7 +56,7 @@ export const EventCard = ({
 
             <div className={styles.middle}>
                 <h4 className={styles.title}>{title}</h4>
-                {/* Контейнер для аккордеона */}
+                
                 <div className={`${styles.description} ${showDescription ? styles.active : ""}`}>
                     <div className={styles.descriptionInner}>
                         <p className={styles.descriptionText}>{description}</p>

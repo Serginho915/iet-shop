@@ -36,6 +36,9 @@ export const EventsSection = ({ events = [] }: EventsSectionProps) => {
     setSelectedEvent(null);
   };
 
+  const today = new Date().toISOString().split('T')[0];
+  const upcomingEvents = events.filter((event) => !event.date || event.date >= today);
+
   return (
     <section className={styles.section} id="events">
       <div className={styles.container}>
@@ -48,7 +51,7 @@ export const EventsSection = ({ events = [] }: EventsSectionProps) => {
 
         <div className={styles.scrollContainer} ref={containerRef}>
           <div className={styles.eventsList}>
-            {events.map((event) => {
+            {upcomingEvents.map((event) => {
               const dateObj = new Date(event.date);
               const formattedDate = !isNaN(dateObj.getTime())
                 ? dateObj.toLocaleDateString(lang === 'bg' ? 'bg-BG' : 'en-GB', {
@@ -93,9 +96,11 @@ export const EventsSection = ({ events = [] }: EventsSectionProps) => {
 
               );
             })}
-            {events.length === 0 && <div className={styles.noEvents}>{lang === 'bg' ? 'Няма предстоящи събития' : 'No upcoming events'}</div>}
+            {upcomingEvents.length === 0 && <div className={styles.noEvents}>{t.noEvents}</div>}
+
           </div>
         </div>
+
 
         {isScrollable && (
           <button className={styles.scrollBtn} onClick={scrollNext} aria-label="Scroll to next events">

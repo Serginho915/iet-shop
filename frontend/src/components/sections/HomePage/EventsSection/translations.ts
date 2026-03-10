@@ -15,6 +15,7 @@ export type EventsTranslations = {
     badge: string;
     dateLabel: string;
     joinBtn: string;
+    noEvents: string;
 };
 
 export const translations: Record<Lang, EventsTranslations> = {
@@ -23,11 +24,13 @@ export const translations: Record<Lang, EventsTranslations> = {
         badge: "Don't miss out!",
         dateLabel: "Date",
         joinBtn: "Join",
+        noEvents: "No upcoming events",
     },
     bg: {
         title: "Предстоящи събития",
         badge: "Не пропускайте!",
         dateLabel: "Дата",
         joinBtn: "Включи се",
+        noEvents: "Няма предстоящи събития",
     }
 };

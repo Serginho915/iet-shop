@@ -81,6 +81,10 @@ const CoursesContent = ({ courses = [], tags: initialTags = [] }: CoursesSection
 
 
   const filteredCourses = courses.filter((course) => {
+    const today = new Date().toISOString().split('T')[0];
+    const isFuture = !course.start || course.start >= today;
+    if (!isFuture) return false;
+
     const matchesTag = activeTag === "all" || course.tags.some(tag => {
       const name = tag.name;
       const tagName = (function () {
@@ -94,6 +98,7 @@ const CoursesContent = ({ courses = [], tags: initialTags = [] }: CoursesSection
     const matchesAudience = activeAudience === "all" || course.audience === activeAudience;
     return matchesTag && matchesType && matchesAudience;
   });
+
 
   const audienceButtons = [
     { id: "all", label: t.allAudience },

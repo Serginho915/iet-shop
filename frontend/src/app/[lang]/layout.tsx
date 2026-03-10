@@ -1,6 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import { Roboto, Rubik, Roboto_Flex } from "next/font/google";
+import Script from "next/script";
 import "./globals.scss";
 import { Header } from "@/components/header/Header/Header";
 import { Footer } from "@/components/footer/Footer/Footer";
@@ -46,6 +47,21 @@ export default async function RootLayout({
 
   return (
     <html lang={lang}>
+      <head>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-TPK2B89YT8"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-TPK2B89YT8');
+          `}
+        </Script>
+      </head>
       <body
         className={`${roboto.variable} ${robotoFlex.variable} ${rubik.variable} antialiased text-gray-900 bg-gray-50`}
       >

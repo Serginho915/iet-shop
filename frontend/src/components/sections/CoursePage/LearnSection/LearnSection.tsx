@@ -29,9 +29,18 @@ export const LearnSection = ({ course }: LearnSectionProps) => {
       <div className={styles.instrumentsBlock}>
         <div className={styles.instrumentsHeader}>
           <h2 className={styles.instrumentsTitle}>{t.instrumentsTitle}</h2>
-          <Button variant="primary" size="lg" rounded="xl">
+          <Button
+            variant="primary"
+            size="lg"
+            rounded="xl"
+            onClick={() => {
+              const el = document.getElementById("consultation");
+              if (el) el.scrollIntoView({ behavior: "smooth" });
+            }}
+          >
             {t.leaveRequest}
           </Button>
+
         </div>
 
         <div className={styles.instrumentsRow}>

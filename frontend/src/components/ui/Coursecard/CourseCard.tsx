@@ -107,7 +107,7 @@ export const CourseCard = ({ course }: CourseCardProps) => {
 
       <div className={styles.footer}>
         <Link
-          href="#consultation"
+          href={`/${lang}/courses/${slug}`}
           className={styles.actionLink}
           onClick={(e) => e.stopPropagation()}
         >

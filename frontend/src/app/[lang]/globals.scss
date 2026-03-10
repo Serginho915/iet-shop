@@ -1,11 +1,16 @@
 @use "../../styles/variables" as *;
 @use "../../styles/mixins" as *;
 
+html {
+    scroll-behavior: smooth;
+}
+
 *,
 *::before,
 *::after {
     box-sizing: border-box;
 }
+
 
 body {
     margin: 0;

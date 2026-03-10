@@ -43,7 +43,6 @@ export const AudienceSection = ({ course }: AudienceSectionProps) => {
     const isAdult = course.audience === "adults";
     const label = isAdult ? t.minimalAge : t.maximalAge;
 
-
     const ageTag = course.tags.find((tag) => {
       const tagName = tag.name;
       const tagStr = typeof tagName === 'object' && tagName
@@ -59,9 +58,12 @@ export const AudienceSection = ({ course }: AudienceSectionProps) => {
         : (tagName || "");
       return tagStr;
     }
-    return label;
 
+    // Default fallback with digits if no tag found
+    const defaultAge = isAdult ? "15+" : "7-14";
+    return `${label}: ${defaultAge}`;
   };
+
 
   return (
     <section className={styles.audienceSection}>

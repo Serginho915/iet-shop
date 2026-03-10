@@ -17,10 +17,11 @@ interface EventsSectionProps {
 export const EventsSection = ({ events = [] }: EventsSectionProps) => {
   const { t, lang } = useTranslate<EventsTranslations>(translations);
 
-  const { containerRef, scrollNext } = useVerticalScroll({
+  const { containerRef, scrollNext, isScrollable } = useVerticalScroll({
     cardHeight: 180,
     gap: 24,
   });
+
 
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -96,11 +97,12 @@ export const EventsSection = ({ events = [] }: EventsSectionProps) => {
           </div>
         </div>
 
-        {events.length > 0 && (
+        {isScrollable && (
           <button className={styles.scrollBtn} onClick={scrollNext} aria-label="Scroll to next events">
             <IconArrowDown />
           </button>
         )}
+
       </div>
 
       <EventRegistrationModal

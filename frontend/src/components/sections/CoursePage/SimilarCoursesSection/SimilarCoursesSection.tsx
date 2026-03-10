@@ -16,14 +16,21 @@ interface SimilarCoursesSectionProps {
 export const SimilarCoursesSection = ({ course, allCourses }: SimilarCoursesSectionProps) => {
     const { t } = useTranslate(translations);
     const currentTagIds = new Set(course.tags?.map((t) => t.id) ?? []);
-
     const similarCourses = allCourses.filter((c) => {
+
         if (c.id === course.id) return false;
+
+        // Only show future courses
+        const today = new Date().toISOString().split('T')[0];
+        const isFuture = !c.start || c.start >= today;
+        if (!isFuture) return false;
+
         // Same audience (adults/kids)
         if (c.audience !== course.audience) return false;
         // At least one matching tag
         return c.tags?.some((t) => currentTagIds.has(t.id));
     });
+
 
     if (similarCourses.length === 0) return null;
 

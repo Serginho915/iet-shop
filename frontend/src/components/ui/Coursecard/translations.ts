@@ -27,3 +27,4 @@ export const translations: Record<Lang, CourseCardTranslations> = {
         start: "Начало",
     },
 };
+

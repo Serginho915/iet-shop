@@ -161,6 +161,7 @@ class CourseSerializer(BilingualSerializerMixin, serializers.ModelSerializer):
 
 class EventSerializer(BilingualSerializerMixin, serializers.ModelSerializer):
     title = serializers.SerializerMethodField()
+    description = serializers.SerializerMethodField()
     tags = TagSerializer(many=True, read_only=True)
     tag_ids = serializers.PrimaryKeyRelatedField(
         queryset=Tag.objects.all(), many=True, write_only=True, required=False, source="tags"
@@ -168,10 +169,25 @@ class EventSerializer(BilingualSerializerMixin, serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ["id", "title", "date", "type", "tags", "tag_ids", "title_en", "title_bg"]
+        fields = [
+            "id",
+            "title",
+            "description",
+            "date",
+            "type",
+            "tags",
+            "tag_ids",
+            "title_en",
+            "title_bg",
+            "description_en",
+            "description_bg",
+        ]
 
     def get_title(self, obj):
         return self._bilingual(obj.title_en, obj.title_bg)
+
+    def get_description(self, obj):
+        return self._bilingual(obj.description_en, obj.description_bg)
 
 
 class PostSerializer(BilingualSerializerMixin, serializers.ModelSerializer):

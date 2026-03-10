@@ -20,14 +20,14 @@ export const SimilarCoursesSection = ({ course, allCourses }: SimilarCoursesSect
 
         if (c.id === course.id) return false;
 
-        // Only show future courses
+
         const today = new Date().toISOString().split('T')[0];
         const isFuture = !c.start || c.start >= today;
         if (!isFuture) return false;
 
-        // Same audience (adults/kids)
+
         if (c.audience !== course.audience) return false;
-        // At least one matching tag
+
         return c.tags?.some((t) => currentTagIds.has(t.id));
     });
 

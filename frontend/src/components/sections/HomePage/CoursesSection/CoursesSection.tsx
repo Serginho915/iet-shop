@@ -81,7 +81,6 @@ const CoursesContent = ({ courses = [], tags: initialTags = [] }: CoursesSection
 
 
   const filteredCourses = courses.filter((course) => {
-    // Only show future courses (or those without a specific start date)
     const today = new Date().toISOString().split('T')[0];
     const isFuture = !course.start || course.start >= today;
     if (!isFuture) return false;

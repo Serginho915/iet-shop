@@ -59,10 +59,11 @@ export const AudienceSection = ({ course }: AudienceSectionProps) => {
       return tagStr;
     }
 
-    // Default fallback with digits if no tag found
-    const defaultAge = isAdult ? "15+" : "7-14";
+
+    const defaultAge = isAdult ? t.defaultAdultAge : t.defaultKidsAge;
     return `${label}: ${defaultAge}`;
   };
+
 
 
   return (

@@ -96,7 +96,8 @@ export const EventsSection = ({ events = [] }: EventsSectionProps) => {
 
               );
             })}
-            {upcomingEvents.length === 0 && <div className={styles.noEvents}>{lang === 'bg' ? 'Няма предстоящи събития' : 'No upcoming events'}</div>}
+            {upcomingEvents.length === 0 && <div className={styles.noEvents}>{t.noEvents}</div>}
+
           </div>
         </div>
 

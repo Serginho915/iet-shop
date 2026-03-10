@@ -221,8 +221,13 @@
   height: 156px;
 
   @include tablet {
-    width: auto;
-    height: auto;
+    width: 100px;
+    height: 135px;
+  }
+
+  @include mobile {
+    width: 80px;
+    height: 108px;
   }
 }
 

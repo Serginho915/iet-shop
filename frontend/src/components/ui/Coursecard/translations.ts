@@ -16,7 +16,7 @@ export const translations: Record<Lang, CourseCardTranslations> = {
         hybrid: "hybrid (offline/online)",
         online: "Online",
         offline: "Offline",
-        start: "start",
+        start: "Start",
     },
     bg: {
         leaveRequest: "Остави заявка",
@@ -24,6 +24,6 @@ export const translations: Record<Lang, CourseCardTranslations> = {
         hybrid: "Хибридно (Офлайн/Онлайн)",
         online: "Онлайн",
         offline: "Офлайн",
-        start: "начало",
+        start: "Начало",
     },
 };

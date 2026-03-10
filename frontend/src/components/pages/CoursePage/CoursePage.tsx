@@ -81,10 +81,9 @@ export const CoursePage = ({ course: initialCourse, slug }: CoursePageProps) => 
                     <Breadcrumbs items={breadcrumbs} />
 
                     {!finalCourse ? (
-                        <div style={{ padding: '80px 0', textAlign: 'center' }}>
-                            <div className={styles.loader}>Loading course data...</div>
-                        </div>
+                        <div style={{ padding: '160px 0' }} /> // Empty space instead of text
                     ) : (
+
                         <>
                             <HeroSectionCourse
                                 course={finalCourse}

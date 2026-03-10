@@ -29,20 +29,20 @@
     overflow-x: auto;
     padding-bottom: 16px;
     scroll-snap-type: x mandatory;
-    scrollbar-width: none; // Firefox
+    scrollbar-width: none;
 
     @include tablet {
         gap: 16px;
     }
 
     &::-webkit-scrollbar {
-        display: none; // Chrome/Safari
+        display: none;
     }
 }
 
 .cardWrapper {
     flex-shrink: 0;
-    width: 540px;
+    width: 600px;
     scroll-snap-align: start;
 
     @include mobile {

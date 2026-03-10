@@ -96,7 +96,9 @@ export const PrivacyPolicyModal = ({ isOpen, onClose }: PrivacyPolicyModalProps)
             isOpen={isOpen}
             onClose={onClose}
             className={styles.modalBody}
+            overlayClassName={styles.overlay}
         >
+
             <div className={styles.content}>
                 <h2 className={styles.title}>{t.title}</h2>
                 <div

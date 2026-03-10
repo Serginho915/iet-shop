@@ -114,21 +114,6 @@ export const BlogPage = ({ post: initialPost, slug }: BlogPageProps) => {
         scrollToStep(index);
     };
 
-    if (!finalPost) {
-        return (
-            <div className={styles.blogPageWrapper}>
-                <Header />
-                <main className={styles.blogPage}>
-                    <div className={styles.container}>
-                        <Breadcrumbs items={breadcrumbs} />
-                        <div className={styles.loading}>{t.loading}</div>
-                    </div>
-                </main>
-                <Footer />
-            </div>
-        );
-    }
-
     return (
         <div className={styles.blogPageWrapper}>
             <Header />
@@ -140,18 +125,27 @@ export const BlogPage = ({ post: initialPost, slug }: BlogPageProps) => {
                 </div>
 
                 <div className={styles.container}>
-                    <HeroSectionBlog
-                        post={finalPost}
-                        formattedDate={formattedDate}
-                    />
+                    {!finalPost ? (
+                        <div style={{ padding: '80px 0', textAlign: 'center' }}>
+                            <div className={styles.loading}>{t.loading}</div>
+                        </div>
+                    ) : (
+                        <>
+                            <HeroSectionBlog
+                                post={finalPost}
+                                formattedDate={formattedDate}
+                            />
 
-                    <div className={styles.articleContentWrapper}>
-                        <h1 className={styles.title}>{postTitle}</h1>
-                        <p className={styles.content}>
-                            {postContent}
-                        </p>
-                    </div>
+                            <div className={styles.articleContentWrapper}>
+                                <h1 className={styles.title}>{postTitle}</h1>
+                                <p className={styles.content}>
+                                    {postContent}
+                                </p>
+                            </div>
+                        </>
+                    )}
                 </div>
+
 
                 {relatedPosts.length > 0 && (
                     <section className={styles.relatedSection}>

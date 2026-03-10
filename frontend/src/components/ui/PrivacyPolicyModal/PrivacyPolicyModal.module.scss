@@ -2,15 +2,22 @@
 @use "../../../styles/mixins" as *;
 
 .modalBody {
-    max-width: 700px !important;
-    padding: 32px !important;
+    max-width: 700px;
+    background: #fff;
+    border-radius: 12px;
+
+    @include desktop {
+        padding: 48px;
+    }
 }
+
 
 .content {
     display: flex;
     flex-direction: column;
     gap: 24px;
 }
+
 
 .title {
     font-size: 28px;
@@ -50,10 +57,23 @@
     }
 }
 
+.overlay {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    padding: 24px;
+
+    @include desktop {
+        padding: 60px 24px;
+    }
+}
+
+
 @include mobile {
     .modalBody {
-        padding: 24px 20px !important;
+        padding: 24px 20px;
+        border-radius: 16px;
     }
+
 
     .title {
         font-size: 24px;

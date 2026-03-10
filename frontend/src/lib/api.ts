@@ -99,30 +99,40 @@ export interface Event {
   title_en?: string;
   title_bg?: string;
   date: string;
-  description: string;
+  description: LocalizedValue;
+  description_en?: string;
+  description_bg?: string;
   type: "online" | "offline" | "hybrid";
   tags: Tag[];
   image_1?: string;
   image_2?: string;
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
+
+const getEffectiveApiBase = () => {
+  if (typeof window === 'undefined') {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
+  return process.env.NEXT_PUBLIC_API_URL || "";
+};
+
+const API_BASE = getEffectiveApiBase();
 const API_URL = `${API_BASE}/api`;
 
 const resolveUrl = (url?: string) => {
   if (!url) return undefined;
   if (url.startsWith('http')) return url;
-  if (!API_BASE && url.startsWith('/')) return url;
-  return `${API_BASE}${url.startsWith('/') ? '' : '/'}${url}`;
+  const base = typeof window === 'undefined' ? (process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000") : "";
+  return `${base}${url.startsWith('/') ? '' : '/'}${url}`;
 };
+
 
 const localize = (value: any) => {
   if (!value) return "";
   if (typeof value === 'string') return value;
   if (typeof value === 'object') {
-    // If it's a bilingual object from backend
     if ('en' in value || 'bg' in value) {
-      return value; // Keep as object, components will handle it with useTranslate/lang
+      return value;
     }
   }
   return value;
@@ -230,13 +240,17 @@ export async function getHomePageData() {
         ...flat,
         id: flat.id,
         title: flat.title,
-        description: flat.description,
+        description: flat.description || {
+          bg: "Информация за събитието ще бъде добавена скоро.",
+          en: "Event information will be added soon."
+        },
         date: flat.date,
         type: flat.type,
         image_1: resolveUrl(flat.image_1),
         image_2: resolveUrl(flat.image_2),
         tags: mapTags(flat.tags, allTags)
       };
+
 
       return mappedEvent;
     })

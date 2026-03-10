@@ -2,30 +2,18 @@
 @use "../../../styles/mixins" as *;
 
 .modalBody {
-    background: #EFF6FF !important;
-    border-radius: 40px !important;
-    padding: 32px 40px !important;
-    max-width: 600px !important;
+    background: #EFF6FF;
+    border-radius: 40px;
+    padding: 32px 40px;
+    max-width: 600px;
 }
 
 .modalContentWrapper {
-    margin-top: 0 !important;
-    /* allow scrolling by not overriding overflow */
+    margin-top: 0;
     padding-bottom: 8px;
-
-    &::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    &::-webkit-scrollbar-track {
-        background: transparent;
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background-color: #CBD5E1;
-        border-radius: 10px;
-    }
 }
+
+
 
 .successMessage {
     display: flex;
@@ -337,7 +325,7 @@
 
 @include tablet {
     .modalBody {
-        padding: 28px 32px !important;
+        padding: 28px 32px;
     }
 
     .title {
@@ -351,8 +339,8 @@
 
 @include mobile {
     .modalBody {
-        padding: 24px 20px !important;
-        border-radius: 24px !important;
+        padding: 24px 20px;
+        border-radius: 24px;
     }
 
     .modalContent {
@@ -385,4 +373,10 @@
     .submitButton {
         min-width: 100%;
     }
+}
+
+.overlay {
+    padding: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
 }

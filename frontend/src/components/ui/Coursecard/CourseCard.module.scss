@@ -175,10 +175,15 @@
   gap: 8px;
   padding: 0 20px;
 
+  @include mobile {
+    padding: 0 12px;
+  }
+
   @include desktop {
     padding: 0 24px;
   }
 }
+
 
 .titleWrapper {
   display: flex;
@@ -259,11 +264,13 @@
   color: white;
 
   @include mobile {
-    min-width: 140px;
-    padding: 0 12px;
+    flex: 1;
+    min-width: 120px;
+    padding: 0 10px;
     font-size: 14px;
     height: 44px;
   }
+
 
   @include tablet {
     min-width: 200px;

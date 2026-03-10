@@ -55,10 +55,10 @@ export const PageContent = ({
             <Header />
             <main className={styles.page}>
                 <HeroSection metadata={initialMetadata} />
+                <EventsSection events={events} />
                 <CoursesSection courses={courses} tags={tags} />
                 <AdvantagesSection />
                 <JourneySection />
-                <EventsSection events={events} />
                 <ReviewsSection />
                 <ConsultationSection courses={courses} />
                 <BlogSection posts={posts} />

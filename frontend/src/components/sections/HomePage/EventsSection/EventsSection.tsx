@@ -71,6 +71,11 @@ export const EventsSection = ({ events = [] }: EventsSectionProps) => {
                 return tagName || "";
               });
 
+              // Robust localization for description
+              const description = typeof event.description === 'object' && event.description
+                ? (event.description[lang === 'bg' ? 'bg' : 'en'] || event.description.en || event.description.bg || "")
+                : event.description;
+
               return (
                 <EventCard
                   key={event.id}
@@ -78,12 +83,13 @@ export const EventsSection = ({ events = [] }: EventsSectionProps) => {
                   date={formattedDate}
                   tags={eventTags.map(String)}
                   location={event.type}
-                  description={event.description}
+                  description={String(description || "")}
                   image1={event.image_1}
                   image2={event.image_2}
                   joinBtnText={t.joinBtn}
                   onJoin={() => handleJoinClick(event)}
                 />
+
               );
             })}
             {events.length === 0 && <div className={styles.noEvents}>{lang === 'bg' ? 'Няма предстоящи събития' : 'No upcoming events'}</div>}

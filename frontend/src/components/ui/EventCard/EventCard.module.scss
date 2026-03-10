@@ -15,7 +15,9 @@
     @include mobile {
         padding: 12px;
         gap: 12px;
+        flex-wrap: wrap; // Allow children to wrap if needed
     }
+
 
     @include tablet {
         flex-direction: row;
@@ -93,14 +95,18 @@
     width: 100%;
 
     @include tablet {
-        width: 517px;
-        text-align: left;
+        flex: 1;
+        text-align: center;
+        align-items: center;
     }
 
     @include desktop {
-        text-align: left;
+        flex: 1;
+        text-align: center;
+        align-items: center;
     }
 }
+
 
 .title {
     font-family: $font-roboto;
@@ -110,6 +116,7 @@
     color: #22262F;
     margin: 0;
     max-width: 100%;
+    text-align: center;
 
     @include tablet {
         font-size: 20px;
@@ -127,30 +134,16 @@
     align-items: center;
     gap: 24px;
     justify-content: center;
-
-    @include tablet {
-        justify-content: flex-start;
-    }
-
-    @include desktop {
-        justify-content: flex-start;
-    }
 }
+
 
 .tags {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
     justify-content: center;
-
-    @include tablet {
-        justify-content: flex-start;
-    }
-
-    @include desktop {
-        justify-content: flex-start;
-    }
 }
+
 
 .tag {
     font-family: $font-rubik;
@@ -227,6 +220,7 @@
     font-size: 16px;
     font-weight: 400;
     color: #22262F;
+    white-space: nowrap;
 
     @include tablet {
         font-size: 18px;
@@ -264,11 +258,14 @@
     grid-template-rows: 0fr; // Текст скрыт (высота 0)
     transition: grid-template-rows 0.3s ease; // Анимация раскрытия
     overflow: hidden;
+    width: 100%; // Ensure it takes full width
+    text-align: center; // Center the text inside the description
 
     &.active {
         grid-template-rows: 1fr; // Текст появляется
     }
 }
+
 
 .descriptionText {
     min-height: 0; // Важно для работы анимации в grid

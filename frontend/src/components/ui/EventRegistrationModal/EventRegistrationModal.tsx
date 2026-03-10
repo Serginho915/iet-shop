@@ -119,7 +119,9 @@ export const EventRegistrationModal = ({ isOpen, onClose, event }: EventRegistra
                 onClose={onClose}
                 className={styles.modalBody}
                 contentClassName={styles.modalContentWrapper}
+                overlayClassName={styles.overlay}
             >
+
                 {isSuccess ? (
                     <div className={styles.successMessage}>
                         <h3>{t.successMessage}</h3>

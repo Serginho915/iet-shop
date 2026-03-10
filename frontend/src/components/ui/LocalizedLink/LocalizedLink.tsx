@@ -11,7 +11,7 @@ interface LocalizedLinkProps extends LinkProps, Omit<React.AnchorHTMLAttributes<
 export const LocalizedLink = ({ href, children, ...props }: LocalizedLinkProps) => {
     const { lang } = useLanguage();
 
-    // Handle string hrefs
+
     let localizedHref = href;
     if (typeof href === 'string') {
         const isInternal = href.startsWith('/') && !href.startsWith('/en') && !href.startsWith('/bg');

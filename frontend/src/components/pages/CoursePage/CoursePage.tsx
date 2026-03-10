@@ -73,21 +73,6 @@ export const CoursePage = ({ course: initialCourse, slug }: CoursePageProps) => 
         })
         : "";
 
-    if (!finalCourse) {
-        return (
-            <div className={styles.coursePageWrapper}>
-                <Header />
-                <main className={styles.coursePage}>
-                    <div className={styles.container}>
-                        <Breadcrumbs items={breadcrumbs} />
-                        <div style={{ padding: '40px 0', textAlign: 'center' }}>Loading course data...</div>
-                    </div>
-                </main>
-                <Footer />
-            </div>
-        );
-    }
-
     return (
         <div className={styles.coursePageWrapper}>
             <Header />
@@ -95,21 +80,29 @@ export const CoursePage = ({ course: initialCourse, slug }: CoursePageProps) => 
                 <div className={styles.container}>
                     <Breadcrumbs items={breadcrumbs} />
 
-                    <HeroSectionCourse
-                        course={finalCourse}
-                        formattedStart={formattedStart}
-                    />
+                    {!finalCourse ? (
+                        <div style={{ padding: '80px 0', textAlign: 'center' }}>
+                            <div className={styles.loader}>Loading course data...</div>
+                        </div>
+                    ) : (
+                        <>
+                            <HeroSectionCourse
+                                course={finalCourse}
+                                formattedStart={formattedStart}
+                            />
 
-                    <AboutSection course={finalCourse} />
-                    <AudienceSection course={finalCourse} />
-                    <ModulesSection course={finalCourse} />
-                    <LearnSection course={finalCourse} />
-                    <ConsultationSection courses={allCourses} />
-                    <SimilarCoursesSection course={finalCourse} allCourses={allCourses} />
-
+                            <AboutSection course={finalCourse} />
+                            <AudienceSection course={finalCourse} />
+                            <ModulesSection course={finalCourse} />
+                            <LearnSection course={finalCourse} />
+                            <ConsultationSection courses={allCourses} />
+                            <SimilarCoursesSection course={finalCourse} allCourses={allCourses} />
+                        </>
+                    )}
                 </div>
             </main>
             <Footer />
         </div>
     );
 };
+

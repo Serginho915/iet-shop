@@ -58,9 +58,9 @@ export const LanguageDropdown = () => {
                         onClick={() => {
                             const newPath = redirectedPathname(other);
                             router.push(newPath);
-                            setLang(other);
                             setIsOpen(false);
                         }}
+
                         className={styles.langOption}
                         title={other === "en" ? "English" : "Български"}
                     >

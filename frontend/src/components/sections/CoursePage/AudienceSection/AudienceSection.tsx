@@ -53,9 +53,14 @@ export const AudienceSection = ({ course }: AudienceSectionProps) => {
     });
 
     if (ageTag) {
-      return label;
+      const tagName = ageTag.name;
+      const tagStr = typeof tagName === 'object' && tagName
+        ? (tagName[lang === 'bg' ? 'bg' : 'en'] || tagName.en || tagName.bg || "")
+        : (tagName || "");
+      return tagStr;
     }
     return label;
+
   };
 
   return (

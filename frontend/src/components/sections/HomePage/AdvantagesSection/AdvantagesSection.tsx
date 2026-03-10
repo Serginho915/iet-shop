@@ -6,11 +6,11 @@ import { translations } from "./translations";
 import styles from "./AdvantagesSection.module.scss";
 import { AdvantageCard } from "@/components/ui/AdvantageCard/AdvantageCard";
 
-import adv1 from "@/assets/Advantagecard/adv1.png";
-import adv2 from "@/assets/Advantagecard/adv2.png";
-import adv3 from "@/assets/Advantagecard/adv3.png";
-import adv4 from "@/assets/Advantagecard/adv4.png";
-import adv5 from "@/assets/Advantagecard/adv5.png";
+import adv1 from "@/assets/emojii/AdvantageCard1.png";
+import adv2 from "@/assets/emojii/AdvantageCard2.png";
+import adv3 from "@/assets/emojii/AdvantageCard3.png";
+import adv4 from "@/assets/emojii/AdvantageCard4.png";
+import adv5 from "@/assets/emojii/AdvantageCard5.png";
 
 const advImages = [adv1, adv2, adv3, adv4, adv5];
 

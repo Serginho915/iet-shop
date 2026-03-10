@@ -28,8 +28,9 @@ export const CoursePage = ({ course: initialCourse, slug }: CoursePageProps) => 
     const { selectedCourse } = useCourse();
 
     // Choose data source: context (fast transition) or prop from server
-    const course = useMemo(() => {
-        if (selectedCourse && selectedCourse.slug === slug) return selectedCourse;
+    const courseFromSource = useMemo(() => {
+        const targetSlug = slug.toLowerCase().trim();
+        if (selectedCourse && selectedCourse.slug?.toLowerCase().trim() === targetSlug) return selectedCourse;
         return initialCourse;
     }, [selectedCourse, initialCourse, slug]);
 
@@ -39,16 +40,16 @@ export const CoursePage = ({ course: initialCourse, slug }: CoursePageProps) => 
         getCourses().then(setAllCourses);
     }, []);
 
-    // Safety fetch if both sources are missing (e.g. some edge cases)
-    // but keep it as minimal as possible
-    const [fetchedCourse, setFetchedCourse] = useState<Course | undefined>(undefined);
+    // Safety fetch if both sources are missing
+    // Use null for "fetch attempted but nothing found" to avoid infinite loop
+    const [fetchedCourse, setFetchedCourse] = useState<Course | undefined | null>(undefined);
     useEffect(() => {
-        if (!course && !fetchedCourse) {
-            getCourseBySlug(slug).then(setFetchedCourse);
+        if (!courseFromSource && fetchedCourse === undefined) {
+            getCourseBySlug(slug).then(res => setFetchedCourse(res || null));
         }
-    }, [course, fetchedCourse, slug]);
+    }, [courseFromSource, fetchedCourse, slug]);
 
-    const finalCourse = course || fetchedCourse;
+    const finalCourse = courseFromSource || (fetchedCourse === null ? undefined : fetchedCourse);
 
     const breadcrumbs: BreadcrumbItem[] = [
         { label: t.course, href: "/#courses" },

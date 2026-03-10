@@ -5,7 +5,7 @@ import Image from "next/image";
 import { LocalizedLink as Link } from "@/components/ui/LocalizedLink/LocalizedLink";
 import { useSearchParams, useRouter } from "next/navigation";
 import { translations, courseTypes } from "./translations";
-import helpGuy from "@/assets/HeroSection/Courseguyhelp.png";
+import helpGuy from "@/assets/emojii/helpIcon.png";
 import styles from "./CoursesSection.module.scss";
 import { IconLightbulb, IconHelpBtn } from "@/components/icons";
 import { CourseCard } from "@/components/ui/Coursecard/CourseCard";
@@ -39,8 +39,13 @@ const CoursesContent = ({ courses = [], tags: initialTags = [] }: CoursesSection
   const tags = [
     { id: 'all', name: lang === 'bg' ? 'Всички категории' : 'All Categories' },
     ...dbTags.map(tag => {
-      const name = lang === 'bg' ? tag.name_bg || tag.name : tag.name_en || tag.name;
-      return { id: tag.id.toString(), name: name || "" };
+      const name = tag.name;
+      const tagName = (function () {
+        if (typeof name === 'string') return name;
+        if (name && typeof name === 'object') return name[lang as keyof typeof name] || name.en || name.bg || "";
+        return "";
+      })();
+      return { id: tag.id.toString(), name: tagName };
     })
   ];
 
@@ -77,7 +82,12 @@ const CoursesContent = ({ courses = [], tags: initialTags = [] }: CoursesSection
 
   const filteredCourses = courses.filter((course) => {
     const matchesTag = activeTag === "all" || course.tags.some(tag => {
-      const tagName = (lang === 'bg' ? tag.name_bg || tag.name : tag.name_en || tag.name) || "";
+      const name = tag.name;
+      const tagName = (function () {
+        if (typeof name === 'string') return name;
+        if (name && typeof name === 'object') return name[lang as keyof typeof name] || name.en || name.bg || "";
+        return "";
+      })();
       return tagName.toLowerCase() === activeTag.toLowerCase() || tag.id.toString() === activeTag;
     });
     const matchesType = activeType === "all" || course.type === activeType;

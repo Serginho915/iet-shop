@@ -6,7 +6,7 @@ import { useTranslate } from "@/lib/useTranslate";
 import { translations } from "./translations";
 import styles from './JourneySection.module.scss';
 
-import mascot from '@/assets/Journey/mascot.png';
+import mascot from '@/assets/emojii/Mascot.png';
 import img1 from '@/assets/Journey/classroom.jpg';
 import img2 from '@/assets/Journey/kids.jpg';
 import img3 from '@/assets/Journey/lesson.jpg';

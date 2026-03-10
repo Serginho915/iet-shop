@@ -5,7 +5,7 @@ import styles from "./FAQSection.module.scss";
 import { useTranslate } from "@/lib/useTranslate";
 import { translations, translationsTitle } from "./translations";
 import { ReminderCard } from "@/components/ui/ReminderCard/ReminderCard";
-import gladAsked from "@/assets/Glad asked.png";
+import gladAsked from "@/assets/emojii/emojii10.png";
 
 export const FAQSection = () => {
   const { t: tr } = useTranslate(translations);
@@ -32,9 +32,11 @@ export const FAQSection = () => {
                   <span>{faq.question}</span>
                   <div className={styles.toggleArrow}></div>
                 </div>
-                {activeFAQ === faq.id && (
-                  <p className={styles.faqAnswer}>{faq.answer}</p>
-                )}
+                <div className={`${styles.answerWrapper} ${activeFAQ === faq.id ? styles.open : ""}`}>
+                  <div className={styles.answerContent}>
+                    <p className={styles.faqAnswer}>{faq.answer}</p>
+                  </div>
+                </div>
               </div>
             </li>
           ))}

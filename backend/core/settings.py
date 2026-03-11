@@ -97,3 +97,8 @@ SPECTACULAR_SETTINGS = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://haldaniko.com.ua",
+    "https://*.haldaniko.com.ua",
+]

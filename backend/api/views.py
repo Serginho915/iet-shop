@@ -61,6 +61,8 @@ class ConsultationViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser]
 
     def get_permissions(self):
+        if self.request.method == "OPTIONS":
+            return [permissions.AllowAny()]
         if self.action == "create":
             return [permissions.AllowAny()]
         return [permissions.IsAdminUser()]
@@ -72,6 +74,8 @@ class EventRequestViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser]
 
     def get_permissions(self):
+        if self.request.method == "OPTIONS":
+            return [permissions.AllowAny()]
         if self.action == "create":
             return [permissions.AllowAny()]
         return [permissions.IsAdminUser()]

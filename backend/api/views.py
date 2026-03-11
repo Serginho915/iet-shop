@@ -60,6 +60,12 @@ class ConsultationViewSet(viewsets.ModelViewSet):
     serializer_class = ConsultationSerializer
     permission_classes = [permissions.IsAdminUser]
 
+    def get_authenticators(self):
+        # Public form submission should not depend on SessionAuth/CSRF.
+        if self.request.method in ("POST", "OPTIONS"):
+            return []
+        return super().get_authenticators()
+
     def get_permissions(self):
         if self.request.method == "OPTIONS":
             return [permissions.AllowAny()]
@@ -72,6 +78,12 @@ class EventRequestViewSet(viewsets.ModelViewSet):
     queryset = EventRequest.objects.all()
     serializer_class = EventRequestSerializer
     permission_classes = [permissions.IsAdminUser]
+
+    def get_authenticators(self):
+        # Public form submission should not depend on SessionAuth/CSRF.
+        if self.request.method in ("POST", "OPTIONS"):
+            return []
+        return super().get_authenticators()
 
     def get_permissions(self):
         if self.request.method == "OPTIONS":

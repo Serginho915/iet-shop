@@ -258,6 +258,7 @@ class EventAdmin(admin.ModelAdmin):
     list_display = ("title_en", "title_bg", "date", "type")
     list_filter = ("type", "date")
     search_fields = ("title_en", "title_bg")
+    fields = ("title_en", "title_bg", "description_en", "description_bg", "image", "date", "type", "tags")
     filter_horizontal = ("tags",)
 
 

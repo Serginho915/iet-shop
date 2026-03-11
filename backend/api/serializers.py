@@ -166,6 +166,9 @@ class CourseSerializer(BilingualSerializerMixin, serializers.ModelSerializer):
 class EventSerializer(BilingualSerializerMixin, serializers.ModelSerializer):
     title = serializers.SerializerMethodField()
     description = serializers.SerializerMethodField()
+    image = serializers.SerializerMethodField()
+    image_1 = serializers.SerializerMethodField()
+    image_2 = serializers.SerializerMethodField()
     tags = TagSerializer(many=True, read_only=True)
     tag_ids = serializers.PrimaryKeyRelatedField(
         queryset=Tag.objects.all(), many=True, write_only=True, required=False, source="tags"
@@ -177,6 +180,9 @@ class EventSerializer(BilingualSerializerMixin, serializers.ModelSerializer):
             "id",
             "title",
             "description",
+            "image",
+            "image_1",
+            "image_2",
             "date",
             "type",
             "tags",
@@ -192,6 +198,15 @@ class EventSerializer(BilingualSerializerMixin, serializers.ModelSerializer):
 
     def get_description(self, obj):
         return self._bilingual(obj.description_en, obj.description_bg)
+
+    def get_image(self, obj):
+        return self._file_url(obj.image)
+
+    def get_image_1(self, obj):
+        return self._file_url(obj.image)
+
+    def get_image_2(self, obj):
+        return self._file_url(obj.image)
 
 
 class PostSerializer(BilingualSerializerMixin, serializers.ModelSerializer):

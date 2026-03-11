@@ -59,7 +59,7 @@ export const HeroSection = ({ metadata = {} }: { metadata?: Record<string, unkno
             <div className={styles.codeIcon}>&lt;/&gt;</div>
             <div className={styles.imageContainer}>
               <Image
-                src={heroMain}
+                src={heroMain} 
                 alt="hero-image"
                 fill
                 className={styles.heroImage}

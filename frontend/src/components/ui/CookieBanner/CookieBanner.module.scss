@@ -48,8 +48,8 @@
 
 .acceptBtn {
     @include flex-center;
-    background-color: $color-black;
-    color: $color-white;
+    background-color: $color-yellow;
+    color: $color-black;
     padding: 0.625rem 1.25rem;
     border-radius: $radius-full;
     font-size: 14px;
@@ -57,7 +57,7 @@
     transition: background-color 0.2s ease;
 
     &:hover {
-        background-color: lighten($color-black, 10%);
+        background-color: $color-yellow-hover;
     }
 
     @media (max-width: 640px) {
@@ -77,8 +77,9 @@
     transition: all 0.2s ease;
 
     &:hover {
-        background-color: $color-bg;
-        border-color: $color-black;
+        background-color: $color-yellow;
+        border-color: $color-yellow;
+        color: $color-black;
     }
 
     @media (max-width: 640px) {

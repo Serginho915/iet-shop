@@ -29,6 +29,8 @@ export interface Course {
   stripe_price_id?: number | null;
   tags: Tag[];
   audience?: "adults" | "kids";
+  monthly_installment_price?: number;
+  visits_per_week?: number;
   about_title?: LocalizedValue;
   about_title_en?: string;
   about_title_bg?: string;
@@ -206,6 +208,8 @@ export async function getHomePageData() {
         audience_image: resolveUrl(flat.audience_image),
         tags: mapTags(flat.tags, allTags),
         audience: flat.audience ?? ((flat.age_group === "adult" || flat.age_group === "Adult") ? "adults" : "kids"),
+        monthly_installment_price: flat.monthly_installment_price,
+        visits_per_week: flat.visits_per_week,
 
         // Map related cards
         extra_audience_tags: (flat.audience_tags || []).map((card: any) => ({

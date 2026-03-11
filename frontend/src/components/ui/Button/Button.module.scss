@@ -28,22 +28,22 @@
 
     // Variants
     &.primary {
-        background-color: $color-accent;
-        color: $color-white;
+        background-color: $color-yellow;
+        color: $color-black;
 
         &:hover:not(:disabled) {
-            background-color: $color-accent-hover;
+            background-color: $color-yellow-hover;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
     }
 
     &.white {
-        background-color: $color-white;
+        background-color: $color-yellow;
         color: $color-black;
         padding: 4rem 8rem;
 
         &:hover:not(:disabled) {
-            background-color: $color-gray;
+            background-color: $color-yellow-hover;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
     }
@@ -71,16 +71,16 @@
     }
 
     &.danger {
-        background-color: $color-bg;
+        background-color: $color-yellow;
         color: $color-black;
 
         &:hover:not(:disabled) {
-            background-color: $color-black;
-            color: $color-white;
+            background-color: $color-yellow-hover;
+            color: $color-black;
         }
     }
 
-    
+
 
     // Sizes
     &.sm {

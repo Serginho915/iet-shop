@@ -329,8 +329,8 @@ export const Footer = ({ config }: FooterProps) => {
                   aria-label={tr.leaveRequest}
                   className={styles.leaveRequestBtn}
                   size="lg"
-                  rounded="full"
-                  variant="white"
+                  rounded="xl"
+                  variant="primary"
                   onClick={scrollToSection("consultation")}
                 >
                   {tr.leaveRequest}

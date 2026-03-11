@@ -404,8 +404,8 @@
   justify-content: center;
   padding: 10px 16px;
   border-radius: 20px 20px 20px 0;
-  background: #dae2ff;
-  color: #22262f;
+  background: $color-accent;
+  color: #fff;
   font-weight: 500;
   font-size: 14px;
   gap: 8px;
@@ -419,8 +419,8 @@
   }
 
   &.active {
-    background: #0061ff;
-    color: white;
+    background: $color-yellow;
+    color: #000;
   }
 
   &:hover {

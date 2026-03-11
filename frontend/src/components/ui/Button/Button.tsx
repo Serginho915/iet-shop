@@ -5,7 +5,7 @@ import styles from './Button.module.scss'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: 'primary' | 'white' | 'outline' | 'dark-outline' | 'danger'
-    size?: 'sm' | 'md' | 'lg' | 'custom'
+    size?: 'sm' | 'md' | 'lg' | 'custom' 
     rounded?: 'xl' | 'full'
     isLoading?: boolean
 }

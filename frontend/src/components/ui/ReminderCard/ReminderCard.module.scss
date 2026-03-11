@@ -4,8 +4,14 @@
 .card {
     display: flex;
     align-items: flex-end;
-    gap: 12px;
+    justify-content: center;
+    gap: 32px;
+
+    @include mobile {
+        gap: 16px;
+    }
 }
+
 
 .imageWrapper {
     flex-shrink: 0;
@@ -24,11 +30,11 @@
 .content {
     border-radius: 44px 44px 44px 0;
     background-color: #5A55F4;
-    padding: 31px 37px;
+    padding: 16px 32px;
     color: #FFFFFF;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 16px;
     max-width: 445px;
 
     @include mobile {
@@ -39,8 +45,9 @@
 }
 
 .title {
-    font-size: 18px;
-    font-weight: 500;
+    font-size: 24px;
+    font-weight: 400;
+    text-align: left;
     margin: 0;
 
     @include mobile {
@@ -49,8 +56,8 @@
 }
 
 .text {
-    font-size: 16px;
-    font-weight: 400;
-    opacity: 0.9;
+    font-size: 18px;
+    font-weight: 600;
     margin: 0;
+    text-align: left;
 }

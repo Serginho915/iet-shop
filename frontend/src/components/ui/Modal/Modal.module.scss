@@ -13,7 +13,9 @@
     justify-content: flex-start;
     z-index: 1000;
     overflow-y: auto;
+    overflow-x: hidden;
 }
+
 
 .defaultOverlay {
     background: rgba(0, 0, 0, 0.7);

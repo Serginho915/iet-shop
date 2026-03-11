@@ -2,9 +2,7 @@
 @use "../../../../styles/mixins" as *;
 
 .heroSection {
-  background: #dbe9ff
-    url("../../../../assets/CoursePage/Hero/bgHero.png") 0 0 / 100% 100%
-    no-repeat;
+  background: #dbe9ff url("../../../../assets/CoursePage/Hero/bgHero.png") 0 0 / 100% 100% no-repeat;
   padding: 44px 68px 32px;
   border-radius: 48px;
   display: flex;
@@ -79,9 +77,13 @@
     margin: 0;
 
     span {
-      color: #ff4d00;
+      color: $color-accent;
     }
   }
+}
+
+.accentText {
+  color: $color-accent;
 }
 
 .infoGrid {
@@ -132,11 +134,31 @@
   display: flex;
   align-items: center;
   gap: 16px;
+
+  @include mobile {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
 }
 
 .priceLabel {
   font-size: 1.25rem;
   font-weight: 600;
+}
+
+.pricesContainer {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  @include mobile {
+    gap: 8px;
+  }
+}
+
+.bold {
+  font-weight: 700;
 }
 
 .priceBox {
@@ -161,6 +183,19 @@
   .bgnPrice {
     font-size: 0.875rem;
     color: rgba(14, 14, 14, 0.5);
+  }
+
+  @include mobile {
+    min-width: 130px;
+    padding: 12px 16px;
+
+    .eurPrice {
+      font-size: 18px;
+    }
+
+    .bgnPrice {
+      font-size: 12px;
+    }
   }
 }
 
@@ -259,8 +294,8 @@
 }
 
 .bookButton {
-  background: $color-accent;
-  color: #ffffff;
+  background: #FFDD4D;
+  color: #000;
   padding: 16px 48px;
   border-radius: 16px;
   font-size: 1.125rem;
@@ -270,7 +305,7 @@
   transition: all 0.2s;
 
   &:hover {
-    background: $color-accent-hover;
+    background: #FFF097;
     transform: translateY(-2px);
   }
 }

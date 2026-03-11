@@ -31,19 +31,18 @@
   font-weight: 400;
   line-height: 1.1;
   color: #1a1a1a;
-  margin: 0;
-  padding-right: 20px;
+  margin: 0 0 32px 0;
+  flex: 0 0 100%;
 
   @include tablet {
     font-size: 44px;
-    padding-right: 0;
+    margin-bottom: 24px;
   }
 
   @include mobile {
     font-size: 40px;
     text-align: center;
-    width: 100%;
-    padding-right: 0;
+    margin-bottom: 24px;
   }
 }
 
@@ -63,9 +62,6 @@
     border-width: 2px;
     padding: 6px;
     z-index: 10;
-
-
-    min-width: 330px;
 
     @include mobile {
       width: 100%;
@@ -112,16 +108,13 @@
   font-size: 24px;
   font-weight: 400;
   line-height: 1.2;
-  white-space: nowrap; // Prevents title from wrapping, forcing pill to grow
 
   @include tablet {
     font-size: 20px;
-    white-space: normal;
   }
 
   @include mobile {
     font-size: 18px;
-    white-space: normal;
   }
 }
 
@@ -141,17 +134,13 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  white-space: nowrap;
-
 
   @include tablet {
     font-size: 20px;
-    white-space: normal;
   }
 
   @include mobile {
     font-size: 18px;
-    white-space: normal;
   }
 }
 

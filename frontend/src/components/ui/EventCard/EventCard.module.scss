@@ -238,8 +238,8 @@
 .joinBtn {
     width: 100%;
     height: 44px;
-    background-color: $color-accent !important;
-    color: #FFFFFF !important;
+    background-color: #FFDD4D !important;
+    color: #000 !important;
     font-size: 16px;
     font-weight: 500;
     border-radius: 20px !important;
@@ -249,7 +249,7 @@
     }
 
     &:hover {
-        background-color: darken($color-accent, 10%) !important;
+        background-color: #FFF097 !important;
     }
 }
 

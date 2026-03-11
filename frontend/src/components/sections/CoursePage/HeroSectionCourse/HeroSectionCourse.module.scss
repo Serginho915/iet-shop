@@ -2,9 +2,7 @@
 @use "../../../../styles/mixins" as *;
 
 .heroSection {
-  background: #dbe9ff
-    url("../../../../assets/CoursePage/Hero/bgHero.png") 0 0 / 100% 100%
-    no-repeat;
+  background: #dbe9ff url("../../../../assets/CoursePage/Hero/bgHero.png") 0 0 / 100% 100% no-repeat;
   padding: 44px 68px 32px;
   border-radius: 48px;
   display: flex;
@@ -259,8 +257,8 @@
 }
 
 .bookButton {
-  background: $color-accent;
-  color: #ffffff;
+  background: #FFDD4D;
+  color: #000;
   padding: 16px 48px;
   border-radius: 16px;
   font-size: 1.125rem;
@@ -270,7 +268,7 @@
   transition: all 0.2s;
 
   &:hover {
-    background: $color-accent-hover;
+    background: #FFF097;
     transform: translateY(-2px);
   }
 }

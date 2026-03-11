@@ -40,7 +40,7 @@
     right: 50%;
     transform: translateX(-50%) rotate(-10deg);
     padding: 6px 16px;
-    border: 1px solid $color-accent;
+    border: 1px solid #EB4335;
     border-radius: 20px;
     background: transparent;
     z-index: 10;
@@ -59,7 +59,7 @@
     }
 
     span {
-        color: $color-accent;
+        color: #EB4335;
         font-size: 14px;
         font-weight: 500;
         white-space: nowrap;

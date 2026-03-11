@@ -7,12 +7,11 @@
     align-items: center;
     gap: 0.25rem;
     @include navbar-link-style;
-    color: $color-accent;
     @include transition-standard;
     cursor: pointer;
     position: relative;
 
-    /* Mobile: full-width row like other links but accented */
+    /* Mobile: full-width row like other links */
     padding: 16px 4px;
     border-bottom: 1px solid #f1f5f9;
     width: 100%;
@@ -21,29 +20,32 @@
         padding: 0;
         border-bottom: none;
         width: auto;
-        /* Desktop: small pill badge look */
-        background: rgba($color-accent, 0.08);
-        border-radius: 20px;
-        padding: 6px 14px;
-        color: $color-accent;
+        color: #000;
     }
 
     &::after {
         content: "";
         border-left: 4px solid transparent;
         border-right: 4px solid transparent;
-        border-top: 6px solid $color-accent;
+        border-top: 6px solid #000;
         margin-left: 4px;
         transition: transform 0.2s;
     }
 
     &:hover {
-        color: $color-accent-hover;
-        opacity: 0.85;
+        color: $color-accent;
+        
+        @include desktop {
+            color: #3c3e3e;
+        }
     }
 
     &:hover::after {
         transform: rotate(180deg);
-        border-top-color: $color-accent-hover;
+        border-top-color: $color-accent;
+
+        @include desktop {
+            border-top-color: #3c3e3e;
+        }
     }
 }

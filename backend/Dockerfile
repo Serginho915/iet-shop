@@ -23,4 +23,4 @@ FROM base AS prod
 
 RUN chmod +x /app/entrypoint.prod.sh
 
-CMD ["/app/entrypoint.prod.sh"]
+CMD ["sh", "/app/entrypoint.prod.sh"]

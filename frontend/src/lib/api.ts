@@ -123,12 +123,9 @@ const API_URL = `${API_BASE}/api`;
 
 const resolveUrl = (url?: string) => {
   if (!url) return undefined;
-  if (url.startsWith('http')) {
-    return url.replace('/media/', '/api/media/');
-  }
+  if (url.startsWith('http')) return url;
   const base = typeof window === 'undefined' ? (process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000") : "";
-  const normalizedPath = url.startsWith('/media/') ? url.replace('/media/', '/api/media/') : url;
-  return `${base}${normalizedPath.startsWith('/') ? '' : '/'}${normalizedPath}`;
+  return `${base}${url.startsWith('/') ? '' : '/'}${url}`;
 };
 
 

@@ -157,7 +157,6 @@ class CourseAdmin(admin.ModelAdmin):
     list_display = ("title_en", "title_bg", "slug", "type", "price", "is_active", "start")
     list_filter = ("type", "is_active", "start", "audience")
     search_fields = ("title_en", "title_bg", "slug")
-    readonly_fields = ("slug",)
     filter_horizontal = ("tags",)
     inlines = [
         CourseAudienceTagCardInline,
@@ -175,6 +174,8 @@ class CourseAdmin(admin.ModelAdmin):
                     "audience",
                     "start",
                     "price",
+                    "monthly_installment_price",
+                    "visits_per_week",
                     "is_active",
                     "tags",
                 )
@@ -267,7 +268,6 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ("title_en", "title_bg", "slug", "author", "created_at")
     list_filter = ("created_at",)
     search_fields = ("title_en", "title_bg", "author")
-    readonly_fields = ("slug",)
     filter_horizontal = ("tags",)
 
 

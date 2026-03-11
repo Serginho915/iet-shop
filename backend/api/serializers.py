@@ -70,6 +70,8 @@ class CourseSerializer(BilingualSerializerMixin, serializers.ModelSerializer):
             "duration",
             "type",
             "price",
+            "monthly_installment_price",
+            "visits_per_week",
             "is_active",
             "stripe_product_id",
             "stripe_price_id",

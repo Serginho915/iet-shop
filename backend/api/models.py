@@ -1,7 +1,4 @@
-from uuid import uuid4
-
 from django.db import models
-from django.utils.text import slugify
 
 
 class Tag(models.Model):
@@ -22,7 +19,7 @@ class Course(models.Model):
         ADULTS = "adults", "Adults"
         KIDS = "kids", "Kids"
 
-    slug = models.SlugField(max_length=255, unique=True, blank=True, editable=False)
+    slug = models.SlugField(max_length=255, unique=True)
     title_en = models.CharField(max_length=255, null=True, blank=True)
     title_bg = models.CharField(max_length=255, null=True, blank=True)
     start = models.DateField()
@@ -34,6 +31,8 @@ class Course(models.Model):
     type = models.CharField(max_length=10, choices=CourseType.choices)
     audience = models.CharField(max_length=10, choices=AudienceType.choices, null=True, blank=True)
     price = models.PositiveIntegerField()
+    monthly_installment_price = models.PositiveIntegerField(null=True, blank=True)
+    visits_per_week = models.PositiveSmallIntegerField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
     stripe_product_id = models.BigIntegerField(null=True, blank=True)
     stripe_price_id = models.BigIntegerField(null=True, blank=True)
@@ -48,13 +47,6 @@ class Course(models.Model):
     audience_image = models.ImageField(upload_to="courses/audience/", null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            title_for_slug = self.title_en or self.title_bg or "course"
-            base_slug = slugify(title_for_slug)[:240] or "course"
-            candidate = base_slug
-            while Course.objects.filter(slug=candidate).exclude(pk=self.pk).exists():
-                candidate = f"{base_slug}-{uuid4().hex[:8]}"
-            self.slug = candidate
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -94,7 +86,7 @@ class Event(models.Model):
 
 
 class Post(models.Model):
-    slug = models.SlugField(max_length=255, unique=True, blank=True, editable=False)
+    slug = models.SlugField(max_length=255, unique=True)
     title_en = models.CharField(max_length=255, null=True, blank=True)
     title_bg = models.CharField(max_length=255, null=True, blank=True)
     author = models.CharField(max_length=255)
@@ -105,13 +97,6 @@ class Post(models.Model):
     tags = models.ManyToManyField(Tag, related_name="posts", blank=True)
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            title_for_slug = self.title_en or self.title_bg or "post"
-            base_slug = slugify(title_for_slug)[:240] or "post"
-            candidate = base_slug
-            while Post.objects.filter(slug=candidate).exclude(pk=self.pk).exists():
-                candidate = f"{base_slug}-{uuid4().hex[:8]}"
-            self.slug = candidate
         super().save(*args, **kwargs)
 
     def __str__(self):

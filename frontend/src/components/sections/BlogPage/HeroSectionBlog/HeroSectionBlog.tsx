@@ -11,9 +11,18 @@ interface HeroSectionBlogProps {
   formattedDate: string;
 }
 
+const asText = (value: unknown, lang: "en" | "bg") => {
+  if (typeof value === "string") return value;
+  if (value && typeof value === "object") {
+    const localized = value as { en?: string; bg?: string };
+    return (lang === "bg" ? localized.bg : localized.en) || localized.en || localized.bg || "";
+  }
+  return "";
+};
+
 export const HeroSectionBlog = ({ post, formattedDate }: HeroSectionBlogProps) => {
   const { lang } = useLanguage();
-  const title = lang === 'bg' ? post.title_bg || post.title : post.title_en || post.title;
+  const title = asText(lang === 'bg' ? post.title_bg || post.title : post.title_en || post.title, lang);
 
   return (
     <div className={styles.header}>
@@ -31,7 +40,7 @@ export const HeroSectionBlog = ({ post, formattedDate }: HeroSectionBlogProps) =
       <div className={styles.metaRow}>
         <div className={styles.tags}>
           {post.tags.map(tag => {
-            const tagName = lang === 'bg' ? tag.name_bg || tag.name : tag.name_en || tag.name;
+            const tagName = asText(lang === 'bg' ? tag.name_bg || tag.name : tag.name_en || tag.name, lang);
             return (
               <Link key={tag.id} href={`/?blogTag=${tagName}#blog`} className={styles.tag}>
                 {tagName}

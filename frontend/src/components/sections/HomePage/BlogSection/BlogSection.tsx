@@ -13,6 +13,15 @@ interface BlogSectionProps {
     posts?: Post[];
 }
 
+const asText = (value: unknown, lang: "en" | "bg") => {
+    if (typeof value === "string") return value;
+    if (value && typeof value === "object") {
+        const localized = value as { en?: string; bg?: string };
+        return (lang === "bg" ? localized.bg : localized.en) || localized.en || localized.bg || "";
+    }
+    return "";
+};
+
 const BlogContent = ({ posts = [] }: BlogSectionProps) => {
     const { t: tTitle, lang } = useTranslate(translationsTitle);
     const searchParams = useSearchParams();
@@ -30,7 +39,7 @@ const BlogContent = ({ posts = [] }: BlogSectionProps) => {
     const displayPosts = activeTagName === "all"
         ? posts
         : posts.filter(p => p.tags.some(tag => {
-            const tagName = lang === 'bg' ? tag.name_bg || tag.name : tag.name_en || tag.name;
+            const tagName = asText(lang === 'bg' ? tag.name_bg || tag.name : tag.name_en || tag.name, lang);
             return tagName === activeTagName;
         }));
 
@@ -86,15 +95,15 @@ const BlogContent = ({ posts = [] }: BlogSectionProps) => {
                 <div className={styles.scrollWrapper} ref={containerRef}>
                     <ul className={styles.blogList}>
                         {displayPosts.map((post) => {
-                            const pTitle = lang === 'bg' ? post.title_bg || post.title : post.title_en || post.title;
-                            const pContent = lang === 'bg' ? post.content_bg || post.content : post.content_en || post.content;
+                            const pTitle = asText(lang === 'bg' ? post.title_bg || post.title : post.title_en || post.title, lang);
+                            const pContent = asText(lang === 'bg' ? post.content_bg || post.content : post.content_en || post.content, lang);
                             return (
                                 <BlogCard
                                     key={post.id}
                                     id={post.id}
                                     author={post.author}
-                                    title={pTitle || ""}
-                                    excerpt={(pContent || "").length > 150 ? (pContent || "").slice(0, 150) + "…" : pContent}
+                                    title={pTitle}
+                                    excerpt={pContent.length > 150 ? pContent.slice(0, 150) + "…" : pContent}
                                     slug={post.slug}
                                     tags={post.tags}
                                     created_at={post.created_at}

@@ -23,6 +23,15 @@ export interface BlogCardProps {
   fullPost?: Post;
 }
 
+const asText = (value: unknown, lang: "en" | "bg") => {
+  if (typeof value === "string") return value;
+  if (value && typeof value === "object") {
+    const localized = value as { en?: string; bg?: string };
+    return (lang === "bg" ? localized.bg : localized.en) || localized.en || localized.bg || "";
+  }
+  return "";
+};
+
 export const BlogCard = ({
   tags,
   author,
@@ -49,7 +58,7 @@ export const BlogCard = ({
       <div className={styles.top}>
         <div className={styles.tags}>
           {tags.map((tag) => {
-            const tagName = lang === 'bg' ? tag.name_bg || tag.name : tag.name_en || tag.name;
+            const tagName = asText(lang === 'bg' ? tag.name_bg || tag.name : tag.name_en || tag.name, lang);
             return (
               <span key={tag.id} className={styles.tag}>
                 {tagName}

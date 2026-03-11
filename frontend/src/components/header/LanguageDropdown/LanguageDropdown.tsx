@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { Suspense, useState, useRef, useEffect } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useLanguage } from "@/lib/LanguageContext";
 import { IconFlagUK, IconFlagBG } from "@/components/icons";
@@ -11,8 +11,8 @@ const flags = {
     bg: IconFlagBG,
 };
 
-export const LanguageDropdown = () => {
-    const { lang, setLang } = useLanguage();
+const LanguageDropdownContent = () => {
+    const { lang } = useLanguage();
     const pathname = usePathname();
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -69,5 +69,13 @@ export const LanguageDropdown = () => {
                 </div>
             )}
         </div>
+    );
+};
+
+export const LanguageDropdown = () => {
+    return (
+        <Suspense fallback={null}>
+            <LanguageDropdownContent />
+        </Suspense>
     );
 };

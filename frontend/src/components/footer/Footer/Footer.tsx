@@ -143,6 +143,19 @@ const mergeConfig = (custom?: Partial<FooterConfig>): FooterConfig => {
   };
 };
 
+const getTagLabel = (tag: Tag, lang: "en" | "bg") => {
+  const fallbackName = tag.name;
+  let localizedFromName: string | undefined;
+
+  if (typeof fallbackName === "string") {
+    localizedFromName = fallbackName;
+  } else if (fallbackName && typeof fallbackName === "object") {
+    localizedFromName = lang === "bg" ? fallbackName.bg : fallbackName.en;
+  }
+
+  return (lang === "bg" ? tag.name_bg : tag.name_en) || localizedFromName || "";
+};
+
 export const Footer = ({ config }: FooterProps) => {
   const { lang } = useLanguage();
   const tr = translations[lang];
@@ -228,9 +241,9 @@ export const Footer = ({ config }: FooterProps) => {
 
   const coursesLinks: SimpleLink[] = categories.length > 0
     ? categories.map(tag => {
-      const label = lang === 'bg' ? tag.name_bg || tag.name : tag.name_en || tag.name;
+      const label = getTagLabel(tag, lang);
       return {
-        label: label || "",
+        label,
         href: `/#courses`,
         onClick: scrollToSection("courses", `courseTag=${tag.id}`),
       };

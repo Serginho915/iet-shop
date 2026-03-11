@@ -25,10 +25,12 @@ FROM node:20-alpine AS prod
 
 WORKDIR /app
 
-RUN npm install -g serve
-
-COPY --from=builder /app/out /app/out
+COPY --from=builder /app/package*.json /app/
+COPY --from=builder /app/node_modules /app/node_modules
+COPY --from=builder /app/.next /app/.next
+COPY --from=builder /app/public /app/public
+COPY --from=builder /app/next.config.ts /app/next.config.ts
 
 EXPOSE 3000
 
-CMD ["serve", "-s", "out", "-l", "3000"]
+CMD ["npm", "run", "start", "--", "-H", "0.0.0.0", "-p", "3000"]

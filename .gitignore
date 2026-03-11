@@ -1,9 +1,10 @@
 .idea
+
 backend/venv
 backend/api/__pycache__/
 backend/db.sqlite3
 backend/api/migrations/__pycache__/
 backend/core/__pycache__/
-
+backend/media/
 
 frontend/node_modules/

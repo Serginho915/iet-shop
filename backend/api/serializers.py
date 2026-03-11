@@ -40,6 +40,7 @@ class TagSerializer(BilingualSerializerMixin, serializers.ModelSerializer):
 
 class CourseSerializer(BilingualSerializerMixin, serializers.ModelSerializer):
     title = serializers.SerializerMethodField()
+    image = serializers.SerializerMethodField()
     description = serializers.SerializerMethodField()
     duration = serializers.SerializerMethodField()
     about_title = serializers.SerializerMethodField()
@@ -100,6 +101,9 @@ class CourseSerializer(BilingualSerializerMixin, serializers.ModelSerializer):
 
     def get_title(self, obj):
         return self._bilingual(obj.title_en, obj.title_bg)
+
+    def get_image(self, obj):
+        return self._file_url(obj.image)
 
     def get_description(self, obj):
         return self._bilingual(obj.description_en, obj.description_bg)
@@ -193,6 +197,7 @@ class EventSerializer(BilingualSerializerMixin, serializers.ModelSerializer):
 class PostSerializer(BilingualSerializerMixin, serializers.ModelSerializer):
     title = serializers.SerializerMethodField()
     content = serializers.SerializerMethodField()
+    picture = serializers.SerializerMethodField()
     tags = TagSerializer(many=True, read_only=True)
     tag_ids = serializers.PrimaryKeyRelatedField(
         queryset=Tag.objects.all(), many=True, write_only=True, required=False, source="tags"
@@ -221,6 +226,9 @@ class PostSerializer(BilingualSerializerMixin, serializers.ModelSerializer):
 
     def get_content(self, obj):
         return self._bilingual(obj.content_en, obj.content_bg)
+
+    def get_picture(self, obj):
+        return self._file_url(obj.picture)
 
 
 class ConsultationSerializer(serializers.ModelSerializer):

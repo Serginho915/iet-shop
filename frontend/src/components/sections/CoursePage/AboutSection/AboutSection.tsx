@@ -80,13 +80,17 @@ export const AboutSection = ({ course }: AboutSectionProps) => {
         {/* Column 3: Image Stack */}
         <div className={styles.imageBox}>
           <div className={styles.imageFanned}>
-            <Image
-              src={course.about_image || ""}
-              alt="About Course image"
-              width={342}
-              height={400}
-              className={styles.mainImg}
-            />
+            {course.about_image ? (
+              <Image
+                src={course.about_image}
+                alt="About Course image"
+                width={342}
+                height={400}
+                className={styles.mainImg}
+              />
+            ) : (
+              <div className={styles.mainImgPlaceholder} aria-hidden="true" />
+            )}
           </div>
         </div>
       </div>

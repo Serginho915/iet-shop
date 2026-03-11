@@ -148,15 +148,25 @@ const mapTags = (tagIds: any[], allTags: Tag[]) => (tagIds || []).map(id => {
   return { id: tagId };
 });
 
+const SERVER_REVALIDATE_SECONDS = 300;
+
 const safeFetch = async (endpoint: string) => {
   const url = `${API_URL}${endpoint}/`.replace(/\/+$/, '/');
+  const isServer = typeof window === 'undefined';
+  const requestOptions: any = {
+    headers: {
+      'Accept': 'application/json'
+    }
+  };
+
+  if (isServer) {
+    requestOptions.next = { revalidate: SERVER_REVALIDATE_SECONDS };
+  } else {
+    requestOptions.cache = 'no-store';
+  }
+
   try {
-    const res = await fetch(url, {
-      cache: 'no-store',
-      headers: {
-        'Accept': 'application/json'
-      }
-    });
+    const res = await fetch(url, requestOptions);
     if (!res.ok) {
       return null;
     }

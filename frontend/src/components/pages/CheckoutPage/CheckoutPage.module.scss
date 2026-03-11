@@ -155,7 +155,7 @@
 }
 
 .infoDate {
-  color: #eb4335;
+  color: $color-accent;
 
   // Red date
 }
@@ -186,7 +186,7 @@
 .dot {
   width: 10px;
   height: 10px;
-  background: #ff4d4d;
+  background: $color-accent;
   border-radius: 50%;
 }
 

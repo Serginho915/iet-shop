@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Course } from "@/lib/api";
 import styles from "./HeroSectionCourse.module.scss";
-import { IconCalendarHero, IconLocation, IconInfinity, IconBeginner } from "@/components/icons";
+import { IconCalendarHero, IconLocation, IconInfinity, IconBeginner, IconVisits } from "@/components/icons";
 
 import { useTranslate } from "@/lib/useTranslate";
 import { useCourse } from "@/lib/CourseContext";
@@ -59,7 +59,7 @@ export const HeroSectionCourse = ({
   const renderHighlightedDescription = (text: string) => {
     if (!text) return null;
     const words = text.trim().split(/\s+/);
-    if (words.length <= 2) return <span style={{ color: '#ff4d00' }}>{text}</span>;
+    if (words.length <= 2) return <span className={styles.accentText}>{text}</span>;
 
     const lastTwoIndex = words.length - 2;
     const initialPart = words.slice(0, lastTwoIndex).join(" ");
@@ -67,7 +67,7 @@ export const HeroSectionCourse = ({
 
     return (
       <>
-        {initialPart} <span style={{ color: '#ff4d00' }}>{lastPart}</span>
+        {initialPart} <span className={styles.accentText}>{lastPart}</span>
       </>
     );
   };
@@ -110,12 +110,27 @@ export const HeroSectionCourse = ({
               <IconBeginner className={styles.icon} />
               <span className={styles.label}>{t.beginnerFriendly}</span>
             </li>
+            {course.visits_per_week && (
+              <li className={styles.infoPill}>
+                <IconVisits className={styles.icon} />
+                <span className={styles.label}>{course.visits_per_week} {t.visitsPerWeek}</span>
+              </li>
+            )}
           </ul>
 
           <div className={styles.priceSection}>
             <span className={styles.priceLabel}>{t.price}:</span>
-            <div className={styles.priceBox}>
-              <span className={styles.eurPrice}>€ {course.price}</span>
+            <div className={styles.pricesContainer}>
+              <div className={styles.priceBox}>
+                <span className={styles.eurPrice}>€ {course.price}</span>
+                <span className={styles.bgnPrice}>{(course.price * 1.95583).toFixed(2)} лв</span>
+              </div>
+              {course.monthly_installment_price && (
+                <div className={styles.priceBox}>
+                  <span className={styles.eurPrice}>€ <span className={styles.bold}>{course.monthly_installment_price}</span>/{t.month}</span>
+                  <span className={styles.bgnPrice}>{(course.monthly_installment_price * 1.95583).toFixed(2)} лв</span>
+                </div>
+              )}
             </div>
           </div>
         </div>

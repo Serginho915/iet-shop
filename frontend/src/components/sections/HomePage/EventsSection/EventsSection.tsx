@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useState, useRef } from "react";
 import styles from "./EventsSection.module.scss";
 import { useTranslate } from "@/lib/useTranslate";
 import { translations, type EventsTranslations } from "./translations";
 import { EventCard } from "@/components/ui/EventCard/EventCard";
 import { IconArrowDown } from "@/components/icons";
-import { useVerticalScroll } from "@/lib/useVerticalScroll";
 import { Event } from "@/lib/api";
 import { EventRegistrationModal } from "@/components/ui/EventRegistrationModal/EventRegistrationModal";
 
@@ -16,15 +15,17 @@ interface EventsSectionProps {
 
 export const EventsSection = ({ events = [] }: EventsSectionProps) => {
   const { t, lang } = useTranslate<EventsTranslations>(translations);
-
-  const { containerRef, scrollNext, isScrollable } = useVerticalScroll({
-    cardHeight: 180,
-    gap: 24,
-  });
-
-
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const toggleExpanded = () => {
+    if (isExpanded && sectionRef.current) {
+      sectionRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+    setIsExpanded(!isExpanded);
+  };
 
   const handleJoinClick = (event: Event) => {
     setSelectedEvent(event);
@@ -38,9 +39,10 @@ export const EventsSection = ({ events = [] }: EventsSectionProps) => {
 
   const today = new Date().toISOString().split('T')[0];
   const upcomingEvents = events.filter((event) => !event.date || event.date >= today);
+  const hasMore = upcomingEvents.length > 3;
 
   return (
-    <section className={styles.section} id="events">
+    <section className={styles.section} id="events" ref={sectionRef}>
       <div className={styles.container}>
         <div className={styles.titleWrapper}>
           <div className={styles.badge}>
@@ -49,7 +51,7 @@ export const EventsSection = ({ events = [] }: EventsSectionProps) => {
           <h2 className={styles.title}>{t.title}</h2>
         </div>
 
-        <div className={styles.scrollContainer} ref={containerRef}>
+        <div className={`${styles.scrollContainer} ${isExpanded ? styles.expanded : ''}`}>
           <div className={styles.eventsList}>
             {upcomingEvents.map((event) => {
               const dateObj = new Date(event.date);
@@ -61,12 +63,10 @@ export const EventsSection = ({ events = [] }: EventsSectionProps) => {
                 })
                 : event.date;
 
-              // Robust localization for title
               const title = typeof event.title === 'object' && event.title
                 ? (event.title[lang === 'bg' ? 'bg' : 'en'] || event.title.en || event.title.bg || "")
                 : event.title;
 
-              // Robust localization for tags
               const eventTags = event.tags.map(tag => {
                 const tagName = tag.name;
                 if (typeof tagName === 'object' && tagName) {
@@ -75,7 +75,6 @@ export const EventsSection = ({ events = [] }: EventsSectionProps) => {
                 return tagName || "";
               });
 
-              // Robust localization for description
               const description = typeof event.description === 'object' && event.description
                 ? (event.description[lang === 'bg' ? 'bg' : 'en'] || event.description.en || event.description.bg || "")
                 : event.description;
@@ -93,21 +92,21 @@ export const EventsSection = ({ events = [] }: EventsSectionProps) => {
                   joinBtnText={t.joinBtn}
                   onJoin={() => handleJoinClick(event)}
                 />
-
               );
             })}
             {upcomingEvents.length === 0 && <div className={styles.noEvents}>{t.noEvents}</div>}
-
           </div>
         </div>
 
-
-        {isScrollable && (
-          <button className={styles.scrollBtn} onClick={scrollNext} aria-label="Scroll to next events">
+        {hasMore && (
+          <button
+            className={`${styles.scrollBtn} ${isExpanded ? styles.rotated : ''}`}
+            onClick={toggleExpanded}
+            aria-label={isExpanded ? "Collapse events" : "Expand all events"}
+          >
             <IconArrowDown />
           </button>
         )}
-
       </div>
 
       <EventRegistrationModal

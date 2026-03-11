@@ -5,7 +5,7 @@ interface ScrollOptions {
   gap: number;
 }
 
-export const useVerticalScroll = (options: ScrollOptions) => {
+export const useVerticalScroll = (options: ScrollOptions, deps: any[] = []) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isScrollable, setIsScrollable] = useState(false);
 
@@ -22,13 +22,13 @@ export const useVerticalScroll = (options: ScrollOptions) => {
     window.addEventListener('resize', checkScrollable);
 
     // Re-check after a brief delay to ensure content is rendered
-    const timer = setTimeout(checkScrollable, 100);
+    const timer = setTimeout(checkScrollable, 200);
 
     return () => {
       window.removeEventListener('resize', checkScrollable);
       clearTimeout(timer);
     };
-  }, []);
+  }, deps);
 
   const scrollNext = () => {
     if (containerRef.current) {

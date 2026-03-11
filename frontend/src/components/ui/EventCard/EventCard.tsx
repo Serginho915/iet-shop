@@ -79,7 +79,6 @@ export const EventCard = ({
                     <IconClock className={styles.icon} />
                     <span className={styles.date}>{date}</span>
                 </div>
-                {/* Остановка всплытия события, чтобы при клике на кнопку не закрывался аккордеон */}
                 <Button
                     variant="primary"
                     rounded="full"

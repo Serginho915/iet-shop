@@ -206,7 +206,7 @@ class EventSerializer(BilingualSerializerMixin, serializers.ModelSerializer):
         return self._file_url(obj.image)
 
     def get_image_2(self, obj):
-        return self._file_url(obj.image)
+        return self._file_url(obj.image_2)
 
 
 class PostSerializer(BilingualSerializerMixin, serializers.ModelSerializer):

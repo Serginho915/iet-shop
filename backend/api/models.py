@@ -82,6 +82,7 @@ class Event(models.Model):
     title_en = models.CharField(max_length=255, null=True, blank=True)
     title_bg = models.CharField(max_length=255, null=True, blank=True)
     image = models.ImageField(upload_to="events/", null=True, blank=True)
+    image_2 = models.ImageField(upload_to="events/", null=True, blank=True)
     description_en = models.TextField(null=True, blank=True)
     description_bg = models.TextField(null=True, blank=True)
     date = models.DateField()

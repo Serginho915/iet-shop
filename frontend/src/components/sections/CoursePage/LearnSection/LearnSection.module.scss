@@ -140,6 +140,10 @@
   width: 100%;
   max-width: 523px;
   border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
 
   @include tablet {
     max-width: 340px;
@@ -158,9 +162,8 @@
   aspect-ratio: 523 / 648;
   border-radius: 32px;
   object-fit: cover;
-  object-position: center top;
+  object-position: center bottom;
   display: block;
-  align-self: stretch;
 
   @include tablet {
     height: auto;

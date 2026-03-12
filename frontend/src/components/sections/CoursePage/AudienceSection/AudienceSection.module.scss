@@ -134,6 +134,7 @@
   padding: 16px 24px;
   align-self: stretch;
   border-radius: 44px;
+  gap: 16px;
   background: #dae2ff;
   transition: all 0.3s ease;
   min-height: 94px;
@@ -145,6 +146,12 @@
     .audienceText {
       color: #fff;
     }
+  }
+
+  @include mobile {
+    padding: 12px 16px;
+    gap: 2px;
+    min-height: 72px;
   }
 }
 
@@ -184,7 +191,7 @@
 
   .audienceBadge {
     top: 20px;
-    right: 15px; // Reduced from 30px to prevent clipping
+    right: 15px; 
     font-size: 16px;
     padding: 6px 12px;
   }

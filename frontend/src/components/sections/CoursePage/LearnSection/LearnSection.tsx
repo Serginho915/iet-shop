@@ -78,7 +78,7 @@ export const LearnSection = ({ course }: LearnSectionProps) => {
           {/* Left – photo */}
           <div className={styles.photoBox}>
             <Image
-              src={humanImg}
+              src={course.audience_image || humanImg}
               alt="Course result"
               width={523}
               height={612}

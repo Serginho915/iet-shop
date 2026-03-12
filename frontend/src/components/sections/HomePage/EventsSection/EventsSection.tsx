@@ -15,14 +15,14 @@ interface EventsSectionProps {
 
 export const EventsSection = ({ events = [] }: EventsSectionProps) => {
   const { t, lang } = useTranslate<EventsTranslations>(translations);
-  const sectionRef = useRef<HTMLElement>(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleExpanded = () => {
-    if (isExpanded && sectionRef.current) {
-      sectionRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (isExpanded && cardsRef.current) {
+      cardsRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
     setIsExpanded(!isExpanded);
   };
@@ -42,7 +42,7 @@ export const EventsSection = ({ events = [] }: EventsSectionProps) => {
   const hasMore = upcomingEvents.length > 3;
 
   return (
-    <section className={styles.section} id="events" ref={sectionRef}>
+    <section className={styles.section} id="events">
       <div className={styles.container}>
         <div className={styles.titleWrapper}>
           <div className={styles.badge}>
@@ -51,7 +51,7 @@ export const EventsSection = ({ events = [] }: EventsSectionProps) => {
           <h2 className={styles.title}>{t.title}</h2>
         </div>
 
-        <div className={`${styles.scrollContainer} ${isExpanded ? styles.expanded : ''}`}>
+        <div className={`${styles.scrollContainer} ${isExpanded ? styles.expanded : ''}`} ref={cardsRef}>
           <div className={styles.eventsList}>
             {upcomingEvents.map((event) => {
               const dateObj = new Date(event.date);

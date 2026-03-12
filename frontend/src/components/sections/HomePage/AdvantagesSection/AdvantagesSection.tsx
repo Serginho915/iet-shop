@@ -5,6 +5,7 @@ import { useTranslate } from "@/lib/useTranslate";
 import { translations } from "./translations";
 import styles from "./AdvantagesSection.module.scss";
 import { AdvantageCard } from "@/components/ui/AdvantageCard/AdvantageCard";
+import { RequestButton } from "@/components/header/RequestButton/RequestButton";
 
 import adv1 from "@/assets/emojii/AdvantageCard1.png";
 import adv2 from "@/assets/emojii/AdvantageCard2.png";
@@ -21,8 +22,13 @@ export const AdvantagesSection = () => {
     <section className={styles.advantagesSection}>
       <div className={styles.cardContainer}>
         <div className={styles.header}>
-          <h2 className={styles.title}>{t.title}</h2>
-          <p className={styles.subtitle}>{t.subtitle}</p>
+          <div className={styles.ellipse}>
+            <h2 className={styles.title}>{t.title}</h2>
+            <p className={styles.subtitle}>{t.subtitle}</p>
+          </div>
+          <div className={styles.headerBtn}>
+            <RequestButton />
+          </div>
         </div>
 
         <div className={styles.gridWrapper}>

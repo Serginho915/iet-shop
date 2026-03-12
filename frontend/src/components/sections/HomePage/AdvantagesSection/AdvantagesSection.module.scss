@@ -19,11 +19,32 @@
     margin-bottom: 2rem;
     padding-left: 0;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
 
     @include desktop {
         margin-bottom: 4rem;
         padding-left: 71px;
         text-align: left;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+}
+
+.ellipse {
+    width: 100%;
+
+    @include desktop {
+        width: auto;
+    }
+}
+
+.headerBtn {
+    @include desktop {
+        margin-bottom: 8px; // Slight adjustment to line up with subtitle
     }
 }
 
@@ -32,6 +53,7 @@
     font-weight: 500;
     color: $color-black;
     margin-bottom: 1rem;
+    max-width: 100%;
 
     @include tablet {
         font-size: 2.5rem;
@@ -74,12 +96,8 @@
     width: 100%;
     align-items: stretch;
 
-    @include tablet {
-        gap: 20px;
-    }
-
     @include desktop {
-        gap: 20px;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
+        justify-content: space-between;
     }
 }

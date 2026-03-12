@@ -11,10 +11,7 @@ interface NavLinksProps {
   links: SimpleLink[];
 
   linkClassName?: string;
-  /**
-   * Если true — каждая ссылка будет обёрнута в <li>, удобно для меню в хедере.
-   * Если false — будут отрендерены только <Link>/<a>, удобно для футера.
-   */
+
   asListItems?: boolean;
 }
 

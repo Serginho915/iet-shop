@@ -21,7 +21,7 @@ const icons = [vec0, vec1, vec2, vec3];
 export const AudienceSection = ({ course }: AudienceSectionProps) => {
   const { t, lang } = useTranslate<AudienceTranslations>(translations);
 
-  const audienceImage = course.audience_image || image;
+  const audienceImage = image;
 
   const audienceTags =
     course.extra_audience_tags && course.extra_audience_tags.length > 0

@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/Button/Button";
 import { IconClock, IconLocation } from "@/components/icons";
 import Image from "next/image";
 
+import defaultEventImg from "@/assets/event.jpg";
+
 interface EventCardProps {
     title: string;
     date: string;
@@ -45,18 +47,43 @@ export const EventCard = ({
         >
             <div className={styles.left}>
                 <div className={styles.avatars}>
-                    <div className={styles.avatar}>
-                        <Image src={image1 || ""} alt="Event Image 1" width={52} height={51} className={styles.img} />
-                    </div>
-                    <div className={styles.avatar}>
-                        <Image src={image2 || ""} alt="Event Image 2" width={52} height={51} className={styles.img} />
-                    </div>
+                    {image1 && image2 ? (
+                        <>
+                            <div className={styles.avatar}>
+                                <Image src={image1} alt="Event Image 1" width={52} height={51} className={styles.img} />
+                            </div>
+                            <div className={styles.avatar}>
+                                <Image src={image2} alt="Event Image 2" width={52} height={51} className={styles.img} />
+                            </div>
+                        </>
+                    ) : (image1 || image2 || !image1 && !image2) ? (
+                        <div
+                            className={styles.avatar}
+                            style={{
+                                top: '50%',
+                                left: '50%',
+                                transform: 'translate(-50%, -50%)',
+                                position: 'absolute',
+                                width: '72px',
+                                height: '70px',
+                                borderRadius: '12px'
+                            }}
+                        >
+                            <Image
+                                src={image1 || image2 || defaultEventImg}
+                                alt="Event Image"
+                                width={72}
+                                height={70}
+                                className={styles.img}
+                            />
+                        </div>
+                    ) : null}
                 </div>
             </div>
 
             <div className={styles.middle}>
                 <h4 className={styles.title}>{title}</h4>
-                
+
                 <div className={`${styles.description} ${showDescription ? styles.active : ""}`}>
                     <div className={styles.descriptionInner}>
                         <p className={styles.descriptionText}>{description}</p>

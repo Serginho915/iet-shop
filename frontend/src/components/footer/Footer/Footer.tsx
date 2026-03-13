@@ -1,16 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, MouseEvent } from "react";
 import { LocalizedLink as Link } from "@/components/ui/LocalizedLink/LocalizedLink";
 import Image from "next/image";
 import { Button } from "@/components/ui/Button/Button";
 import { NavLinks, type SimpleLink } from "@/components/ui/NavLinks/NavLinks";
 import { Modal } from "@/components/ui/Modal/Modal";
 import { PrivacyPolicyModal } from "@/components/ui/PrivacyPolicyModal/PrivacyPolicyModal";
-import { CookieSettingsModal } from "@/components/ui/CookieSettingsModal/CookieSettingsModal";
 import { useLanguage } from "@/lib/LanguageContext";
 import { translations } from "./translations";
 import styles from "./Footer.module.scss";
+import { ChatButton } from "@/components/ui/ChatButton/ChatButoon";
 
 import euProjectImg from "@/assets/Plakat-IOT-Digi.jpg";
 import {
@@ -27,6 +27,7 @@ import { useEffect } from "react";
 import ciscoLogo from "@/assets/Partners/cisco.png";
 import microsoftLogo from "@/assets/Partners/microsoft.png";
 import autodeskLogo from "@/assets/Partners/autodesc.png";
+
 
 type FooterLink = {
   label: string;
@@ -161,7 +162,6 @@ export const Footer = ({ config }: FooterProps) => {
   const tr = translations[lang];
   const [isEuModalOpen, setIsEuModalOpen] = useState(false);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
-  const [isCookieOpen, setIsCookieOpen] = useState(false);
   const [categories, setCategories] = useState<Tag[]>([]);
   const router = useRouter();
 
@@ -181,19 +181,19 @@ export const Footer = ({ config }: FooterProps) => {
     bottomText,
   } = mergeConfig(config);
 
-  const handleOpenEuModal = (e: React.MouseEvent) => {
+  const handleOpenEuModal = (e: MouseEvent) => {
     e.preventDefault();
     setIsEuModalOpen(true);
   };
 
-  const handleOpenPrivacy = (e: React.MouseEvent) => {
+  const handleOpenPrivacy = (e: MouseEvent) => {
     e.preventDefault();
     setIsPrivacyOpen(true);
   };
 
-  const handleOpenCookie = (e: React.MouseEvent) => {
+  const handleOpenCookie = (e: MouseEvent) => {
     e.preventDefault();
-    setIsCookieOpen(true);
+    window.dispatchEvent(new CustomEvent("open-cookie-banner"));
   };
 
   const companyNameText = tr.footerCompanyName ?? companyName;
@@ -349,6 +349,7 @@ export const Footer = ({ config }: FooterProps) => {
                   {tr.leaveRequest}
                 </Button>
               </div>
+              <ChatButton />
             </div>
           </div>
 
@@ -378,7 +379,6 @@ export const Footer = ({ config }: FooterProps) => {
         </div>
       </Modal>
       <PrivacyPolicyModal isOpen={isPrivacyOpen} onClose={() => setIsPrivacyOpen(false)} />
-      <CookieSettingsModal isOpen={isCookieOpen} onClose={() => setIsCookieOpen(false)} />
     </>
   );
 };

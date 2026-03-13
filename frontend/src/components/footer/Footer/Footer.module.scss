@@ -220,9 +220,13 @@
 .contactColumn,
 .coursesColumn,
 .actionColumn {
+	display: flex;
+	flex-direction: column;
 	width: 100%;
 
+
 	@include desktop {
+		gap: 44px;
 		min-width: 200px;
 	}
 }

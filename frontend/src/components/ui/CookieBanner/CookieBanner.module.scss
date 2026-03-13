@@ -3,98 +3,193 @@
 
 .bannerWrapper {
     position: fixed;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 24px;
+    left: 24px;
+    right: 24px;
     z-index: 1000;
-    width: calc(100% - 2rem);
-    max-width: 600px;
-}
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
 
-.inner {
-    @include flex-between;
-    padding: 1rem 1.5rem;
-    background-color: $color-white;
-    border-radius: $radius-2xl;
-    box-shadow: $shadow-lg;
-    border: 1px solid $color-border;
-    gap: 1.5rem;
-    animation: slideUp 0.5s ease;
-
-    @media (max-width: 640px) {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
+    @include mobile {
+        bottom: 16px;
+        left: 16px;
+        right: 16px;
     }
 }
 
-.message {
-    font-size: 14px;
-    font-weight: 500;
-    color: $color-black-second;
-    line-height: 1.4;
+.banner {
+    pointer-events: auto;
+    background: rgba(255, 255, 255);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255);
+    box-shadow: 0 12px 40px rgba(0, 0, 0);
+    border-radius: 24px;
+    padding: 24px 32px;
+    max-width: 1000px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(0);
+    opacity: 1;
+
+    @include mobile {
+        padding: 20px;
+        gap: 20px;
+        text-align: center;
+    }
 }
 
-.buttons {
+.mainView {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    flex-shrink: 0;
+    gap: 32px;
 
-    @media (max-width: 640px) {
-        width: 100%;
+    @include mobile {
+        flex-direction: column;
+        gap: 20px;
     }
 }
 
-.acceptBtn {
-    @include flex-center;
-    background-color: $color-yellow;
-    color: $color-black;
-    padding: 0.625rem 1.25rem;
-    border-radius: $radius-full;
-    font-size: 14px;
+.content {
+    flex: 1;
+}
+
+.title {
+    font-family: $font-roboto;
+    font-size: 18px;
     font-weight: 600;
-    transition: background-color 0.2s ease;
-
-    &:hover {
-        background-color: $color-yellow-hover;
-    }
-
-    @media (max-width: 640px) {
-        flex: 1;
-    }
-}
-
-.rejectBtn {
-    @include flex-center;
-    background-color: transparent;
+    margin-bottom: 8px;
     color: $color-black-second;
-    padding: 0.625rem 1.25rem;
-    border-radius: $radius-full;
+}
+
+.description {
+    font-family: $font-rubik;
     font-size: 14px;
-    font-weight: 600;
-    border: 1px solid $color-border;
-    transition: all 0.2s ease;
+    line-height: 1.5;
+    color: rgba(35, 31, 32, 0.7);
+    margin: 0;
 
-    &:hover {
-        background-color: $color-yellow;
-        border-color: $color-yellow;
-        color: $color-black;
-    }
+    .link {
+        color: $color-accent;
+        text-decoration: underline;
+        font-weight: 500;
 
-    @media (max-width: 640px) {
-        flex: 1;
+        &:hover {
+            color: $color-accent-hover;
+        }
     }
 }
 
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translate(-50%, 20px);
+// Settings View
+.settingsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px 0;
+    border-top: 1px solid rgba(0, 0, 0);
+    border-bottom: 1px solid rgba(0, 0, 0);
+}
+
+.categoryItem {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    text-align: left;
+}
+
+.categoryInfo {
+    flex: 1;
+
+    h4 {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: $color-black-second;
     }
 
-    to {
-        opacity: 1;
-        transform: translate(-50%, 0);
+    p {
+        font-size: 12px;
+        color: rgba(35, 31, 32, 0.6);
+        margin: 0;
     }
+}
+
+.categoryToggle {
+    input {
+        display: none;
+    }
+
+    span {
+        display: block;
+        width: 40px;
+        height: 20px;
+        background: #e2e2e2;
+        border-radius: 10px;
+        position: relative;
+        cursor: pointer;
+        transition: background 0.3s;
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+    }
+
+    input:checked+span {
+        background: $color-accent;
+
+        &::after {
+            transform: translateX(20px);
+        }
+    }
+
+    input:disabled+span {
+        background: #d4d4d4;
+        cursor: not-allowed;
+    }
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: flex-end;
+
+    @include mobile {
+        width: 100%;
+        flex-direction: column-reverse;
+    }
+}
+
+.actionBtn {
+    @include mobile {
+        width: 100% !important;
+    }
+}
+
+// Settings layout tweak
+.settingsActions {
+    @include mobile {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+// Fade out/in animation
+.hidden {
+    transform: translateY(100px);
+    opacity: 0;
+    pointer-events: none;
 }

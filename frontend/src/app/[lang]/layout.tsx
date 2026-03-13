@@ -58,6 +58,11 @@ export default async function RootLayout({
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
 
+            gtag('consent', 'default', {
+              'analytics_storage': 'denied',
+              'ad_storage': 'denied'
+            });
+
             gtag('config', 'G-TPK2B89YT8');
           `}
         </Script>

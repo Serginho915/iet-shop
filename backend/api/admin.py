@@ -4,6 +4,7 @@ from django import forms
 from django.forms.models import BaseInlineFormSet
 
 from .models import (
+    ChatSession,
     Consultation,
     Course,
     CourseAudienceTagCard,
@@ -13,6 +14,7 @@ from .models import (
     CourseOutcome,
     Event,
     EventRequest,
+    Message,
     Order,
     Post,
     Tag,
@@ -305,3 +307,24 @@ class EventRequestAdmin(admin.ModelAdmin):
 
     def has_view_permission(self, request, obj=None):
         return request.user.is_active and request.user.is_staff
+
+
+@admin.register(ChatSession)
+class ChatSessionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'session_key', 'is_active', 'created_at', 'updated_at')
+    list_filter = ('is_active', 'created_at', 'updated_at')
+    search_fields = ('session_key',)
+    readonly_fields = ('id', 'session_key', 'created_at', 'updated_at')
+
+    def has_add_permission(self, request):
+        return False
+
+
+@admin.register(Message)
+class MessageAdmin(admin.ModelAdmin):
+    list_display = ('id', 'chat_session', 'sender_type', 'created_at')
+    list_filter = ('sender_type', 'created_at')
+    search_fields = ('text', 'chat_session__session_key')
+    autocomplete_fields = ('chat_session',)
+    readonly_fields = ('created_at',)
+    fields = ('chat_session', 'sender_type', 'text', 'created_at')

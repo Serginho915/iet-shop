@@ -1,3 +1,7 @@
+import uuid
+
+from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -133,6 +137,55 @@ class EventRequest(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class ChatSession(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    session_key = models.CharField(max_length=64, unique=True, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['-updated_at', '-created_at']
+
+    def __str__(self):
+        return f'Chat {self.session_key}'
+
+
+class Message(models.Model):
+    class SenderType(models.TextChoices):
+        USER = 'user', 'User'
+        OPERATOR = 'operator', 'Operator'
+        BOT = 'bot', 'Bot'
+
+    chat_session = models.ForeignKey(
+        ChatSession,
+        on_delete=models.CASCADE,
+        related_name='messages',
+    )
+    text = models.TextField()
+    sender_type = models.CharField(max_length=10, choices=SenderType.choices)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['created_at', 'id']
+
+    def clean(self):
+        self.text = (self.text or '').strip()
+        if not self.text:
+            raise ValidationError({'text': 'Message text cannot be empty.'})
+        if len(self.text) > settings.CHAT_MESSAGE_MAX_LENGTH:
+            raise ValidationError(
+                {'text': f'Message text cannot exceed {settings.CHAT_MESSAGE_MAX_LENGTH} characters.'}
+            )
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.sender_type}: {self.text[:40]}'
 
 
 class CourseAudienceTagCard(models.Model):

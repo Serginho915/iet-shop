@@ -5,11 +5,15 @@ services:
       target: dev
     container_name: django_backend
     environment:
+      DEBUG: "1"
       LOAD_FIXTURE_ON_STARTUP: "1"
+      REDIS_URL: "redis://redis:6379/1"
     volumes:
       - ./backend:/app
     ports:
       - "8000:8000"
+    depends_on:
+      - redis
 
   frontend:
     build:
@@ -26,3 +30,9 @@ services:
       - "3000:3000"
     depends_on:
       - backend
+
+  redis:
+    image: redis:7-alpine
+    container_name: iet_shop_redis_dev
+    ports:
+      - "6379:6379"

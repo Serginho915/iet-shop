@@ -2,6 +2,8 @@ from django.urls import path
 from rest_framework.routers import DefaultRouter
 
 from .views import (
+    ChatInitView,
+    ChatMessagesView,
     ConsultationViewSet,
     CourseViewSet,
     EventViewSet,
@@ -23,6 +25,8 @@ router.register("event-requests", EventRequestViewSet, basename="event-request")
 
 urlpatterns = [
     path('test/', TestView.as_view()),
+    path('chat/init/', ChatInitView.as_view(), name='chat-init'),
+    path('chat/messages/', ChatMessagesView.as_view(), name='chat-messages'),
 ]
 
 urlpatterns += router.urls

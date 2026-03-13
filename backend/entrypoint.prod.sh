@@ -12,4 +12,4 @@ if [ "${LOAD_FIXTURE_ON_STARTUP:-1}" = "1" ] && [ -f "api/fixtures/initial_data.
   fi
 fi
 
-exec gunicorn core.wsgi:application --bind 0.0.0.0:8000
+exec daphne -b 0.0.0.0 -p 8000 core.asgi:application

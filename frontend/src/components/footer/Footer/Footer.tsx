@@ -11,6 +11,7 @@ import { useLanguage } from "@/lib/LanguageContext";
 import { translations } from "./translations";
 import styles from "./Footer.module.scss";
 import { ChatButton } from "@/components/ui/ChatButton/ChatButoon";
+import { ChatWidget } from "@/components/ui/ChatWidget/ChatWidget";
 
 import euProjectImg from "@/assets/Plakat-IOT-Digi.jpg";
 import {
@@ -162,6 +163,7 @@ export const Footer = ({ config }: FooterProps) => {
   const tr = translations[lang];
   const [isEuModalOpen, setIsEuModalOpen] = useState(false);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const [categories, setCategories] = useState<Tag[]>([]);
   const router = useRouter();
 
@@ -194,6 +196,14 @@ export const Footer = ({ config }: FooterProps) => {
   const handleOpenCookie = (e: MouseEvent) => {
     e.preventDefault();
     window.dispatchEvent(new CustomEvent("open-cookie-banner"));
+  };
+
+  const handleToggleChat = () => {
+    setIsChatOpen((current) => !current);
+  };
+
+  const handleCloseChat = () => {
+    setIsChatOpen(false);
   };
 
   const companyNameText = tr.footerCompanyName ?? companyName;
@@ -349,7 +359,7 @@ export const Footer = ({ config }: FooterProps) => {
                   {tr.leaveRequest}
                 </Button>
               </div>
-              <ChatButton />
+              <ChatButton onClick={handleToggleChat} isOpen={isChatOpen} />
             </div>
           </div>
 
@@ -377,6 +387,9 @@ export const Footer = ({ config }: FooterProps) => {
             style={{ maxWidth: "100%", height: "auto", borderRadius: "8px" }}
           />
         </div>
+      </Modal>
+      <Modal isOpen={isChatOpen} onClose={handleCloseChat}>
+        <ChatWidget />
       </Modal>
       <PrivacyPolicyModal isOpen={isPrivacyOpen} onClose={() => setIsPrivacyOpen(false)} />
     </>

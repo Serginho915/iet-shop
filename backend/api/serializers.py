@@ -17,6 +17,13 @@ class BilingualSerializerMixin:
     def _file_url(self, file_field):
         if not file_field:
             return None
+
+        # Avoid returning broken media links when DB path exists but file is missing.
+        file_name = getattr(file_field, "name", "")
+        storage = getattr(file_field, "storage", None)
+        if not file_name or (storage is not None and not storage.exists(file_name)):
+            return None
+
         request = self.context.get("request")
         if request:
             return request.build_absolute_uri(file_field.url)

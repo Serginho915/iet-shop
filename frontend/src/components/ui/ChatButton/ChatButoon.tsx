@@ -1,16 +1,30 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./ChatButton.module.scss";
 
-export const ChatButton = () => {
-  const [isChatOpened, setIsChatOpened] = useState(false);
-  const handleClick = () => {
-    setIsChatOpened((prev) => !prev);
-  };
+interface ChatButtonProps {
+  onClick: () => void;
+  isOpen?: boolean;
+  openLabel?: string;
+  closeLabel?: string;
+}
+
+export const ChatButton = ({
+  onClick,
+  isOpen = false,
+  openLabel = "Live chat",
+  closeLabel = "Close chat",
+}: ChatButtonProps) => {
+  const label = isOpen ? closeLabel : openLabel;
 
   return (
     <div>
-      <button className={styles.chatButton} onClick={handleClick}>
-        Live chat
+      <button
+        type="button"
+        className={styles.chatButton}
+        onClick={onClick}
+        aria-pressed={isOpen}
+      >
+        {label}
       </button>
     </div>
   );

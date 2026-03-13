@@ -5,7 +5,7 @@ from channels.db import database_sync_to_async
 from django.test import Client, TestCase, TransactionTestCase, override_settings
 from django.urls import reverse
 
-from .models import ChatSession, Message
+from .models import ChatSession, Course, Message
 
 
 IN_MEMORY_CHANNEL_LAYERS = {
@@ -191,3 +191,23 @@ class ChatWebSocketTests(TransactionTestCase):
 		self.assertEqual(second_message['message']['text'], 'Operator reply')
 
 		await communicator.disconnect()
+
+
+class MediaSerializationTests(TestCase):
+	def test_course_image_is_null_when_file_is_missing(self):
+		Course.objects.create(
+			slug='missing-media-course',
+			start='2026-01-01',
+			type='online',
+			price=1000,
+			image='courses/does-not-exist.jpg',
+		)
+
+		response = self.client.get('/api/courses/')
+		self.assertEqual(response.status_code, 200)
+
+		payload = response.json()
+		course_item = next((item for item in payload if item['slug'] == 'missing-media-course'), None)
+
+		self.assertIsNotNone(course_item)
+		self.assertIsNone(course_item['image'])

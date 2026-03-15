@@ -39,32 +39,28 @@ export const HeroSection = ({ metadata = {} }: { metadata?: Record<string, unkno
       <div className={styles.heroContent}>
         <div className={styles.heroContentLeft}>
           <h3 className={styles.heroTitle}>
-            {getDynamic("heroTitle", tr.heroTitle)}{" "}
-            <span className={styles.heroTitleHighlight}>
-              {getDynamic("heroTitleHighlight", tr.heroTitleHighlight)}
-            </span>
+            {getDynamic("heroTitle", tr.heroTitle)}
           </h3>
 
           <p className={styles.heroDescription}>
-            {getDynamic("heroDescription", tr.heroDescription)}{" "}
-            <span className={styles.heroDescriptionHighlight}>
-              {getDynamic("heroDescriptionHighlight", tr.heroDescriptionHighlight)}
-            </span>{" "}
-            {getDynamic("heroDescriptionEnd", tr.heroDescriptionEnd)}
+            {getDynamic("heroDescription", tr.heroDescription)}
           </p>
         </div>
 
         <div className={styles.heroContentRight}>
           <div className={styles.imageWrapper}>
-            <div className={styles.codeIcon}>&lt;/&gt;</div>
             <div className={styles.imageContainer}>
-              <Image
-                src={heroMain} 
-                alt="hero-image"
-                fill
-                className={styles.heroImage}
-                priority
-              />
+              <div className={styles.codeIcon}>&lt;/&gt;</div>
+              <div className={styles.imageSubWrapper}>
+
+                <Image
+                  src={heroMain}
+                  alt="hero-image"
+                  fill
+                  className={styles.heroImage}
+                  priority
+                />
+              </div>
             </div>
           </div>
         </div>

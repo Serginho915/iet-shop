@@ -48,7 +48,7 @@ export const translations: Record<Lang, FooterTranslations> = {
       "© 2026 Innovative Educational Technologies. All rights reserved.",
   },
   bg: {
-    leaveRequest: "Оставете заявка",
+    leaveRequest: "Остави запитване",
     contact: "Контакти",
     footerCompanyName: "Инновативни образователни технологии",
     footerAddressLine1: "Бул. Сливница 188",

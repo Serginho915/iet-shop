@@ -51,7 +51,7 @@ export const translations: Record<Lang, ConsultationTranslations> = {
         privacyPrefix: "Съгласен съм с ",
         privacyLink: "Политиката за поверителност",
         privacySuffix: " и обработката на лични данни.",
-        buttonLabel: "Оставете заявка",
+        buttonLabel: "Остави запитване",
         errorName: "Моля, въведете вашето име.",
         errorEmail: "Моля, въведете валиден имейл.",
         errorPhone: "Моля, въведете 7 цифри след +359.",

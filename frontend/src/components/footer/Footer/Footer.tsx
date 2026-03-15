@@ -11,7 +11,7 @@ import { useLanguage } from "@/lib/LanguageContext";
 import { translations } from "./translations";
 import styles from "./Footer.module.scss";
 import { ChatButton } from "@/components/ui/ChatButton/ChatButton";
-import { ChatWindow } from "@/components/ui/ChatWindow/ChatWindow";
+import { ChatWidget } from "@/components/ui/ChatWidget/ChatWidget";
 
 import euProjectImg from "@/assets/Plakat-IOT-Digi.jpg";
 import {
@@ -198,6 +198,14 @@ export const Footer = ({ config }: FooterProps) => {
     window.dispatchEvent(new CustomEvent("open-cookie-banner"));
   };
 
+  const handleToggleChat = () => {
+    setIsChatOpen((current) => !current);
+  };
+
+  const handleCloseChat = () => {
+    setIsChatOpen(false);
+  };
+
   const companyNameText = tr.footerCompanyName ?? companyName;
   const partneredText = tr.footerPartnered ?? "Partnered with";
   const contactTitle = tr.contact ?? contact.title;
@@ -351,7 +359,7 @@ export const Footer = ({ config }: FooterProps) => {
                   {tr.leaveRequest}
                 </Button>
               </div>
-              <ChatButton isOpen={isChatOpen} onClick={() => setIsChatOpen(!isChatOpen)} />
+              <ChatButton onClick={handleToggleChat} isOpen={isChatOpen} />
             </div>
           </div>
 
@@ -380,8 +388,10 @@ export const Footer = ({ config }: FooterProps) => {
           />
         </div>
       </Modal>
+      <Modal isOpen={isChatOpen} onClose={handleCloseChat}>
+        <ChatWidget />
+      </Modal>
       <PrivacyPolicyModal isOpen={isPrivacyOpen} onClose={() => setIsPrivacyOpen(false)} />
-      <ChatWindow isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </>
   );
 };

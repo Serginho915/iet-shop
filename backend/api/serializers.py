@@ -1,10 +1,13 @@
+from django.conf import settings
 from rest_framework import serializers
 
 from .models import (
+    ChatSession,
     Consultation,
     Course,
     EventRequest,
     Event,
+    Message,
     Post,
     Tag,
 )
@@ -14,6 +17,13 @@ class BilingualSerializerMixin:
     def _file_url(self, file_field):
         if not file_field:
             return None
+
+        # Avoid returning broken media links when DB path exists but file is missing.
+        file_name = getattr(file_field, "name", "")
+        storage = getattr(file_field, "storage", None)
+        if not file_name or (storage is not None and not storage.exists(file_name)):
+            return None
+
         request = self.context.get("request")
         if request:
             return request.build_absolute_uri(file_field.url)
@@ -258,3 +268,33 @@ class EventRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = EventRequest
         fields = "__all__"
+
+
+class ChatMessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Message
+        fields = ['id', 'text', 'sender_type', 'created_at']
+        read_only_fields = fields
+
+
+class ChatMessageCreateSerializer(serializers.Serializer):
+    text = serializers.CharField(trim_whitespace=True)
+
+    def validate_text(self, value):
+        cleaned = value.strip()
+        if not cleaned:
+            raise serializers.ValidationError('Message text cannot be empty.')
+        if len(cleaned) > settings.CHAT_MESSAGE_MAX_LENGTH:
+            raise serializers.ValidationError(
+                f'Message text cannot exceed {settings.CHAT_MESSAGE_MAX_LENGTH} characters.'
+            )
+        return cleaned
+
+
+class ChatSessionSerializer(serializers.ModelSerializer):
+    messages = ChatMessageSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = ChatSession
+        fields = ['id', 'messages']
+        read_only_fields = fields

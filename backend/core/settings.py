@@ -1,4 +1,19 @@
+import os
 from pathlib import Path
+
+
+def env_bool(name, default=False):
+    value = os.getenv(name)
+    if value is None:
+        return default
+    return value.strip().lower() in {"1", "true", "yes", "on"}
+
+
+def env_list(name, default=None):
+    value = os.getenv(name)
+    if value is None:
+        return list(default or [])
+    return [item.strip() for item in value.split(",") if item.strip()]
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -6,7 +21,16 @@ SECRET_KEY = 'django-insecure-&c3%)cp9*njkj@m2d@nue#38*q(_$!0ar&wq^xpr0t^=6t7hh0
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = env_list('ALLOWED_HOSTS', ['*'])
+
+DEFAULT_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'https://haldaniko.com.ua',
+    'https://www.haldaniko.com.ua',
+]
+
+REDIS_URL = os.getenv('REDIS_URL', 'redis://127.0.0.1:6379/1')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -16,10 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'channels',
     "corsheaders",
     'rest_framework',
     'drf_spectacular',
-    'api',
+    'api.apps.ApiConfig',
 ]
 
 MIDDLEWARE = [
@@ -34,6 +59,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'core.urls'
+ASGI_APPLICATION = 'core.asgi.application'
 
 TEMPLATES = [
     {
@@ -96,9 +122,49 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'API documentation',
 }
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = env_list('CORS_ALLOWED_ORIGINS', DEFAULT_ALLOWED_ORIGINS)
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://haldaniko.com.ua",
-    "https://*.haldaniko.com.ua",
-]
+CSRF_TRUSTED_ORIGINS = env_list(
+    'CSRF_TRUSTED_ORIGINS',
+    [
+        'http://localhost:3000',
+        'http://127.0.0.1:3000',
+        'https://haldaniko.com.ua',
+        'https://www.haldaniko.com.ua',
+        'https://*.haldaniko.com.ua',
+    ],
+)
+
+# Anonymous SPA chat relies on browser-managed cookies rather than tokens.
+SESSION_COOKIE_SAMESITE = os.getenv('SESSION_COOKIE_SAMESITE', 'Lax')
+SESSION_COOKIE_SECURE = env_bool(
+    'SESSION_COOKIE_SECURE',
+    not DEBUG and SESSION_COOKIE_SAMESITE.lower() == 'none',
+)
+CSRF_COOKIE_SAMESITE = os.getenv('CSRF_COOKIE_SAMESITE', 'Lax')
+CSRF_COOKIE_SECURE = env_bool(
+    'CSRF_COOKIE_SECURE',
+    not DEBUG and CSRF_COOKIE_SAMESITE.lower() == 'none',
+)
+CSRF_COOKIE_HTTPONLY = False
+
+if env_bool('USE_IN_MEMORY_CHANNEL_LAYER', False):
+    CHANNEL_LAYERS = {
+        'default': {
+            'BACKEND': 'channels.layers.InMemoryChannelLayer',
+        }
+    }
+else:
+    CHANNEL_LAYERS = {
+        'default': {
+            'BACKEND': 'channels_redis.core.RedisChannelLayer',
+            'CONFIG': {
+                'hosts': [REDIS_URL],
+            },
+        }
+    }
+
+CHAT_MESSAGE_MAX_LENGTH = int(os.getenv('CHAT_MESSAGE_MAX_LENGTH', '2000'))
+CHAT_RATE_LIMIT_COUNT = int(os.getenv('CHAT_RATE_LIMIT_COUNT', '5'))
+CHAT_RATE_LIMIT_WINDOW_SECONDS = int(os.getenv('CHAT_RATE_LIMIT_WINDOW_SECONDS', '30'))

@@ -1,9 +1,17 @@
+from django.core.exceptions import ValidationError as DjangoValidationError
+from django.middleware.csrf import get_token
 from rest_framework.response import Response
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, status, viewsets
+from rest_framework.exceptions import Throttled, ValidationError
 from rest_framework.views import APIView
 
-from .models import Consultation, Course, Event, EventRequest, Post, Tag
+from .authentication import SessionCSRFAuthentication
+from .chat_services import ChatRateLimitExceeded, create_message, get_or_create_chat_session
+from .models import Consultation, Course, Event, EventRequest, Message, Post, Tag
 from .serializers import (
+    ChatMessageCreateSerializer,
+    ChatMessageSerializer,
+    ChatSessionSerializer,
     ConsultationSerializer,
     CourseSerializer,
     EventSerializer,
@@ -23,6 +31,48 @@ class IsAdminOrReadOnly(permissions.BasePermission):
 class TestView(APIView):
     def get(self, request):
         return Response({"status": "ok"})
+
+
+class ChatInitView(APIView):
+    permission_classes = [permissions.AllowAny]
+    authentication_classes = []
+
+    def post(self, request):
+        chat_session = get_or_create_chat_session(request)
+        get_token(request)
+        serializer = ChatSessionSerializer(chat_session)
+        return Response(serializer.data)
+
+
+class ChatMessagesView(APIView):
+    permission_classes = [permissions.AllowAny]
+    authentication_classes = [SessionCSRFAuthentication]
+
+    def get(self, request):
+        chat_session = get_or_create_chat_session(request)
+        get_token(request)
+        serializer = ChatMessageSerializer(chat_session.messages.all(), many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = ChatMessageCreateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        chat_session = get_or_create_chat_session(request)
+
+        try:
+            message = create_message(
+                chat_session=chat_session,
+                text=serializer.validated_data['text'],
+                sender_type=Message.SenderType.USER,
+            )
+        except ChatRateLimitExceeded as exc:
+            raise Throttled(wait=exc.wait_seconds, detail=exc.detail) from exc
+        except DjangoValidationError as exc:
+            detail = exc.message_dict if hasattr(exc, 'message_dict') else exc.messages
+            raise ValidationError(detail) from exc
+
+        return Response(ChatMessageSerializer(message).data, status=status.HTTP_201_CREATED)
 
 
 class TagViewSet(viewsets.ModelViewSet):

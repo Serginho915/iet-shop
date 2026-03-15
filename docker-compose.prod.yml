@@ -6,12 +6,18 @@ services:
     container_name: django_backend
     restart: always
     environment:
+      DEBUG: "0"
       LOAD_FIXTURE_ON_STARTUP: "1"
+      SESSION_COOKIE_SECURE: "1"
+      CSRF_COOKIE_SECURE: "1"
+      REDIS_URL: "redis://redis:6379/1"
     volumes:
       - ./backend/db.sqlite3:/app/db.sqlite3
       - media_data:/app/media
     ports:
       - "8007:8000"
+    depends_on:
+      - redis
 
   frontend:
     build:
@@ -25,6 +31,11 @@ services:
       - "3000:3000"
     depends_on:
       - backend
+
+  redis:
+    image: redis:7-alpine
+    container_name: iet_shop_redis_prod
+    restart: always
 
 volumes:
   media_data:

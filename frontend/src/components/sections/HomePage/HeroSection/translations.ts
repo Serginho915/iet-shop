@@ -31,7 +31,7 @@ export const translations = {
         mainTitleBlock: "Иновативни образователни технологии",
         georgeChat: "Здравей, аз съм Джордж. Нека ни представя.",
         beginnerFriendly: "Подходящо за начинаещи",
-        coursesDelivered: "Курсове за ученици від всі възрасти",
+        coursesDelivered: "Курсове за ученици въд всички възрасти",
         studentsCompleted: "студенти успешно завършиха нашите програми",
         expertiseTitle: "Нашата експертиза е в:",
         expertiseDesign: "Дизайн",

@@ -1,0 +1,119 @@
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 10% 20%, rgba(255, 156, 38, 0.35), transparent 38%),
+    radial-gradient(circle at 90% 80%, rgba(16, 96, 191, 0.28), transparent 42%),
+    linear-gradient(165deg, #f4f7fd 0%, #dbe7fb 42%, #fef6ec 100%);
+}
+
+.card {
+  width: min(100%, 460px);
+  padding: 30px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(18, 45, 86, 0.15);
+  box-shadow: 0 30px 80px rgba(9, 30, 66, 0.22);
+  backdrop-filter: blur(4px);
+}
+
+.header {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 24px;
+
+  h1 {
+    margin: 0;
+    text-align: left;
+    font-size: clamp(1.6rem, 3.2vw, 2.2rem);
+    line-height: 1.2;
+    letter-spacing: 0.03em;
+    color: #0d203f;
+  }
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #1d5ca8;
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: #374f79;
+}
+
+.form {
+  display: grid;
+  gap: 16px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+  font-weight: 500;
+  color: #1c345f;
+
+  input {
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid #9db1d2;
+    background: #f7faff;
+    padding: 12px;
+    color: #0f274f;
+    font-size: 0.97rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:focus-visible {
+      outline: none;
+      border-color: #1f66bf;
+      box-shadow: 0 0 0 3px rgba(31, 102, 191, 0.2);
+    }
+  }
+}
+
+.error {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: #8a1430;
+  background: #ffe6eb;
+  border: 1px solid #f3b8c5;
+}
+
+.submit {
+  border: 0;
+  border-radius: 999px;
+  padding: 11px 16px;
+  font-weight: 700;
+  font-size: 0.98rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #f7fbff;
+  background: linear-gradient(130deg, #0e4a90 0%, #1572df 70%, #2f90ff 100%);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  box-shadow: 0 10px 24px rgba(17, 101, 200, 0.38);
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 30px rgba(17, 101, 200, 0.45);
+  }
+
+  &:disabled {
+    opacity: 0.72;
+    cursor: not-allowed;
+  }
+}
+
+@media (max-width: 560px) {
+  .card {
+    padding: 22px;
+  }
+}

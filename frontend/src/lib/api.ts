@@ -112,10 +112,17 @@ export interface Event {
 
 
 const getEffectiveApiBase = () => {
-  if (typeof window === 'undefined') {
-    return process.env.NEXT_PUBLIC_API_URL;
+  const configuredBase = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, "");
+  if (configuredBase) {
+    return configuredBase;
   }
-  return process.env.NEXT_PUBLIC_API_URL || "";
+
+  if (typeof window !== "undefined") {
+    const protocol = window.location.protocol === "https:" ? "https:" : "http:";
+    return `${protocol}//${window.location.hostname}:8000`;
+  }
+
+  return "http://127.0.0.1:8000";
 };
 
 const API_BASE = getEffectiveApiBase();
@@ -124,7 +131,7 @@ export const API_URL = `${API_BASE}/api`;
 const resolveUrl = (url?: string) => {
   if (!url) return undefined;
   if (url.startsWith('http')) return url;
-  const base = typeof window === 'undefined' ? (process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000") : "";
+  const base = getEffectiveApiBase();
   return `${base}${url.startsWith('/') ? '' : '/'}${url}`;
 };
 

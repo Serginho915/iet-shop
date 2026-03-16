@@ -25,7 +25,9 @@ ALLOWED_HOSTS = env_list('ALLOWED_HOSTS', ['*'])
 
 DEFAULT_ALLOWED_ORIGINS = [
     'http://localhost:3000',
+    'http://localhost:3001',
     'http://127.0.0.1:3000',
+    'http://127.0.0.1:3001',
     'https://haldaniko.com.ua',
     'https://www.haldaniko.com.ua',
 ]
@@ -129,7 +131,9 @@ CSRF_TRUSTED_ORIGINS = env_list(
     'CSRF_TRUSTED_ORIGINS',
     [
         'http://localhost:3000',
+        'http://localhost:3001',
         'http://127.0.0.1:3000',
+        'http://127.0.0.1:3001',
         'https://haldaniko.com.ua',
         'https://www.haldaniko.com.ua',
         'https://*.haldaniko.com.ua',

@@ -5,6 +5,7 @@ from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from .chat_services import (
     ChatRateLimitExceeded,
     create_message,
+    get_admin_chat_group_name,
     get_chat_group_name,
     get_or_create_chat_session_by_session_key,
 )
@@ -85,3 +86,43 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
 
     async def chat_message(self, event):
         await self.send_json({'type': 'chat.message', 'message': event['message']})
+
+
+class AdminChatConsumer(AsyncJsonWebsocketConsumer):
+    async def connect(self):
+        user = self.scope.get('user')
+        if not user or not user.is_authenticated or not user.is_superuser:
+            await self.close(code=4403)
+            return
+
+        self.group_name = get_admin_chat_group_name()
+        await self.channel_layer.group_add(self.group_name, self.channel_name)
+        await self.accept()
+        await self.send_json({'type': 'admin.chat.ready'})
+
+    async def disconnect(self, close_code):
+        if hasattr(self, 'group_name') and self.group_name:
+            await self.channel_layer.group_discard(self.group_name, self.channel_name)
+
+    async def receive_json(self, content, **kwargs):
+        event_type = content.get('type')
+        if event_type == 'ping':
+            await self.send_json({'type': 'pong'})
+            return
+
+        await self.send_json(
+            {
+                'type': 'chat.error',
+                'code': 'invalid_event',
+                'detail': 'Unsupported websocket event type.',
+            }
+        )
+
+    async def admin_chat_message(self, event):
+        await self.send_json(
+            {
+                'type': 'admin.chat.message',
+                'chat_session_id': event['chat_session_id'],
+                'message': event['message'],
+            }
+        )

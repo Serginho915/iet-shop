@@ -19,7 +19,7 @@ or via environment variables in your deployment environment.
 
 - **`NEXT_PUBLIC_API_URL`** – base URL of the backend  
   - example for local development:  
-    `NEXT_PUBLIC_API_URL=http://localhost:9000`
+    `NEXT_PUBLIC_API_URL=http://localhost:8000`
 - **`NEXT_PUBLIC_API_PUBLISHABLE_KEY`** – optional public key; if present it will be sent as `x-publishable-api-key`
 - **`NEXT_PUBLIC_PRODUCTS_ENDPOINT`** – endpoint used to fetch the product list  
   - default: `/store/products`
@@ -29,11 +29,13 @@ or via environment variables in your deployment environment.
 Example `.env.local` file in the `frontend` root:
 
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:9000
+NEXT_PUBLIC_API_URL=http://localhost:8000
 NEXT_PUBLIC_PRODUCTS_ENDPOINT=/store/products
 # NEXT_PUBLIC_API_PUBLISHABLE_KEY=public-key-if-needed
 # NEXT_PUBLIC_IMAGE_HOSTNAMES=cdn.myshop.com
 ```
+
+If `NEXT_PUBLIC_API_URL` is not set, the frontend falls back to `http://localhost:8000` in local mode.
 
 ---
 
@@ -51,6 +53,8 @@ npm install
 ```bash
 npm run dev
 ```
+
+If Docker frontend is already running on port `3000`, local `npm run dev` will start on the next free port.
 
 3. Open in the browser:
 

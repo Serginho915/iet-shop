@@ -8,6 +8,9 @@ from django.utils import timezone
 from .models import ChatSession, Message
 
 
+ADMIN_CHAT_GROUP_NAME = 'admin_chat_watchers'
+
+
 class ChatRateLimitExceeded(Exception):
     def __init__(self, detail, wait_seconds):
         super().__init__(detail)
@@ -18,6 +21,10 @@ class ChatRateLimitExceeded(Exception):
 def get_chat_group_name(session_key):
     sanitized_key = re.sub(r'[^a-zA-Z0-9_.-]', '_', session_key)
     return f'chat_{sanitized_key}'[:100]
+
+
+def get_admin_chat_group_name():
+    return ADMIN_CHAT_GROUP_NAME
 
 
 def ensure_session_key(request):

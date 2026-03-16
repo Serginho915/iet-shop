@@ -26,9 +26,10 @@ const getApiBaseUrl = () => {
     return configuredBase;
   }
   if (typeof window !== "undefined") {
-    return window.location.origin;
+    const protocol = window.location.protocol === "https:" ? "https:" : "http:";
+    return `${protocol}//${window.location.hostname}:8000`;
   }
-  throw new Error("NEXT_PUBLIC_API_URL is required on the server.");
+  return "http://127.0.0.1:8000";
 };
 
 const getCookie = (name: string) => {

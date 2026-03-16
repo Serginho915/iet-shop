@@ -1,6 +1,11 @@
+import fs from "node:fs";
 import type { NextConfig } from "next";
 
+const defaultDistDir = fs.existsSync("/.dockerenv") ? ".next-docker" : ".next-local";
+
 const nextConfig: NextConfig = {
+  typedRoutes: false,
+  distDir: process.env.NEXT_DIST_DIR || defaultDistDir,
   images: {
     unoptimized: true,
     remotePatterns: [

@@ -3,6 +3,8 @@ frontend/node_modules/
 
 
 .next/
+.next-local/
+.next-docker/
 out/
 build/
 

@@ -111,6 +111,7 @@ class Consultation(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField()
     phone = models.CharField(max_length=30)
+    created_at = models.DateTimeField(auto_now_add=True)
     interested = models.ForeignKey(
         Course,
         on_delete=models.SET_NULL,
@@ -127,6 +128,7 @@ class EventRequest(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField()
     phone = models.CharField(max_length=30)
+    created_at = models.DateTimeField(auto_now_add=True)
     interested = models.ForeignKey(
         Event,
         on_delete=models.SET_NULL,

@@ -275,8 +275,10 @@ class PostAdmin(admin.ModelAdmin):
 
 @admin.register(Consultation)
 class ConsultationAdmin(admin.ModelAdmin):
-    list_display = ("name", "email", "phone", "interested")
+    list_display = ("name", "email", "phone", "interested", "created_at")
+    list_filter = ("created_at",)
     search_fields = ("name", "email", "phone")
+    readonly_fields = ("name", "email", "phone", "interested", "created_at")
 
     def has_add_permission(self, request):
         return False
@@ -293,8 +295,10 @@ class ConsultationAdmin(admin.ModelAdmin):
 
 @admin.register(EventRequest)
 class EventRequestAdmin(admin.ModelAdmin):
-    list_display = ("name", "email", "phone", "interested")
+    list_display = ("name", "email", "phone", "interested", "created_at")
+    list_filter = ("created_at",)
     search_fields = ("name", "email", "phone")
+    readonly_fields = ("name", "email", "phone", "interested", "created_at")
 
     def has_add_permission(self, request):
         return False

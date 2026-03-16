@@ -1,16 +1,27 @@
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
+from .chat_services import create_message
 from .models import (
     ChatSession,
     Consultation,
     Course,
+    CourseAudienceTagCard,
+    CourseInstrument,
+    CourseModule,
+    CourseModuleDescription,
+    CourseOutcome,
     EventRequest,
     Event,
     Message,
+    Order,
     Post,
     Tag,
 )
+
+
+User = get_user_model()
 
 
 class BilingualSerializerMixin:
@@ -298,3 +309,248 @@ class ChatSessionSerializer(serializers.ModelSerializer):
         model = ChatSession
         fields = ['id', 'messages']
         read_only_fields = fields
+
+
+class AdminUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'id',
+            'username',
+            'email',
+            'first_name',
+            'last_name',
+            'is_staff',
+            'is_superuser',
+            'is_active',
+            'last_login',
+        ]
+        read_only_fields = fields
+
+
+class AdminTagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ['id', 'name_en', 'name_bg']
+
+
+class AdminCourseSerializer(serializers.ModelSerializer):
+    tags = serializers.PrimaryKeyRelatedField(queryset=Tag.objects.all(), many=True, required=False)
+    tag_ids = serializers.PrimaryKeyRelatedField(
+        queryset=Tag.objects.all(), many=True, write_only=True, required=False, source='tags'
+    )
+
+    class Meta:
+        model = Course
+        fields = [
+            'id',
+            'slug',
+            'title_en',
+            'title_bg',
+            'start',
+            'image',
+            'description_en',
+            'description_bg',
+            'duration_en',
+            'duration_bg',
+            'type',
+            'audience',
+            'price',
+            'monthly_installment_price',
+            'visits_per_week',
+            'is_active',
+            'stripe_product_id',
+            'stripe_price_id',
+            'about_title_en',
+            'about_title_bg',
+            'about_description_top_en',
+            'about_description_top_bg',
+            'about_description_bottom_en',
+            'about_description_bottom_bg',
+            'about_image',
+            'audience_image',
+            'tags',
+            'tag_ids',
+        ]
+
+
+class AdminEventSerializer(serializers.ModelSerializer):
+    tags = serializers.PrimaryKeyRelatedField(queryset=Tag.objects.all(), many=True, required=False)
+    tag_ids = serializers.PrimaryKeyRelatedField(
+        queryset=Tag.objects.all(), many=True, write_only=True, required=False, source='tags'
+    )
+
+    class Meta:
+        model = Event
+        fields = [
+            'id',
+            'title_en',
+            'title_bg',
+            'image',
+            'image_2',
+            'description_en',
+            'description_bg',
+            'date',
+            'type',
+            'tags',
+            'tag_ids',
+        ]
+
+
+class AdminPostSerializer(serializers.ModelSerializer):
+    tags = serializers.PrimaryKeyRelatedField(queryset=Tag.objects.all(), many=True, required=False)
+    tag_ids = serializers.PrimaryKeyRelatedField(
+        queryset=Tag.objects.all(), many=True, write_only=True, required=False, source='tags'
+    )
+
+    class Meta:
+        model = Post
+        fields = [
+            'id',
+            'slug',
+            'title_en',
+            'title_bg',
+            'author',
+            'content_en',
+            'content_bg',
+            'picture',
+            'created_at',
+            'tags',
+            'tag_ids',
+        ]
+        read_only_fields = ['created_at']
+
+
+class AdminConsultationSerializer(serializers.ModelSerializer):
+    interested = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Consultation
+        fields = ['id', 'name', 'email', 'phone', 'interested', 'created_at']
+
+    def get_interested(self, obj):
+        if not obj.interested:
+            return None
+        title_en = (obj.interested.title_en or '').strip()
+        title_bg = (obj.interested.title_bg or '').strip()
+        if title_en:
+            return title_en
+        if title_bg:
+            return title_bg
+        if obj.interested.slug:
+            return obj.interested.slug
+        return 'Untitled course'
+
+
+class AdminEventRequestSerializer(serializers.ModelSerializer):
+    interested = serializers.SerializerMethodField()
+
+    class Meta:
+        model = EventRequest
+        fields = ['id', 'name', 'email', 'phone', 'interested', 'created_at']
+
+    def get_interested(self, obj):
+        if not obj.interested:
+            return None
+        title_en = (obj.interested.title_en or '').strip()
+        title_bg = (obj.interested.title_bg or '').strip()
+        if title_en:
+            return title_en
+        if title_bg:
+            return title_bg
+        return 'Untitled event'
+
+
+class AdminOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = '__all__'
+
+
+class AdminCourseAudienceTagCardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CourseAudienceTagCard
+        fields = '__all__'
+
+
+class AdminCourseInstrumentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CourseInstrument
+        fields = '__all__'
+
+
+class AdminCourseOutcomeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CourseOutcome
+        fields = '__all__'
+
+
+class AdminCourseModuleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CourseModule
+        fields = '__all__'
+
+
+class AdminCourseModuleDescriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CourseModuleDescription
+        fields = '__all__'
+
+
+class AdminChatSessionSerializer(serializers.ModelSerializer):
+    messages_count = serializers.SerializerMethodField()
+    last_message = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ChatSession
+        fields = [
+            'id',
+            'session_key',
+            'is_active',
+            'created_at',
+            'updated_at',
+            'messages_count',
+            'last_message',
+        ]
+        read_only_fields = [
+            'id',
+            'session_key',
+            'created_at',
+            'updated_at',
+            'messages_count',
+            'last_message',
+        ]
+
+    def get_messages_count(self, obj):
+        prefetched_count = getattr(obj, 'messages_count', None)
+        if prefetched_count is not None:
+            return prefetched_count
+        return obj.messages.count()
+
+    def get_last_message(self, obj):
+        last_message = getattr(obj, 'last_message_obj', None)
+        if last_message is None:
+            last_message = obj.messages.order_by('-created_at', '-id').first()
+        if not last_message:
+            return None
+        return ChatMessageSerializer(last_message, context=self.context).data
+
+
+class AdminMessageSerializer(serializers.ModelSerializer):
+    sender_type = serializers.ChoiceField(
+        choices=Message.SenderType.choices,
+        default=Message.SenderType.OPERATOR,
+    )
+
+    class Meta:
+        model = Message
+        fields = ['id', 'chat_session', 'text', 'sender_type', 'created_at']
+        read_only_fields = ['id', 'created_at']
+
+    def create(self, validated_data):
+        sender_type = validated_data.get('sender_type', Message.SenderType.OPERATOR)
+        return create_message(
+            chat_session=validated_data['chat_session'],
+            text=validated_data['text'],
+            sender_type=sender_type,
+        )

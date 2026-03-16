@@ -94,7 +94,7 @@ const defaultConfig: FooterConfig = {
     title: "Contact",
     addressLines: ["188 Slivnica Blvd", "Sofia, Bulgaria"],
     phone: "+359 87 532 9945",
-    email: "email_office@gmail.com",
+    email: "office.inovativni@gmail.com",
   },
   legal: {
     title: "Legal",

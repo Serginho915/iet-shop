@@ -119,7 +119,7 @@ const getEffectiveApiBase = () => {
 };
 
 const API_BASE = getEffectiveApiBase();
-const API_URL = `${API_BASE}/api`;
+export const API_URL = `${API_BASE}/api`;
 
 const resolveUrl = (url?: string) => {
   if (!url) return undefined;

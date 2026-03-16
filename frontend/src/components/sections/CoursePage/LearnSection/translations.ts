@@ -15,6 +15,6 @@ export const translations: Record<Lang, LearnTranslations> = {
     bg: {
         instrumentsTitle: "Инструменти, които ще научите",
         outcomeTitle: "В резултат ще бъдете готови да:",
-        leaveRequest: "Оставете заявка",
+        leaveRequest: "Остави запитване",
     },
 };

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import { useTranslate } from "@/lib/useTranslate";
 import { translations, CookieTranslations } from "./translations";
 import styles from "./CookieBanner.module.scss";
@@ -24,7 +23,13 @@ export const CookieBanner = () => {
     });
 
     const saveConsent = (newChoices: ConsentChoices) => {
-        localStorage.setItem("cookie-consent", JSON.stringify(newChoices));
+        try {
+            if (typeof window !== "undefined" && window.localStorage) {
+                window.localStorage.setItem("cookie-consent", JSON.stringify(newChoices));
+            }
+        } catch (e) {
+            console.error("CookieBanner: Failed to save consent", e);
+        }
         setIsVisible(false);
 
         // Apply choice to Google Analytics
@@ -37,33 +42,41 @@ export const CookieBanner = () => {
     };
 
     useEffect(() => {
-        const consent = localStorage.getItem("cookie-consent");
-        if (!consent) {
-            const timer = setTimeout(() => setIsVisible(true), 1500);
-            return () => clearTimeout(timer);
-        } else {
-            // If already consented
-            try {
-                const parsed = JSON.parse(consent);
-                if (typeof parsed === 'object') {
-                    setChoices(parsed);
+        try {
+            if (typeof window === "undefined" || !window.localStorage) {
+                setIsVisible(true);
+                return;
+            }
 
-                    // Re-apply saved preferences to gtag
-                    if (typeof window !== "undefined" && (window as any).gtag) {
-                        (window as any).gtag('consent', 'update', {
-                            'analytics_storage': parsed.analytics ? 'granted' : 'denied',
-                            'ad_storage': parsed.marketing ? 'granted' : 'denied'
-                        });
+            const consent = window.localStorage.getItem("cookie-consent");
+            if (!consent) {
+                const timer = setTimeout(() => setIsVisible(true), 1500);
+                return () => clearTimeout(timer);
+            } else {
+                // If already consented
+                try {
+                    const parsed = JSON.parse(consent);
+                    if (typeof parsed === 'object') {
+                        setChoices(parsed);
+
+                        if ((window as any).gtag) {
+                            (window as any).gtag('consent', 'update', {
+                                'analytics_storage': parsed.analytics ? 'granted' : 'denied',
+                                'ad_storage': parsed.marketing ? 'granted' : 'denied'
+                            });
+                        }
+                    }
+                } catch (e) {
+                    if (consent === 'accepted') {
+                        const allIn = { necessary: true, analytics: true, marketing: true };
+                        setChoices(allIn);
+                        saveConsent(allIn);
                     }
                 }
-            } catch (e) {
-                
-                if (consent === 'accepted') {
-                    const allIn = { necessary: true, analytics: true, marketing: true };
-                    setChoices(allIn);
-                    saveConsent(allIn);
-                }
             }
+        } catch (e) {
+            console.error("CookieBanner: LocalStorage access failed", e);
+            setIsVisible(true); // Fallback: show banner if storage is blocked
         }
     }, []);
 
@@ -98,19 +111,27 @@ export const CookieBanner = () => {
         setChoices(prev => ({ ...prev, [key]: !prev[key] }));
     };
 
+    if (!isVisible) return null;
+
     return (
-        <div className={`${styles.bannerWrapper} ${!isVisible ? styles.hidden : ""}`}>
+        <div className={styles.bannerWrapper}>
             <div className={styles.banner}>
                 {!showSettings ? (
                     <div className={styles.mainView}>
                         <div className={styles.content}>
                             <h3 className={styles.title}>{t.title}</h3>
-                            <p className={styles.description}>
-                                {t.description} {" "}
-                                <Link href={`/${lang}/cookie-policy`} className={styles.link}>
-                                    {t.policyLink}
-                                </Link>
-                            </p>
+                            <div className={styles.text}>
+                                <p className={styles.textDesc}>
+                                    {t.description}{" "}
+                                    <button
+                                        type="button"
+                                        className={styles.link}
+                                        onClick={() => window.dispatchEvent(new CustomEvent("open-cookie-policy"))}
+                                    >
+                                        {t.policyLink}
+                                    </button>
+                                </p>
+                            </div>
                         </div>
                         <div className={styles.actions}>
                             <Button

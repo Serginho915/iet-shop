@@ -18,6 +18,12 @@ import {
     sendChatMessage,
 } from "@/lib/chat";
 
+import { useTranslate } from "@/lib/useTranslate";
+import { translations, ChatTranslations } from "../ChatWindow/translations";
+import Image from "next/image";
+import georgeAvatar from "@/assets/emojii/GeorgeAvatar.png";
+import { useLanguage } from "@/lib/LanguageContext";
+
 import styles from "./ChatWidget.module.scss";
 
 type ConnectionState = "idle" | "connecting" | "connected" | "reconnecting" | "error";
@@ -45,20 +51,27 @@ const mergeMessages = (current: ChatMessage[], incoming: ChatMessage[]) => {
     return sortMessages(Array.from(messageMap.values()));
 };
 
-const formatTime = (value: string) =>
-    new Intl.DateTimeFormat("ru-RU", {
+const formatTime = (value: string, lang: string) =>
+    new Intl.DateTimeFormat(lang === 'bg' ? 'bg-BG' : 'en-GB', {
         hour: "2-digit",
         minute: "2-digit",
         day: "2-digit",
         month: "2-digit",
     }).format(new Date(value));
 
-export function ChatWidget() {
+
+export function ChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+    const { t } = useTranslate<ChatTranslations>(translations);
+    const { lang } = useLanguage();
+
     const [messages, setMessages] = useState<ChatMessage[]>([]);
+    const [sessionId, setSessionId] = useState<string | null>(null);
     const [draft, setDraft] = useState("");
     const [status, setStatus] = useState<ConnectionState>("idle");
     const [error, setError] = useState<string | null>(null);
     const [isSending, setIsSending] = useState(false);
+
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const socketRef = useRef<WebSocket | null>(null);
     const reconnectTimeoutRef = useRef<number | null>(null);
@@ -72,6 +85,11 @@ export function ChatWidget() {
     });
 
     const applySocketEvent = useEffectEvent((event: ChatSocketEvent) => {
+        if (event.type === "chat.ready") {
+            setSessionId(event.chat_session_id);
+            return;
+        }
+
         if (event.type === "chat.message") {
             syncMessages([event.message]);
             setError(null);
@@ -130,7 +148,7 @@ export function ChatWidget() {
             setStatus("connected");
             setError(null);
             void resyncHistory().catch(() => {
-                setError("Не удалось синхронизировать историю чата после подключения.");
+                setError(t.errorSync);
             });
         };
 
@@ -139,7 +157,7 @@ export function ChatWidget() {
                 const event = JSON.parse(rawEvent.data) as ChatSocketEvent;
                 applySocketEvent(event);
             } catch {
-                setError("Не удалось разобрать сообщение WebSocket.");
+                setError(t.errorParse);
             }
         };
 
@@ -150,13 +168,14 @@ export function ChatWidget() {
         };
 
         socket.onerror = () => {
-            setError("WebSocket соединение завершилось с ошибкой.");
+            setError(t.errorConnection);
         };
     });
 
     const bootstrapChat = useEffectEvent(async () => {
         setStatus("connecting");
         const initialState = await initChatSession();
+        setSessionId(initialState.id);
         syncMessages(initialState.messages);
         await openSocket();
     });
@@ -168,7 +187,7 @@ export function ChatWidget() {
             setError(
                 bootstrapError instanceof Error
                     ? bootstrapError.message
-                    : "Не удалось инициализировать чат.",
+                    : t.errorInit,
             );
         });
 
@@ -186,9 +205,13 @@ export function ChatWidget() {
         };
     }, []);
 
-    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+    const handleWrapperClick = () => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    };
 
+    const handleSend = async () => {
         const text = draft.trim();
         if (!text) {
             return;
@@ -207,55 +230,100 @@ export function ChatWidget() {
             }
         } catch (sendError) {
             setDraft(text);
-            setError(sendError instanceof Error ? sendError.message : "Не удалось отправить сообщение.");
+            setError(sendError instanceof Error ? sendError.message : t.errorSend);
         } finally {
             setIsSending(false);
         }
     };
 
-    return (
-        <section className={styles.chat} aria-label="Anonymous chat widget">
-            <header className={styles.header}>
-                <h2 className={styles.title}>Чат поддержки</h2>
-                <span className={styles.status}>Статус: {status}</span>
-            </header>
+    const handleKeyPress = (e: React.KeyboardEvent) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            handleSend();
+        }
+    };
 
-            <div className={styles.messages}>
+    if (!isOpen) return null;
+
+    return (
+        <div className={styles.chatWindow}>
+            <div className={styles.header}>
+                <div className={styles.agentInfo}>
+                    <div className={styles.avatarWrapper}>
+                        <Image src={georgeAvatar} alt="George" fill className={styles.avatar} />
+                    </div>
+                    <div className={styles.textInfo}>
+                        <span className={styles.name}>{t.title}</span>
+                        <span className={styles.subtext}>{t.subTitle}</span>
+                        {status !== 'connected' && (
+                            <span className={styles.statusError} style={{ fontSize: '12px', color: '#ff4d4f' }}>
+                                {status === 'connecting' || status === 'reconnecting' ? t.connecting : t.networkError}
+                            </span>
+                        )}
+                    </div>
+                </div>
+                <button onClick={onClose} className={styles.closeBtn} aria-label="Close">
+                    X
+                </button>
+            </div>
+
+            <div className={styles.content}>
                 {messages.length === 0 ? (
-                    <p className={styles.empty}>Сообщений пока нет. Напишите первым.</p>
+                    <div className={styles.welcomeScreen}>
+                        <h2 className={styles.welcomeTitle}>{t.welcomeTitle}</h2>
+                        <p className={styles.welcomeText}>{t.welcomeText}</p>
+                    </div>
                 ) : (
-                    messages.map((message) => (
-                        <article
-                            key={message.id}
-                            className={`${styles.message} ${styles[message.sender_type]}`}
-                        >
-                            <div>{message.text}</div>
-                            <time className={styles.meta} dateTime={message.created_at}>
-                                {message.sender_type} • {formatTime(message.created_at)}
-                            </time>
-                        </article>
-                    ))
+                    <div className={styles.messagesList}>
+                        {messages.map((msg) => (
+                            <div
+                                key={msg.id}
+                                className={`${styles.messageItem} ${msg.sender_type === "user" ? styles.userMessage : styles.agentMessage
+                                    }`}
+                            >
+                                <div className={styles.messageBubble}>{msg.text}</div>
+                            </div>
+                        ))}
+                    </div>
                 )}
             </div>
 
-            {error ? <div className={styles.error}>{error}</div> : null}
-
-            <form className={styles.form} onSubmit={handleSubmit}>
-                <textarea
-                    className={styles.textarea}
-                    value={draft}
-                    onChange={(event) => setDraft(event.target.value)}
-                    maxLength={2000}
-                    placeholder="Введите сообщение"
-                />
-
-                <div className={styles.actions}>
-                    <span className={styles.hint}>Сессия хранится в cookie `sessionid`.</span>
-                    <button className={styles.button} type="submit" disabled={isSending || !draft.trim()}>
-                        {isSending ? "Отправка..." : "Отправить"}
+            <div className={styles.inputContainer}>
+                {error && <div className={styles.errorText} style={{ padding: '0 8px 8px', color: '#ff4d4f', fontSize: '12px' }}>{error}</div>}
+                <div className={styles.inputWrapper} onClick={handleWrapperClick}>
+                    <input
+                        ref={inputRef}
+                        type="text"
+                        className={styles.input}
+                        placeholder={t.inputPlaceholder}
+                        value={draft}
+                        onChange={(e) => setDraft(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                        disabled={isSending}
+                        id="chat-message-input"
+                        name="message"
+                    />
+                    <button
+                        className={`${styles.sendBtn} ${draft.trim() ? styles.active : ""}`}
+                        onClick={handleSend}
+                        disabled={!draft.trim() || isSending}
+                    >
+                        {isSending ? (
+                            <span style={{ fontSize: '10px' }}>...</span>
+                        ) : (
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12 19V5M12 5L5 12M12 5L19 12"
+                                    stroke="currentColor"
+                                    strokeWidth="2.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
+                        )}
                     </button>
                 </div>
-            </form>
-        </section>
+            </div>
+        </div>
     );
 }

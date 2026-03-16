@@ -5,7 +5,6 @@ export const translations: Record<Lang, { leaveRequest: string }> = {
     leaveRequest: "Leave Request",
   },
   bg: {
-    leaveRequest: "Оставете заявка",
+    leaveRequest: "Остави запитване",
   },
 };
-

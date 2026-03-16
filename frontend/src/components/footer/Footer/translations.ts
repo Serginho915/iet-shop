@@ -12,6 +12,7 @@ type FooterTranslations = {
   footerLegalEuInfo: string;
   footerLegalTerms: string;
   footerLegalCookies: string;
+  footerLegalCookiePolicy: string;
   footerLegalPrivacy: string;
   footerCoursesTitle: string;
   footerCourseDesign: string;
@@ -36,6 +37,7 @@ export const translations: Record<Lang, FooterTranslations> = {
     footerLegalEuInfo: "EU Project Information",
     footerLegalTerms: "Terms and Conditions",
     footerLegalCookies: "Cookie Settings",
+    footerLegalCookiePolicy: "Cookie Policy",
     footerLegalPrivacy: "Privacy Policy",
     footerCoursesTitle: "Courses",
     footerCourseDesign: "Design",
@@ -59,6 +61,7 @@ export const translations: Record<Lang, FooterTranslations> = {
     footerLegalEuInfo: "Информация за проекта на ЕС",
     footerLegalTerms: "Общи условия",
     footerLegalCookies: "Настройки на бисквитките",
+    footerLegalCookiePolicy: "Политика за бисквитки",
     footerLegalPrivacy: "Политика за поверителност",
     footerCoursesTitle: "Курсове",
     footerCourseDesign: "Дизайн",

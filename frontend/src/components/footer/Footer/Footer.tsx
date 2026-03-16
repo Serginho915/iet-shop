@@ -12,6 +12,7 @@ import { translations } from "./translations";
 import styles from "./Footer.module.scss";
 import { ChatButton } from "@/components/ui/ChatButton/ChatButton";
 import { ChatWidget } from "@/components/ui/ChatWidget/ChatWidget";
+import { CookiePolicyModal } from "@/components/ui/CookiePolicyModal/CookiePolicyModal";
 
 import euProjectImg from "@/assets/Plakat-IOT-Digi.jpg";
 import {
@@ -99,8 +100,9 @@ const defaultConfig: FooterConfig = {
     title: "Legal",
     links: [
       { label: "EU Project Information", href: "#", translationKey: "footerLegalEuInfo" },
-      { label: "Terms and Conditions", href: "#", translationKey: "footerLegalTerms" },
+      // { label: "Terms and Conditions", href: "#", translationKey: "footerLegalTerms" },
       { label: "Cookie Settings", href: "#", translationKey: "footerLegalCookies" },
+      { label: "Cookie Policy", href: "#", translationKey: "footerLegalCookiePolicy" },
       { label: "Privacy Policy", href: "#", translationKey: "footerLegalPrivacy" },
     ],
   },
@@ -163,6 +165,7 @@ export const Footer = ({ config }: FooterProps) => {
   const tr = translations[lang];
   const [isEuModalOpen, setIsEuModalOpen] = useState(false);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
+  const [isCookiePolicyOpen, setIsCookiePolicyOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [categories, setCategories] = useState<Tag[]>([]);
   const router = useRouter();
@@ -198,6 +201,17 @@ export const Footer = ({ config }: FooterProps) => {
     window.dispatchEvent(new CustomEvent("open-cookie-banner"));
   };
 
+  const handleOpenCookiePolicy = (e: MouseEvent) => {
+    e.preventDefault();
+    setIsCookiePolicyOpen(true);
+  };
+
+  useEffect(() => {
+    const handlePolicyOpen = () => setIsCookiePolicyOpen(true);
+    window.addEventListener("open-cookie-policy", handlePolicyOpen);
+    return () => window.removeEventListener("open-cookie-policy", handlePolicyOpen);
+  }, []);
+
   const handleToggleChat = () => {
     setIsChatOpen((current) => !current);
   };
@@ -224,6 +238,7 @@ export const Footer = ({ config }: FooterProps) => {
     if (item.translationKey === "footerLegalEuInfo") onClick = handleOpenEuModal;
     else if (item.translationKey === "footerLegalPrivacy") onClick = handleOpenPrivacy;
     else if (item.translationKey === "footerLegalCookies") onClick = handleOpenCookie;
+    else if (item.translationKey === "footerLegalCookiePolicy") onClick = handleOpenCookiePolicy;
 
     return {
       label: item.translationKey ? tr[item.translationKey] : item.label,
@@ -390,6 +405,7 @@ export const Footer = ({ config }: FooterProps) => {
       </Modal>
       <ChatWidget isOpen={isChatOpen} onClose={handleCloseChat} />
       <PrivacyPolicyModal isOpen={isPrivacyOpen} onClose={() => setIsPrivacyOpen(false)} />
+      <CookiePolicyModal isOpen={isCookiePolicyOpen} onClose={() => setIsCookiePolicyOpen(false)} />
     </>
   );
 };

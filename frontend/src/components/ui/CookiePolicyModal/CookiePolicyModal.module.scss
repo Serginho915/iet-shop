@@ -1,0 +1,89 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.modalBody {
+    max-width: 700px;
+    background: #fff;
+    border-radius: 12px;
+
+    @include desktop {
+        padding: 48px;
+    }
+}
+
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+
+.title {
+    font-size: 28px;
+    font-weight: 600;
+    color: #22262F;
+    margin: 0;
+}
+
+.textBody {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #475569;
+
+    h3 {
+        font-size: 20px;
+        color: #22262F;
+        margin-top: 24px;
+        margin-bottom: 12px;
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+
+    p {
+        margin-bottom: 12px;
+    }
+
+    ul {
+        margin-bottom: 16px;
+        padding-left: 20px;
+        list-style-type: disc;
+
+        li {
+            margin-bottom: 8px;
+        }
+    }
+}
+
+.overlay {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    padding: 24px;
+
+    @include desktop {
+        padding: 60px 24px;
+    }
+}
+
+
+@include mobile {
+    .modalBody {
+        padding: 24px 20px;
+        border-radius: 16px;
+    }
+
+
+    .title {
+        font-size: 24px;
+    }
+
+    .textBody {
+        font-size: 14px;
+
+        h3 {
+            font-size: 18px;
+        }
+    }
+}

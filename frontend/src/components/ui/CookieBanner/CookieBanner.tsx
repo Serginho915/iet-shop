@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import { useTranslate } from "@/lib/useTranslate";
 import { translations, CookieTranslations } from "./translations";
 import styles from "./CookieBanner.module.scss";
@@ -60,7 +59,6 @@ export const CookieBanner = () => {
                     if (typeof parsed === 'object') {
                         setChoices(parsed);
 
-                        // Re-apply saved preferences to gtag
                         if ((window as any).gtag) {
                             (window as any).gtag('consent', 'update', {
                                 'analytics_storage': parsed.analytics ? 'granted' : 'denied',
@@ -122,12 +120,18 @@ export const CookieBanner = () => {
                     <div className={styles.mainView}>
                         <div className={styles.content}>
                             <h3 className={styles.title}>{t.title}</h3>
-                            <p className={styles.description}>
-                                {t.description} {" "}
-                                <Link href={`/${lang}/cookie-policy`} className={styles.link}>
-                                    {t.policyLink}
-                                </Link>
-                            </p>
+                            <div className={styles.text}>
+                                <p className={styles.textDesc}>
+                                    {t.description}{" "}
+                                    <button
+                                        type="button"
+                                        className={styles.link}
+                                        onClick={() => window.dispatchEvent(new CustomEvent("open-cookie-policy"))}
+                                    >
+                                        {t.policyLink}
+                                    </button>
+                                </p>
+                            </div>
                         </div>
                         <div className={styles.actions}>
                             <Button

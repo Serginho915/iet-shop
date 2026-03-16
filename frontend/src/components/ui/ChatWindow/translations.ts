@@ -7,12 +7,15 @@ export type ChatTranslations = {
     welcomeText: string;
     inputPlaceholder: string;
     send: string;
-    // emailLabel: string;
-    // topicLabel: string;
-    // startChat: string;
-    // emailError: string;
-    // topicError: string;
-    // requiredError: string;
+    connecting: string;
+    networkError: string;
+    sending: string;
+    emptyHistory: string;
+    errorSync: string;
+    errorParse: string;
+    errorConnection: string;
+    errorInit: string;
+    errorSend: string;
 };
 
 export const translations: Record<Lang, ChatTranslations> = {
@@ -23,12 +26,15 @@ export const translations: Record<Lang, ChatTranslations> = {
         welcomeText: "We're here to answer your questions!",
         inputPlaceholder: "Ask anything",
         send: "Send",
-        // emailLabel: "Email",
-        // topicLabel: "Topic",
-        // startChat: "Start Chat",
-        // emailError: "Please enter a valid email",
-        // topicError: "Please enter a topic",
-        // requiredError: "This field is required",
+        connecting: "Connecting...",
+        networkError: "Network error",
+        sending: "Sending...",
+        emptyHistory: "No messages yet. Be the first to write!",
+        errorSync: "Failed to sync history after connection.",
+        errorParse: "Failed to parse message.",
+        errorConnection: "WebSocket connection error.",
+        errorInit: "Failed to initialize chat.",
+        errorSend: "Failed to send message.",
     },
     bg: {
         title: "Георги",
@@ -37,11 +43,14 @@ export const translations: Record<Lang, ChatTranslations> = {
         welcomeText: "Тук сме, за да отговорим на вашите въпроси!",
         inputPlaceholder: "Попитайте ни нещо",
         send: "Изпрати",
-        // emailLabel: "Имейл",
-        // topicLabel: "Тема",
-        // startChat: "Започни чат",
-        // emailError: "Моля, въведете валиден имейл",
-        // topicError: "Моля, въведете тема",
-        // requiredError: "Това поле е задължително",
+        connecting: "Свързване...",
+        networkError: "Мрежова грешка",
+        sending: "Изпращане...",
+        emptyHistory: "Все още няма съобщения. Пишете първи!",
+        errorSync: "Неуспешно синхронизиране на историята след свързване.",
+        errorParse: "Неуспешно разчитане на съобщението.",
+        errorConnection: "Грешка при WebSocket връзката.",
+        errorInit: "Неуспешно инициализиране на чата.",
+        errorSend: "Неуспешно изпращане на съобщението.",
     },
 };

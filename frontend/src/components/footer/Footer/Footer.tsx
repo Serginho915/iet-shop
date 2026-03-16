@@ -388,9 +388,7 @@ export const Footer = ({ config }: FooterProps) => {
           />
         </div>
       </Modal>
-      <Modal isOpen={isChatOpen} onClose={handleCloseChat}>
-        <ChatWidget />
-      </Modal>
+      <ChatWidget isOpen={isChatOpen} onClose={handleCloseChat} />
       <PrivacyPolicyModal isOpen={isPrivacyOpen} onClose={() => setIsPrivacyOpen(false)} />
     </>
   );

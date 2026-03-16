@@ -65,6 +65,7 @@ export function ChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: () =
     const { lang } = useLanguage();
 
     const [messages, setMessages] = useState<ChatMessage[]>([]);
+    const [sessionId, setSessionId] = useState<string | null>(null);
     const [draft, setDraft] = useState("");
     const [status, setStatus] = useState<ConnectionState>("idle");
     const [error, setError] = useState<string | null>(null);
@@ -84,6 +85,11 @@ export function ChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: () =
     });
 
     const applySocketEvent = useEffectEvent((event: ChatSocketEvent) => {
+        if (event.type === "chat.ready") {
+            setSessionId(event.chat_session_id);
+            return;
+        }
+
         if (event.type === "chat.message") {
             syncMessages([event.message]);
             setError(null);
@@ -169,6 +175,7 @@ export function ChatWidget({ isOpen, onClose }: { isOpen: boolean; onClose: () =
     const bootstrapChat = useEffectEvent(async () => {
         setStatus("connecting");
         const initialState = await initChatSession();
+        setSessionId(initialState.id);
         syncMessages(initialState.messages);
         await openSocket();
     });

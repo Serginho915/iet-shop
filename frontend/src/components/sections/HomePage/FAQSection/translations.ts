@@ -33,43 +33,28 @@ export const translations: Record<Lang, FAQTranslations> = {
     faqs: [
       {
         id: "1",
-        question: "What are the technical requirements to join a course?",
-        answer: "Technical requirements vary by course, but generally you need a computer with stable internet access and specific software depending on the subject.",
+        question: "Do I need prior knowledge to enroll?",
+        answer: "Most of our entry-level courses are designed for complete beginners. If a selected program requires specific skills, it will be clearly stated in its description.",
       },
       {
         id: "2",
-        question: "What documents are required for admission?",
-        answer: "Typically, you need a copy of your ID, previous education certificates, and a completed application form.",
+        question: "Are there age restrictions?",
+        answer: "The IT sector is open to everyone with a desire to grow. We offer specialized programs for children and students, as well as professional courses for adults looking to change careers or upgrade their skills.",
       },
       {
         id: "3",
-        question: "What document/certificate will I receive after graduating from the Institute?",
-        answer: "Upon successful completion, you will receive an official certificate from the Institute recognized by industry partners.",
+        question: "What is the training format?",
+        answer: "We offer maximum flexibility. Our trainings are conducted online, with the possibility of recording every session so that all materials can be reviewed.",
       },
       {
         id: "4",
-        question: "Are there evening or weekend timings available?",
-        answer: "Yes, we offer flexible schedules including evening and weekend classes for many of our courses.",
+        question: "How often are the classes held?",
+        answer: "Usually, classes are held 2 or 3 times a week, during non-working hours (evenings) or on weekends, so you can combine training with work or school.",
       },
       {
         id: "5",
-        question: "What documents are required for registration?",
-        answer: "Registration requires proof of payment, ID, and any course-specific prerequisites documentation.",
-      },
-      {
-        id: "6",
-        question: "Can I change my training schedule?",
-        answer: "Schedule changes are possible within the first week of the course, subject to availability in other groups.",
-      },
-      {
-        id: "7",
-        question: "How can I choose the suitable course for me?",
-        answer: "You can consult with our academic advisors or take a self-assessment test on our website to find the best fit.",
-      },
-      {
-        id: "8",
-        question: "Will there be homework and how long will it take?",
-        answer: "Yes, there is homework to reinforce learning. It typically takes 2-4 hours per week depending on the course intensity.",
+        question: "Will I have practical tasks?",
+        answer: "Yes! Our philosophy is learning through practice. Over 70% of the time is dedicated to practical exercises, working on real cases, and developing personal projects for your portfolio.",
       }
     ]
   },
@@ -77,33 +62,28 @@ export const translations: Record<Lang, FAQTranslations> = {
     faqs: [
       {
         id: "1",
-        question: "Каква е политиката за връщане?",
-        answer: "Нашата политика за връщане позволява връщане на продукти в рамките на 30 дни от покупката.",
+        question: "Трябва ли да имам предварителни познания, за да се запиша?",
+        answer: "Повечето от нашите начални курсове са проектирани за напълно начинаещи. Ако избраната програма изисква специфични умения, това ще бъде ясно посочено в описанието ѝ.",
       },
       {
         id: "2",
-        question: "Колко време отнема доставката?",
-        answer: "Времето за доставка вари в зависимост от вашето местоположение.",
+        question: "Има ли възрастови ограничения?",
+        answer: "ИТ секторът е отворен за всеки с желание за развитие. Предлагаме специализирани програми за деца и ученици, както и професионални курсове за възрастни, които искат да сменят кариерата си или да надградят уменията си.",
       },
       {
         id: "3",
-        question: "Предлагате ли международна доставка?",
-        answer: "Да, предлагаме международна доставка до избрани страни.",
+        question: "Какъв е форматът на обучение?",
+        answer: "Предлагаме максимална гъвкавост. Обученията ни се провеждат онлайн, с възможност за запис на всяко едно занятие, за да може да се прави преглед на всички материали.",
       },
       {
         id: "4",
-        question: "Как мога да проследя моята поръчка?",
-        answer: "След като вашата поръчка бъде изпратена, ще получите номер за проследяване по имейл.",
+        question: "Колко често се провеждат занятията?",
+        answer: "Обикновено занятията са 2 или 3 пъти седмично, в извънработно време (вечерни часове) или през уикенда, за да можете да съчетавате обучението с работа или училище.",
       },
       {
         id: "5",
-        question: "Какви методи на плащане приемате?",
-        answer: "Приемаме различни методи на плащане, включително кредитни карти, дебитни карти и PayPal.",
-      },
-      {
-        id: "6",
-        question: "Мога ли да променя или отменя моята поръчка?",
-        answer: "Можете да промените или отмените вашата поръчка в рамките на 24 часа след нейното поставяне.",
+        question: "Ще имам ли практически задачи?",
+        answer: "Да! Нашата философия е учене чрез практика. Над 70% от времето е посветено на практически упражнения, работа по реални казуси и разработване на лични проекти за вашето портфолио.",
       }
     ]
   }

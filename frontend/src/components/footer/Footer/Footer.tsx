@@ -72,7 +72,7 @@ const defaultConfig: FooterConfig = {
     {
       name: "facebook",
       label: "Facebook",
-      href: "#",
+      href: "https://www.facebook.com/innovativeedutech/",
     },
     {
       name: "linkedin",

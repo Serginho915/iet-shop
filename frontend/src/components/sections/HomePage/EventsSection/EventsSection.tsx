@@ -19,6 +19,7 @@ export const EventsSection = ({ events = [] }: EventsSectionProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [openEventId, setOpenEventId] = useState<number | null>(null);
 
   const toggleExpanded = () => {
     if (isExpanded && cardsRef.current) {
@@ -38,7 +39,13 @@ export const EventsSection = ({ events = [] }: EventsSectionProps) => {
   };
 
   const today = new Date().toISOString().split('T')[0];
-  const upcomingEvents = events.filter((event) => !event.date || event.date >= today);
+  const upcomingEvents = [...events]
+    .filter((event) => !event.date || event.date >= today)
+    .sort((a, b) => {
+      if (!a.date) return 1;
+      if (!b.date) return -1;
+      return new Date(a.date).getTime() - new Date(b.date).getTime();
+    });
   const hasMore = upcomingEvents.length > 3;
 
   return (
@@ -51,7 +58,10 @@ export const EventsSection = ({ events = [] }: EventsSectionProps) => {
           <h2 className={styles.title}>{t.title}</h2>
         </div>
 
-        <div className={`${styles.scrollContainer} ${isExpanded ? styles.expanded : ''}`} ref={cardsRef}>
+        <div 
+          className={`${styles.scrollContainer} ${isExpanded ? styles.expanded : ''} ${openEventId ? styles.hasOpenedCard : ''}`} 
+          ref={cardsRef}
+        >
           <div className={styles.eventsList}>
             {upcomingEvents.map((event) => {
               const dateObj = new Date(event.date);
@@ -91,6 +101,8 @@ export const EventsSection = ({ events = [] }: EventsSectionProps) => {
                   image2={event.image_2}
                   joinBtnText={t.joinBtn}
                   onJoin={() => handleJoinClick(event)}
+                  isOpened={openEventId === event.id}
+                  onToggle={() => setOpenEventId(prev => prev === event.id ? null : event.id)}
                 />
               );
             })}

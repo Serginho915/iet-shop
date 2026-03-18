@@ -39,9 +39,14 @@
 
     @include desktop {
         flex-direction: row;
-        align-items: stretch; // Ensure equal height
+        align-items: stretch; 
         gap: 40px;
     }
+
+    @include mobile {
+        gap: 0;
+    }
+
 }
 
 .titleWrapper {

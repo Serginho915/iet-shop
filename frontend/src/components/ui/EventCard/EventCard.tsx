@@ -17,6 +17,8 @@ interface EventCardProps {
     image2?: string;
     onJoin?: () => void;
     image?: string;
+    isOpened?: boolean;
+    onToggle?: () => void;
 }
 
 export const EventCard = ({
@@ -29,20 +31,13 @@ export const EventCard = ({
     image1,
     image2,
     onJoin,
+    isOpened,
+    onToggle,
 }: EventCardProps) => {
-    const [showDescription, setShowDescription] = useState(false);
-
-    const toggleDescription = () => {
-        if (description) {
-            setShowDescription((prev) => !prev);
-        }
-    };
-
     return (
-        // Добавляем onClick здесь. cursor: pointer добавит наглядности.
         <div
-            className={`${styles.card} ${showDescription ? styles.opened : ""}`}
-            onClick={toggleDescription}
+            className={`${styles.card} ${isOpened ? styles.opened : ""}`}
+            onClick={onToggle}
             style={{ cursor: 'pointer' }}
         >
             <div className={styles.left}>
@@ -84,7 +79,7 @@ export const EventCard = ({
             <div className={styles.middle}>
                 <h4 className={styles.title}>{title}</h4>
 
-                <div className={`${styles.description} ${showDescription ? styles.active : ""}`}>
+                <div className={`${styles.description} ${isOpened ? styles.active : ""}`}>
                     <div className={styles.descriptionInner}>
                         <p className={styles.descriptionText}>{description}</p>
                     </div>

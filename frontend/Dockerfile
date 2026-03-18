@@ -25,10 +25,11 @@ RUN npm run build
 FROM node:20-alpine AS prod
 
 WORKDIR /app
+ENV NEXT_DIST_DIR=.next-docker
 
 COPY --from=builder /app/package*.json /app/
 COPY --from=builder /app/node_modules /app/node_modules
-COPY --from=builder /app/.next-docker /app/.next
+COPY --from=builder /app/.next-docker /app/.next-docker
 COPY --from=builder /app/public /app/public
 COPY --from=builder /app/next.config.ts /app/next.config.ts
 

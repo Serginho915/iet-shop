@@ -23,6 +23,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = env_list('ALLOWED_HOSTS', ['*'])
 
+USE_X_FORWARDED_HOST = env_bool('USE_X_FORWARDED_HOST', False)
+if env_bool('USE_X_FORWARDED_PROTO', False):
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 DEFAULT_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://localhost:3001',

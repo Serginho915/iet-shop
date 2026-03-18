@@ -18,7 +18,7 @@ services:
       REDIS_URL: ${REDIS_URL:-redis://redis:6379/1}
     volumes:
       - ./backend/db.sqlite3:/app/db.sqlite3
-      - media_data:/app/media
+      - ./backend/media:/app/media
     ports:
       - "8007:8000"
     depends_on:
@@ -43,6 +43,3 @@ services:
     image: redis:7-alpine
     container_name: iet_shop_redis_prod
     restart: always
-
-volumes:
-  media_data:

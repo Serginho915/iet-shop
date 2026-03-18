@@ -47,6 +47,12 @@ interface FieldDefinition {
   placeholder?: string;
 }
 
+interface TagOption {
+  id: number;
+  name_en: string;
+  name_bg: string;
+}
+
 interface ResourceDefinition {
   key: AdminResourceKey;
   title: string;
@@ -167,6 +173,40 @@ const parseIdList = (value: string) =>
     .map((item) => Number(item))
     .filter((item) => Number.isFinite(item));
 
+const normalizeIdArray = (value: unknown): number[] => {
+  if (Array.isArray(value)) {
+    return value
+      .map((item) => {
+        if (typeof item === "number") {
+          return item;
+        }
+        if (typeof item === "string") {
+          return Number(item.trim());
+        }
+        if (item && typeof item === "object" && "id" in item) {
+          return Number((item as { id: unknown }).id);
+        }
+        return Number.NaN;
+      })
+      .filter((item) => Number.isFinite(item));
+  }
+
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? [value] : [];
+  }
+
+  if (typeof value === "string") {
+    return parseIdList(value);
+  }
+
+  if (value && typeof value === "object" && "id" in value) {
+    const parsed = Number((value as { id: unknown }).id);
+    return Number.isFinite(parsed) ? [parsed] : [];
+  }
+
+  return [];
+};
+
 const toTableValue = (value: unknown, fieldType?: FieldType, fieldName?: string): string => {
   if (value === null || value === undefined || value === "") {
     return "-";
@@ -224,6 +264,9 @@ const toFormValue = (field: FieldDefinition, row: Record<string, unknown> | null
     if (field.type === "file") {
       return null;
     }
+    if (field.type === "ids" && field.name === "tags") {
+      return [];
+    }
     if (field.name === "sender_type") {
       return "operator";
     }
@@ -237,6 +280,10 @@ const toFormValue = (field: FieldDefinition, row: Record<string, unknown> | null
   }
 
   if (field.type === "ids") {
+    if (field.name === "tags") {
+      return normalizeIdArray(rawValue);
+    }
+
     if (Array.isArray(rawValue)) {
       return rawValue
         .map((item) => {
@@ -314,8 +361,7 @@ const buildPayloadFromForm = (definition: ResourceDefinition, formValues: FormVa
     }
 
     if (field.type === "ids") {
-      const text = typeof rawValue === "string" ? rawValue : String(rawValue ?? "");
-      payload[field.name] = parseIdList(text);
+      payload[field.name] = normalizeIdArray(rawValue);
       continue;
     }
 
@@ -381,6 +427,42 @@ const toText = (value: unknown) => (typeof value === "string" ? value : "");
 const toNullableText = (value: string) => {
   const trimmed = value.trim();
   return trimmed ? trimmed : null;
+};
+
+const getTagDisplayName = (tag: TagOption, lang: Lang) => {
+  const primary = lang === "bg" ? tag.name_bg.trim() : tag.name_en.trim();
+  const fallback = lang === "bg" ? tag.name_en.trim() : tag.name_bg.trim();
+
+  return primary || fallback || `#${tag.id}`;
+};
+
+const sortTagOptions = (tags: TagOption[], lang: Lang) => {
+  const locale = lang === "bg" ? "bg" : "en";
+
+  return [...tags].sort((left, right) =>
+    getTagDisplayName(left, lang).localeCompare(getTagDisplayName(right, lang), locale, {
+      sensitivity: "base",
+    }),
+  );
+};
+
+const toTagOptions = (rows: Array<Record<string, unknown>>, lang: Lang): TagOption[] => {
+  const mapped = rows
+    .map((row) => {
+      const id = toFiniteNumber(row.id);
+      if (id === null) {
+        return null;
+      }
+
+      return {
+        id,
+        name_en: toText(row.name_en).trim(),
+        name_bg: toText(row.name_bg).trim(),
+      } as TagOption;
+    })
+    .filter((item): item is TagOption => item !== null);
+
+  return sortTagOptions(mapped, lang);
 };
 
 const splitNonEmptyLines = (value: string) =>
@@ -671,6 +753,9 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
   ]);
   const [courseOutcomes, setCourseOutcomes] = useState<CourseOutcomeForm[]>(buildDefaultOutcomes);
   const [courseModules, setCourseModules] = useState<CourseModuleForm[]>([createModule(1)]);
+  const [availableTags, setAvailableTags] = useState<TagOption[]>([]);
+  const [tagsLoading, setTagsLoading] = useState(false);
+  const [pendingTagId, setPendingTagId] = useState("");
 
   const [chatSessions, setChatSessions] = useState<AdminChatSession[]>([]);
   const [chatSessionsError, setChatSessionsError] = useState<string | null>(null);
@@ -718,6 +803,10 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
   useEffect(() => {
     activeTabRef.current = activeTab;
   }, [activeTab]);
+
+  useEffect(() => {
+    setPendingTagId("");
+  }, [activeTab, selectedRow]);
 
   const resetCourseComposition = useCallback(() => {
     setCourseAudienceCards(buildDefaultAudienceCards());
@@ -827,6 +916,19 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
       setChatSessionsLoading(false);
     }
   }, []);
+
+  const loadTagOptions = useCallback(async () => {
+    setTagsLoading(true);
+
+    try {
+      const rows = await listAdminResource<Record<string, unknown>>("tags");
+      setAvailableTags(toTagOptions(rows, lang));
+    } catch {
+      setAvailableTags([]);
+    } finally {
+      setTagsLoading(false);
+    }
+  }, [lang]);
 
   const loadSelectedSessionMessages = useCallback(async (sessionId: string) => {
     try {
@@ -1346,6 +1448,22 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
       isDisposed = true;
     };
   }, [lang, loadChatSessions, router]);
+
+  useEffect(() => {
+    if (authState !== "authorized") {
+      return;
+    }
+
+    void loadTagOptions();
+  }, [authState, loadTagOptions]);
+
+  useEffect(() => {
+    if (currentDefinition?.key !== "tags") {
+      return;
+    }
+
+    setAvailableTags(toTagOptions(resourceRows, lang));
+  }, [currentDefinition, lang, resourceRows]);
 
   useEffect(() => {
     if (!currentDefinition || authState !== "authorized") {
@@ -1878,6 +1996,128 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
         ) : null}
 
         {field.type === "ids" ? (() => {
+          if (field.name === "tags") {
+            const selectedTagIds = normalizeIdArray(value);
+            const selectedTagIdSet = new Set(selectedTagIds);
+            const selectedFromRow = Array.isArray(selectedRow?.[field.name])
+              ? (selectedRow?.[field.name] as unknown[])
+                  .map((item) => {
+                    if (!item || typeof item !== "object") {
+                      return null;
+                    }
+
+                    const rowTag = item as Record<string, unknown>;
+                    const id = toFiniteNumber(rowTag.id);
+                    if (id === null) {
+                      return null;
+                    }
+
+                    return {
+                      id,
+                      name_en: toText(rowTag.name_en).trim(),
+                      name_bg: toText(rowTag.name_bg).trim(),
+                    } as TagOption;
+                  })
+                  .filter((item): item is TagOption => item !== null)
+              : [];
+
+            const optionById = new Map<number, TagOption>();
+            for (const tag of availableTags) {
+              optionById.set(tag.id, tag);
+            }
+            for (const tag of selectedFromRow) {
+              if (!optionById.has(tag.id)) {
+                optionById.set(tag.id, tag);
+              }
+            }
+
+            const tagOptions = sortTagOptions(Array.from(optionById.values()), lang);
+            const selectedTagOptions = selectedTagIds.map(
+              (id) =>
+                optionById.get(id) || {
+                  id,
+                  name_en: "",
+                  name_bg: "",
+                },
+            );
+            const availableToAdd = tagOptions.filter((tag) => !selectedTagIdSet.has(tag.id));
+            const canAddTag =
+              pendingTagId !== "" &&
+              availableToAdd.some((tag) => String(tag.id) === pendingTagId);
+
+            return (
+              <>
+                {selectedTagOptions.length > 0 ? (
+                  <div className={styles.tagChips}>
+                    {selectedTagOptions.map((tag) => (
+                      <span key={tag.id} className={styles.tagChip}>
+                        {getTagDisplayName(tag, lang)}
+                        {!disabled ? (
+                          <button
+                            type="button"
+                            className={styles.tagChipRemove}
+                            onClick={() => {
+                              handleFieldChange(
+                                field.name,
+                                selectedTagIds.filter((id) => id !== tag.id),
+                              );
+                            }}
+                            aria-label={getAdminTranslation(lang, "buttons.remove-tag")}
+                          >
+                            x
+                          </button>
+                        ) : null}
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  <p className={styles.fieldHint}>
+                    {getAdminTranslation(lang, "messages.no-tags-selected")}
+                  </p>
+                )}
+
+                {!disabled ? (
+                  <div className={styles.tagPickerRow}>
+                    <select
+                      value={pendingTagId}
+                      onChange={(event) => setPendingTagId(event.target.value)}
+                      disabled={tagsLoading || availableToAdd.length === 0}
+                    >
+                      <option value="">
+                        {tagsLoading
+                          ? getAdminTranslation(lang, "messages.loading-tags")
+                          : availableToAdd.length === 0
+                            ? getAdminTranslation(lang, "messages.no-tags-available")
+                            : getAdminTranslation(lang, "placeholders.select-tag")}
+                      </option>
+                      {availableToAdd.map((tag) => (
+                        <option key={tag.id} value={String(tag.id)}>
+                          {getTagDisplayName(tag, lang)}
+                        </option>
+                      ))}
+                    </select>
+
+                    <button
+                      type="button"
+                      className={styles.secondaryButton}
+                      onClick={() => {
+                        const parsedId = Number(pendingTagId);
+                        if (!Number.isFinite(parsedId)) {
+                          return;
+                        }
+                        handleFieldChange(field.name, [...selectedTagIds, parsedId]);
+                        setPendingTagId("");
+                      }}
+                      disabled={!canAddTag || tagsLoading}
+                    >
+                      {getAdminTranslation(lang, "buttons.add-tag")}
+                    </button>
+                  </div>
+                ) : null}
+              </>
+            );
+          }
+
           const rawTags = selectedRow?.[field.name];
           const namedTags = Array.isArray(rawTags)
             ? (rawTags as unknown[]).filter(
@@ -1885,6 +2125,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
                   item !== null && typeof item === "object" && ("name_en" in (item as object) || "name_bg" in (item as object)),
               )
             : [];
+
           return (
             <>
               {namedTags.length > 0 && (

@@ -6,7 +6,7 @@ import { translations, type AudienceTranslations } from "./translations";
 import styles from "./AudienceSection.module.scss";
 
 
-import image from "@/assets/AudienceSection/girl & guy.png";
+import image from "@/assets/AudienceSection/girl&guy.png";
 import vec0 from "@/assets/AudienceSection/vec-0.svg";
 import vec1 from "@/assets/AudienceSection/vec-1.svg";
 import vec2 from "@/assets/AudienceSection/vec-2.svg";
@@ -41,7 +41,7 @@ export const AudienceSection = ({ course }: AudienceSectionProps) => {
 
   const getAgeLabel = (course: Course) => {
     const isAdult = course.audience === "adults";
-    const label = isAdult ? t.minimalAge : t.maximalAge;
+    const label = isAdult ? t.minimalAge : t.ageGroup;
 
     const ageTag = course.tags.find((tag) => {
       const tagName = tag.name;
@@ -51,17 +51,18 @@ export const AudienceSection = ({ course }: AudienceSectionProps) => {
       return String(tagStr)?.match(/\d+-\d+/) || String(tagStr)?.match(/\d+\+/);
     });
 
-    if (ageTag) {
-      const tagName = ageTag.name;
-      const tagStr = typeof tagName === 'object' && tagName
-        ? (tagName[lang === 'bg' ? 'bg' : 'en'] || tagName.en || tagName.bg || "")
-        : (tagName || "");
-      return tagStr;
-    }
-
-
     const defaultAge = isAdult ? t.defaultAdultAge : t.defaultKidsAge;
-    return `${label}: ${defaultAge}`;
+    const ageValue = (() => {
+      if (ageTag) {
+        const tagName = ageTag.name;
+        return typeof tagName === 'object' && tagName
+          ? (tagName[lang === 'bg' ? 'bg' : 'en'] || tagName.en || tagName.bg || "")
+          : (tagName || "");
+      }
+      return defaultAge;
+    })();
+
+    return `${label}: ${ageValue}`;
   };
 
 

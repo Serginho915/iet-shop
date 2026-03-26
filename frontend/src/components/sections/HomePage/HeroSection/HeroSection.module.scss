@@ -180,6 +180,13 @@
     top: -27px;
     left: 140px;
   }
+
+  @include tablet {
+    display: none;
+  }
+   @include mobile {
+    display: none;
+  }
 }
 
 .expertiseSection {

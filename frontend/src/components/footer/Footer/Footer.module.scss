@@ -229,6 +229,10 @@
 		gap: 44px;
 		min-width: 200px;
 	}
+
+	@include mobile {
+		gap: 20px;
+	}
 }
 
 .contactColumn,

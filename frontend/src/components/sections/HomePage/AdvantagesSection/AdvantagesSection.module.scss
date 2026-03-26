@@ -26,7 +26,7 @@
 
     @include desktop {
         margin-bottom: 4rem;
-        padding-left: 71px;
+        // padding-left: 71px;
         text-align: left;
         flex-direction: row;
         justify-content: space-between;
@@ -44,7 +44,7 @@
 
 .headerBtn {
     @include desktop {
-        margin-bottom: 8px; // Slight adjustment to line up with subtitle
+        margin-bottom: 8px;
     }
 }
 

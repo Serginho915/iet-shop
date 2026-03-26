@@ -103,7 +103,17 @@
     }
 
     &.expanded {
-        max-height: 4000px;
+        max-height: 5000px;
+    }
+
+    &.hasOpenedCard:not(.expanded) {
+        max-height: 1200px; // Growth to fit expanded first 3 cards
+    }
+
+    &:not(.expanded) {
+        .eventsList > div:nth-child(n+4) {
+            display: none;
+        }
     }
 }
 

@@ -34,6 +34,9 @@ const rubik = Rubik({
 export const metadata: Metadata = {
   title: "IET Shop",
   description: "Get your right course",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default async function RootLayout({
@@ -47,7 +50,9 @@ export default async function RootLayout({
 
   return (
     <html lang={lang}>
-      <head>
+      <body
+        className={`${roboto.variable} ${robotoFlex.variable} ${rubik.variable} antialiased text-gray-900 bg-gray-50`}
+      >
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-TPK2B89YT8"
           strategy="afterInteractive"
@@ -66,10 +71,6 @@ export default async function RootLayout({
             gtag('config', 'G-TPK2B89YT8');
           `}
         </Script>
-      </head>
-      <body
-        className={`${roboto.variable} ${robotoFlex.variable} ${rubik.variable} antialiased text-gray-900 bg-gray-50`}
-      >
         <LanguageProvider initialLang={lang as "en" | "bg"}>
           <BlogProvider>
             <CourseProvider>

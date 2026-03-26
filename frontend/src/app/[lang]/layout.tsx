@@ -32,7 +32,7 @@ const rubik = Rubik({
 });
 
 export const metadata: Metadata = {
-  title: "IET Shop",
+  title: "ИОТ",
   description: "Get your right course",
   icons: {
     icon: "/favicon.ico",

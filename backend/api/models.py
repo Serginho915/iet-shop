@@ -3,6 +3,7 @@ import uuid
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils import timezone
 
 
 class Tag(models.Model):
@@ -97,7 +98,7 @@ class Post(models.Model):
     content_en = models.TextField(null=True, blank=True)
     content_bg = models.TextField(null=True, blank=True)
     picture = models.ImageField(upload_to="posts/", null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)
     tags = models.ManyToManyField(Tag, related_name="posts", blank=True)
 
     def save(self, *args, **kwargs):

@@ -418,7 +418,7 @@ class AdminPostSerializer(serializers.ModelSerializer):
             'tags',
             'tag_ids',
         ]
-        read_only_fields = ['created_at']
+        read_only_fields = []
 
 
 class AdminConsultationSerializer(serializers.ModelSerializer):

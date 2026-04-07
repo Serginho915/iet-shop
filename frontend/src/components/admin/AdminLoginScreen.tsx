@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { adminLogin, adminMe } from "@/lib/admin";
+import { getAdminTranslation } from "./translations";
 
 import styles from "./AdminLoginScreen.module.scss";
 
@@ -47,7 +48,7 @@ export function AdminLoginScreen({ lang }: AdminLoginScreenProps) {
     setError(null);
 
     if (!username.trim() || !password) {
-      setError("Enter both username and password.");
+      setError(getAdminTranslation(lang, "login.error-empty"));
       return;
     }
 
@@ -57,36 +58,22 @@ export function AdminLoginScreen({ lang }: AdminLoginScreenProps) {
       await adminLogin(username.trim(), password);
       router.replace(`/${lang}/admin`);
     } catch (loginError) {
-      setError(loginError instanceof Error ? loginError.message : "Login failed.");
+      setError(loginError instanceof Error ? loginError.message : getAdminTranslation(lang, "login.error-failed"));
     } finally {
       setIsSubmitting(false);
     }
   };
 
   if (isCheckingSession) {
-    return (
-      <main className={styles.page}>
-        <div className={styles.card}>
-          <p className={styles.hint}>Checking existing admin session...</p>
-        </div>
-      </main>
-    );
+    return null;
   }
 
   return (
     <main className={styles.page}>
       <div className={styles.card}>
-        <div className={styles.header}>
-          <p className={styles.eyebrow}>IET Shop Admin</p>
-          <h1>Secure Superuser Login</h1>
-          <p className={styles.hint}>
-            Access is restricted to superusers only. Sessions are cookie-based and CSRF-protected.
-          </p>
-        </div>
-
         <form className={styles.form} onSubmit={handleSubmit}>
           <label className={styles.field} htmlFor="admin-username">
-            Username
+            {getAdminTranslation(lang, "login.username")}
             <input
               id="admin-username"
               name="username"
@@ -100,7 +87,7 @@ export function AdminLoginScreen({ lang }: AdminLoginScreenProps) {
           </label>
 
           <label className={styles.field} htmlFor="admin-password">
-            Password
+            {getAdminTranslation(lang, "login.password")}
             <input
               id="admin-password"
               name="password"
@@ -116,7 +103,7 @@ export function AdminLoginScreen({ lang }: AdminLoginScreenProps) {
           {error ? <p className={styles.error}>{error}</p> : null}
 
           <button type="submit" className={styles.submit} disabled={isSubmitting}>
-            {isSubmitting ? "Signing in..." : "Sign in"}
+            {isSubmitting ? getAdminTranslation(lang, "buttons.signing-in") : getAdminTranslation(lang, "buttons.sign-in")}
           </button>
         </form>
       </div>

@@ -213,7 +213,7 @@ const toTableValue = (value: unknown, fieldType?: FieldType, fieldName?: string)
   }
 
   if (typeof value === "boolean") {
-    return value ? "Yes" : "No";
+    return value ? "Да" : "Не";
   }
 
   if (typeof value === "number") {
@@ -429,24 +429,24 @@ const toNullableText = (value: string) => {
   return trimmed ? trimmed : null;
 };
 
-const getTagDisplayName = (tag: TagOption, lang: Lang) => {
-  const primary = lang === "bg" ? tag.name_bg.trim() : tag.name_en.trim();
-  const fallback = lang === "bg" ? tag.name_en.trim() : tag.name_bg.trim();
+const getTagDisplayName = (tag: TagOption) => {
+  const primary = tag.name_bg.trim();
+  const fallback = tag.name_en.trim();
 
   return primary || fallback || `#${tag.id}`;
 };
 
-const sortTagOptions = (tags: TagOption[], lang: Lang) => {
-  const locale = lang === "bg" ? "bg" : "en";
+const sortTagOptions = (tags: TagOption[]) => {
+  const locale = "bg";
 
   return [...tags].sort((left, right) =>
-    getTagDisplayName(left, lang).localeCompare(getTagDisplayName(right, lang), locale, {
+    getTagDisplayName(left).localeCompare(getTagDisplayName(right), locale, {
       sensitivity: "base",
     }),
   );
 };
 
-const toTagOptions = (rows: Array<Record<string, unknown>>, lang: Lang): TagOption[] => {
+const toTagOptions = (rows: Array<Record<string, unknown>>): TagOption[] => {
   const mapped = rows
     .map((row) => {
       const id = toFiniteNumber(row.id);
@@ -462,7 +462,7 @@ const toTagOptions = (rows: Array<Record<string, unknown>>, lang: Lang): TagOpti
     })
     .filter((item): item is TagOption => item !== null);
 
-  return sortTagOptions(mapped, lang);
+  return sortTagOptions(mapped);
 };
 
 const splitNonEmptyLines = (value: string) =>
@@ -655,7 +655,7 @@ const buildResourceDefinitions = (lang: Lang): ResourceDefinition[] => {
         { name: "content_bg", label: t("fieldLabels", "content_bg"), type: "textarea" },
         { name: "tags", label: t("fieldLabels", "tags"), type: "ids", placeholder: t("placeholders", "tag-ids") },
         { name: "picture", label: t("fieldLabels", "picture"), type: "file" },
-        { name: "created_at", label: t("fieldLabels", "created_at"), type: "datetime", readOnly: true },
+        { name: "created_at", label: t("fieldLabels", "created_at"), type: "datetime" },
       ],
     },
     {
@@ -711,9 +711,9 @@ const buildResourceDefinitions = (lang: Lang): ResourceDefinition[] => {
 };
 
 const NAV_GROUPS: Array<{ label: string; tabs: DashboardTab[] }> = [
-  { label: "Main", tabs: ["operator-chat"] },
-  { label: "Content", tabs: ["tags", "courses", "events", "posts"] },
-  { label: "Requests", tabs: ["consultations", "event-requests", "orders"] },
+  { label: "ui.main", tabs: ["operator-chat"] },
+  { label: "ui.content", tabs: ["tags", "courses", "events", "posts"] },
+  { label: "ui.requests", tabs: ["consultations", "event-requests", "orders"] },
 ];
 
 const getTabLabel = (tab: DashboardTab, definitions: ResourceDefinition[], lang: Lang) => {
@@ -922,13 +922,13 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
 
     try {
       const rows = await listAdminResource<Record<string, unknown>>("tags");
-      setAvailableTags(toTagOptions(rows, lang));
+      setAvailableTags(toTagOptions(rows));
     } catch {
       setAvailableTags([]);
     } finally {
       setTagsLoading(false);
     }
-  }, [lang]);
+  }, []);
 
   const loadSelectedSessionMessages = useCallback(async (sessionId: string) => {
     try {
@@ -1462,8 +1462,8 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
       return;
     }
 
-    setAvailableTags(toTagOptions(resourceRows, lang));
-  }, [currentDefinition, lang, resourceRows]);
+    setAvailableTags(toTagOptions(resourceRows));
+  }, [currentDefinition, resourceRows]);
 
   useEffect(() => {
     if (!currentDefinition || authState !== "authorized") {
@@ -1921,6 +1921,16 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
     );
   }, [currentDefinition]);
 
+  const fieldLabelByName = useMemo(() => {
+    if (!currentDefinition) {
+      return new Map<string, string>();
+    }
+
+    return new Map<string, string>(
+      currentDefinition.fields.map((field) => [field.name, field.label]),
+    );
+  }, [currentDefinition]);
+
   const renderDefinitionField = (field: FieldDefinition) => {
     const value = formValues[field.name];
     const disabled = !currentDefinition || currentDefinition.readOnly || field.readOnly || isSaving;
@@ -1957,7 +1967,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
             onChange={(event) => handleFieldChange(field.name, event.target.value)}
             disabled={disabled}
           >
-            <option value="">Select option</option>
+            <option value="">{getAdminTranslation(lang, "messages.select-option")}</option>
             {(field.options || []).map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
@@ -1976,7 +1986,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
             />
             {existingFileValue ? (
               <a className={styles.fileLink} href={existingFileValue} target="_blank" rel="noreferrer">
-                Current file
+                {getAdminTranslation(lang, "messages.current-file")}
               </a>
             ) : null}
           </>
@@ -2031,7 +2041,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
               }
             }
 
-            const tagOptions = sortTagOptions(Array.from(optionById.values()), lang);
+            const tagOptions = sortTagOptions(Array.from(optionById.values()));
             const selectedTagOptions = selectedTagIds.map(
               (id) =>
                 optionById.get(id) || {
@@ -2051,7 +2061,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
                   <div className={styles.tagChips}>
                     {selectedTagOptions.map((tag) => (
                       <span key={tag.id} className={styles.tagChip}>
-                        {getTagDisplayName(tag, lang)}
+                        {getTagDisplayName(tag)}
                         {!disabled ? (
                           <button
                             type="button"
@@ -2092,7 +2102,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
                       </option>
                       {availableToAdd.map((tag) => (
                         <option key={tag.id} value={String(tag.id)}>
-                          {getTagDisplayName(tag, lang)}
+                          {getTagDisplayName(tag)}
                         </option>
                       ))}
                     </select>
@@ -2155,8 +2165,8 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
           field.type === "date" ||
           field.type === "datetime") ? (
           <input
-            type={field.type === "number" ? "number" : field.type === "date" ? "date" : "text"}
-            value={typeof value === "string" || typeof value === "number" ? String(value) : ""}
+            type={field.type === "number" ? "number" : field.type === "date" ? "date" : field.type === "datetime" ? "datetime-local" : "text"}
+            value={typeof value === "string" || typeof value === "number" ? (field.type === "datetime" ? String(value).slice(0, 16) : String(value)) : ""}
             onChange={(event) => handleFieldChange(field.name, event.target.value)}
             placeholder={field.placeholder}
             disabled={disabled}
@@ -2191,36 +2201,24 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
   }, [currentDefinition]);
 
   if (authState === "checking") {
-    return (
-      <main className={styles.page}>
-        <div className={styles.centerCard}>
-          <p>Loading secure admin workspace...</p>
-        </div>
-      </main>
-    );
+    return null;
   }
 
   if (authState === "unauthorized") {
-    return (
-      <main className={styles.page}>
-        <div className={styles.centerCard}>
-          <p>Redirecting to admin login...</p>
-        </div>
-      </main>
-    );
+    return null;
   }
 
   return (
     <div className={styles.page}>
       <aside className={styles.sidebar}>
         <div className={styles.brandBlock}>
-          <h1>IET Admin</h1>
+          <h1>{getAdminTranslation(lang, "ui.admin-title")}</h1>
         </div>
 
         <nav className={styles.nav}>
           {NAV_GROUPS.map((group) => (
             <div key={group.label} className={styles.navGroup}>
-              <p className={styles.groupTitle}>{group.label}</p>
+              <p className={styles.groupTitle}>{getAdminTranslation(lang, group.label)}</p>
               {group.tabs.map((tab) => (
                 <button
                   key={tab}
@@ -2241,7 +2239,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
         </nav>
 
         <button type="button" className={styles.logoutButton} onClick={handleLogout}>
-          Logout
+          {getAdminTranslation(lang, "buttons.logout")}
         </button>
       </aside>
 
@@ -2250,7 +2248,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
           <section className={styles.chatSection}>
             <div className={styles.headerRow}>
               <div>
-                <h2>Chats</h2>
+                <h2>{getAdminTranslation(lang, "ui.chats")}</h2>
               </div>
               <div className={styles.chatTools}>
                 <span
@@ -2258,7 +2256,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
                     chatConnectionStatus === "connected" ? styles.connectionOnline : styles.connectionOffline
                   }
                 >
-                  {chatConnectionStatus}
+                  {getAdminTranslation(lang, `messages.connection-${chatConnectionStatus}`)}
                 </span>
                 <button
                   type="button"
@@ -2275,7 +2273,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
 
             <div className={styles.chatLayout}>
               <aside className={styles.sessionList}>
-                {chatSessionsLoading ? <p className={styles.dimText}>{getAdminTranslation(lang, "messages.loading-sessions")}</p> : null}
+                {chatSessionsLoading ? null : null}
 
                 {sortedChatSessions.map((session) => {
                   const isSelected = session.id === selectedChatSessionId;
@@ -2404,14 +2402,14 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
               }
             >
               <div className={styles.tableWrap}>
-                {resourceLoading ? <p className={styles.dimText}>{getAdminTranslation(lang, "messages.loading-sessions")}</p> : null}
+                {resourceLoading ? null : null}
 
                 {!resourceLoading ? (
                   <table className={styles.table}>
                     <thead>
                       <tr>
                         {visibleTableColumns.map((column) => (
-                          <th key={column}>{column}</th>
+                          <th key={column}>{fieldLabelByName.get(column) ?? column}</th>
                         ))}
                       </tr>
                     </thead>
@@ -2448,54 +2446,54 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
                 <div className={styles.formWrap}>
                 <h3>
                   {currentDefinition.readOnly
-                    ? "Details"
+                    ? getAdminTranslation(lang, "ui.details")
                     : selectedRow
-                      ? `Edit #${String(selectedRow.id ?? "")}`
-                      : "Create New"}
+                      ? `${getAdminTranslation(lang, "ui.edit")} #${String(selectedRow.id ?? "")}`
+                      : getAdminTranslation(lang, "ui.create-new")}
                 </h3>
 
                 <form className={styles.form} onSubmit={handleSaveForm}>
                   {isCourseTab(currentDefinition) ? (
                     <>
                       <section className={styles.inlineSection}>
-                        <h4>Main</h4>
+                        <h4>{getAdminTranslation(lang, "ui.course-main")}</h4>
                         <div className={styles.inlineGridTwo}>
                           {courseSectionFields.main.map((field) => renderDefinitionField(field))}
                         </div>
                       </section>
 
                       <section className={styles.inlineSection}>
-                        <h4>Title and Description</h4>
+                        <h4>{getAdminTranslation(lang, "ui.course-titles")}</h4>
                         <div className={styles.inlineGridTwo}>
                           {courseSectionFields.title.map((field) => renderDefinitionField(field))}
                         </div>
                       </section>
 
                       <section className={styles.inlineSection}>
-                        <h4>About Section</h4>
+                        <h4>{getAdminTranslation(lang, "ui.course-about")}</h4>
                         <div className={styles.inlineGridTwo}>
                           {courseSectionFields.about.map((field) => renderDefinitionField(field))}
                         </div>
                       </section>
 
                       <section className={styles.inlineSection}>
-                        <h4>Payments</h4>
+                        <h4>{getAdminTranslation(lang, "ui.course-payments")}</h4>
                         <div className={styles.inlineGridTwo}>
                           {courseSectionFields.payments.map((field) => renderDefinitionField(field))}
                         </div>
                       </section>
 
                       <section className={styles.inlineSection}>
-                        <h4>Audience Cards (exactly 4)</h4>
+                        <h4>{getAdminTranslation(lang, "ui.course-audience")}</h4>
                         <div className={styles.inlineGrid}>
                           {courseAudienceCards.map((card, index) => (
                             <article key={`audience-${index}`} className={styles.inlineItem}>
                               <div className={styles.inlineItemHeader}>
-                                <strong>Card {index + 1}</strong>
+                                <strong>{getAdminTranslation(lang, "ui.card")} {index + 1}</strong>
                               </div>
                               <div className={styles.inlineGridTwo}>
                                 <label className={styles.formField}>
-                                  <span>Title (EN)</span>
+                                  <span>{getAdminTranslation(lang, "fieldLabels", "title_en")}</span>
                                   <input
                                     type="text"
                                     value={card.title_en}
@@ -2506,7 +2504,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
                                   />
                                 </label>
                                 <label className={styles.formField}>
-                                  <span>Title (BG)</span>
+                                  <span>{getAdminTranslation(lang, "fieldLabels", "title_bg")}</span>
                                   <input
                                     type="text"
                                     value={card.title_bg}
@@ -2517,7 +2515,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
                                   />
                                 </label>
                                 <label className={styles.formField}>
-                                  <span>Text (EN)</span>
+                                  <span>{getAdminTranslation(lang, "fieldLabels", "text_en")}</span>
                                   <textarea
                                     value={card.text_en}
                                     onChange={(event) =>
@@ -2528,7 +2526,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
                                   />
                                 </label>
                                 <label className={styles.formField}>
-                                  <span>Text (BG)</span>
+                                  <span>{getAdminTranslation(lang, "fieldLabels", "text_bg")}</span>
                                   <textarea
                                     value={card.text_bg}
                                     onChange={(event) =>
@@ -2546,33 +2544,33 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
 
                       <section className={styles.inlineSection}>
                         <div className={styles.inlineTitleRow}>
-                          <h4>Instruments</h4>
+                          <h4>{getAdminTranslation(lang, "ui.course-instruments")}</h4>
                           <button
                             type="button"
                             className={styles.secondaryButton}
                             onClick={addCourseInstrument}
                             disabled={isSaving}
                           >
-                            Add Instrument
+                            {getAdminTranslation(lang, "buttons.add-instrument")}
                           </button>
                         </div>
                         <div className={styles.inlineGrid}>
                           {courseInstruments.map((instrument, index) => (
                             <article key={`instrument-${index}`} className={styles.inlineItem}>
                               <div className={styles.inlineItemHeader}>
-                                <strong>Instrument {index + 1}</strong>
+                                <strong>{getAdminTranslation(lang, "ui.instrument")} {index + 1}</strong>
                                 <button
                                   type="button"
                                   className={styles.secondaryButton}
                                   onClick={() => removeCourseInstrument(index)}
                                   disabled={isSaving}
                                 >
-                                  Remove
+                                  {getAdminTranslation(lang, "buttons.remove")}
                                 </button>
                               </div>
                               <div className={styles.inlineGridTwo}>
                                 <label className={styles.formField}>
-                                  <span>Name (EN)</span>
+                                  <span>{getAdminTranslation(lang, "fieldLabels", "name_en")}</span>
                                   <input
                                     type="text"
                                     value={instrument.name_en}
@@ -2583,7 +2581,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
                                   />
                                 </label>
                                 <label className={styles.formField}>
-                                  <span>Name (BG)</span>
+                                  <span>{getAdminTranslation(lang, "fieldLabels", "name_bg")}</span>
                                   <input
                                     type="text"
                                     value={instrument.name_bg}
@@ -2594,7 +2592,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
                                   />
                                 </label>
                                 <label className={styles.formField}>
-                                  <span>Icon</span>
+                                  <span>{getAdminTranslation(lang, "fieldLabels", "icon")}</span>
                                   <input
                                     type="file"
                                     accept="image/*"
@@ -2614,7 +2612,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
                                       target="_blank"
                                       rel="noreferrer"
                                     >
-                                      Current icon
+                                      {getAdminTranslation(lang, "messages.current-icon")}
                                     </a>
                                   ) : null}
                                 </label>
@@ -2625,16 +2623,16 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
                       </section>
 
                       <section className={styles.inlineSection}>
-                        <h4>Outcomes (exactly 6)</h4>
+                        <h4>{getAdminTranslation(lang, "ui.course-outcomes")}</h4>
                         <div className={styles.inlineGrid}>
                           {courseOutcomes.map((outcome, index) => (
                             <article key={`outcome-${index}`} className={styles.inlineItem}>
                               <div className={styles.inlineItemHeader}>
-                                <strong>Outcome {index + 1}</strong>
+                                <strong>{getAdminTranslation(lang, "ui.outcome")} {index + 1}</strong>
                               </div>
                               <div className={styles.inlineGridTwo}>
                                 <label className={styles.formField}>
-                                  <span>Text (EN)</span>
+                                  <span>{getAdminTranslation(lang, "fieldLabels", "text_en")}</span>
                                   <textarea
                                     value={outcome.text_en}
                                     onChange={(event) =>
@@ -2645,7 +2643,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
                                   />
                                 </label>
                                 <label className={styles.formField}>
-                                  <span>Text (BG)</span>
+                                  <span>{getAdminTranslation(lang, "fieldLabels", "text_bg")}</span>
                                   <textarea
                                     value={outcome.text_bg}
                                     onChange={(event) =>
@@ -2663,34 +2661,34 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
 
                       <section className={styles.inlineSection}>
                         <div className={styles.inlineTitleRow}>
-                          <h4>Modules</h4>
+                          <h4>{getAdminTranslation(lang, "ui.course-modules")}</h4>
                           <button
                             type="button"
                             className={styles.secondaryButton}
                             onClick={addCourseModule}
                             disabled={isSaving}
                           >
-                            Add Module
+                            {getAdminTranslation(lang, "buttons.add-module")}
                           </button>
                         </div>
                         <div className={styles.inlineGrid}>
                           {courseModules.map((module, index) => (
                             <article key={`module-${index}`} className={styles.inlineItem}>
                               <div className={styles.inlineItemHeader}>
-                                <strong>Module {index + 1}</strong>
+                                <strong>{getAdminTranslation(lang, "ui.module")} {index + 1}</strong>
                                 <button
                                   type="button"
                                   className={styles.secondaryButton}
                                   onClick={() => removeCourseModule(index)}
                                   disabled={isSaving}
                                 >
-                                  Remove
+                                  {getAdminTranslation(lang, "buttons.remove")}
                                 </button>
                               </div>
 
                               <div className={styles.inlineGridTwo}>
                                 <label className={styles.formField}>
-                                  <span>Title (EN)</span>
+                                  <span>{getAdminTranslation(lang, "fieldLabels", "title_en")}</span>
                                   <input
                                     type="text"
                                     value={module.title_en}
@@ -2701,7 +2699,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
                                   />
                                 </label>
                                 <label className={styles.formField}>
-                                  <span>Title (BG)</span>
+                                  <span>{getAdminTranslation(lang, "fieldLabels", "title_bg")}</span>
                                   <input
                                     type="text"
                                     value={module.title_bg}
@@ -2712,7 +2710,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
                                   />
                                 </label>
                                 <label className={styles.formField}>
-                                  <span>Descriptions EN</span>
+                                  <span>{getAdminTranslation(lang, "fieldLabels", "descriptions_en")}</span>
                                   <textarea
                                     value={module.descriptions_en}
                                     onChange={(event) =>
@@ -2720,11 +2718,11 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
                                     }
                                     disabled={isSaving}
                                     rows={4}
-                                    placeholder="One line = one description tag"
+                                    placeholder={getAdminTranslation(lang, "messages.one-line-description")}
                                   />
                                 </label>
                                 <label className={styles.formField}>
-                                  <span>Descriptions BG</span>
+                                  <span>{getAdminTranslation(lang, "fieldLabels", "descriptions_bg")}</span>
                                   <textarea
                                     value={module.descriptions_bg}
                                     onChange={(event) =>
@@ -2732,7 +2730,7 @@ export function AdminDashboard({ lang }: AdminDashboardProps) {
                                     }
                                     disabled={isSaving}
                                     rows={4}
-                                    placeholder="One line = one description tag"
+                                    placeholder={getAdminTranslation(lang, "messages.one-line-description")}
                                   />
                                 </label>
                               </div>

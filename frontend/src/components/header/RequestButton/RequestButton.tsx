@@ -9,7 +9,7 @@ import styles from "./RequestButton.module.scss";
 export const RequestButton = () => {
     const router = useRouter();
     const { lang } = useLanguage();
-    const tr = translations[lang];
+    const tr = translations[lang] ?? translations.bg;
 
     const handleClick = () => {
         const el = document.getElementById("consultation");

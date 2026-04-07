@@ -26,7 +26,7 @@ interface NavbarProps {
 
 export const Navbar = ({ onLinkClick }: NavbarProps) => {
   const { lang } = useLanguage();
-  const tr = translations[lang];
+  const tr = translations[lang] ?? translations.bg;
 
   const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     onLinkClick?.();

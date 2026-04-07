@@ -12,7 +12,7 @@ interface CoursesDropdownProps {
 
 export const CoursesDropdown = ({ onLinkClick }: CoursesDropdownProps) => {
     const { lang } = useLanguage();
-    const tr = translations[lang];
+    const tr = translations[lang] ?? translations.bg;
 
     const courseLinks = [
         { label: tr.allCourses, href: "/#courses" },

@@ -215,7 +215,7 @@ class CourseAdmin(admin.ModelAdmin):
         (
             "Payments",
             {
-                "fields": ("stripe_product_id", "stripe_price_id")
+                "fields": ("stripe_product_id",)
             },
         ),
     )

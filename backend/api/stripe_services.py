@@ -42,14 +42,17 @@ def build_checkout_line_item(course: Course) -> dict:
     unit_amount = int(course.price)
     course_name = (course.title_en or course.title_bg or course.slug).strip()
 
+    price_data: dict = {
+        "currency": "eur",
+        "unit_amount": unit_amount,
+    }
+    if course.stripe_product_id:
+        price_data["product"] = course.stripe_product_id
+    else:
+        price_data["product_data"] = {"name": course_name}
+
     return {
-        "price_data": {
-            "currency": "eur",
-            "product_data": {
-                "name": course_name,
-            },
-            "unit_amount": unit_amount,
-        },
+        "price_data": price_data,
         "quantity": 1,
     }
 
@@ -58,8 +61,6 @@ def create_checkout_session(course: Course, request, customer_email: str | None 
     configure_stripe()
 
     line_items = [build_checkout_line_item(course)]
-    if course.stripe_price_id:
-        line_items = [{"price": course.stripe_price_id, "quantity": 1}]
 
     session_data = {
         "mode": "payment",

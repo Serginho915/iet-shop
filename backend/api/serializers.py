@@ -100,7 +100,6 @@ class CourseSerializer(BilingualSerializerMixin, serializers.ModelSerializer):
             "visits_per_week",
             "is_active",
             "stripe_product_id",
-            "stripe_price_id",
             "tags",
             "tag_ids",
             "audience",
@@ -344,6 +343,7 @@ class AdminCourseSerializer(serializers.ModelSerializer):
     tag_ids = serializers.PrimaryKeyRelatedField(
         queryset=Tag.objects.all(), many=True, write_only=True, required=False, source='tags'
     )
+    stripe_product_id = serializers.CharField(required=True)
 
     class Meta:
         model = Course
@@ -365,7 +365,6 @@ class AdminCourseSerializer(serializers.ModelSerializer):
             'visits_per_week',
             'is_active',
             'stripe_product_id',
-            'stripe_price_id',
             'about_title_en',
             'about_title_bg',
             'about_description_top_en',

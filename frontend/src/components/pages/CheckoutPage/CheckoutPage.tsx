@@ -145,11 +145,11 @@ export const CheckoutPage = ({ slug, course: initialCourse }: CheckoutPageProps)
   }, [course?.start, lang]);
 
   const priceEur = useMemo(() => {
-    return ((course?.price ?? 0) / 100).toFixed(2);
+    return ((course?.price ?? 0)).toFixed(2);
   }, [course?.price]);
 
   const priceBgn = useMemo(() => {
-    const price = (course?.price ?? 0) / 100;
+    const price = (course?.price ?? 0);
     return (price * 1.95583).toFixed(2);
   }, [course?.price]);
 

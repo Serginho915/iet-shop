@@ -64,8 +64,8 @@
       "audience": "adults",
       "price": 79000,
       "is_active": true,
-      "stripe_product_id": 101001,
-      "stripe_price_id": 201001,
+      "stripe_product_id": null,
+      "stripe_price_id": null,
       "tags": [
         1,
         2,
@@ -96,8 +96,8 @@
       "audience": "adults",
       "price": 69000,
       "is_active": true,
-      "stripe_product_id": 101002,
-      "stripe_price_id": 201002,
+      "stripe_product_id": null,
+      "stripe_price_id": null,
       "tags": [
         2,
         3

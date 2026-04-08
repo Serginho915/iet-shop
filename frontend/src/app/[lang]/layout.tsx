@@ -11,6 +11,12 @@ import { BlogProvider } from "@/lib/BlogContext";
 import { CookieBanner } from "@/components/ui/CookieBanner/CookieBanner";
 import { i18n } from "@/i18n-config";
 
+const PassThroughProvider = ({ children }: { children: React.ReactNode }) => <>{children}</>;
+const SafeLanguageProvider = LanguageProvider ?? PassThroughProvider;
+const SafeBlogProvider = BlogProvider ?? PassThroughProvider;
+const SafeCourseProvider = CourseProvider ?? PassThroughProvider;
+const SafeCookieBanner = CookieBanner ?? (() => null);
+
 export async function generateStaticParams() {
   return i18n.locales.map((locale) => ({ lang: locale }));
 }
@@ -71,14 +77,14 @@ export default async function RootLayout({
             gtag('config', 'G-TPK2B89YT8');
           `}
         </Script>
-        <LanguageProvider initialLang={lang as "en" | "bg"}>
-          <BlogProvider>
-            <CourseProvider>
+        <SafeLanguageProvider initialLang={lang as "en" | "bg"}>
+          <SafeBlogProvider>
+            <SafeCourseProvider>
               {children}
-              <CookieBanner />
-            </CourseProvider>
-          </BlogProvider>
-        </LanguageProvider>
+              <SafeCookieBanner />
+            </SafeCourseProvider>
+          </SafeBlogProvider>
+        </SafeLanguageProvider>
       </body>
     </html>
   );

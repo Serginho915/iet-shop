@@ -162,7 +162,7 @@ const getTagLabel = (tag: Tag, lang: "en" | "bg") => {
 
 export const Footer = ({ config }: FooterProps) => {
   const { lang } = useLanguage();
-  const tr = translations[lang];
+  const tr = translations[lang] ?? translations.bg;
   const [isEuModalOpen, setIsEuModalOpen] = useState(false);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
   const [isCookiePolicyOpen, setIsCookiePolicyOpen] = useState(false);

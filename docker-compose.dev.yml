@@ -4,6 +4,8 @@ services:
       context: ./backend
       target: dev
     container_name: django_backend
+    env_file:
+      - ./.env
     environment:
       DEBUG: "1"
       LOAD_FIXTURE_ON_STARTUP: "1"
@@ -20,8 +22,12 @@ services:
       context: ./frontend
       target: dev
     container_name: frontend_dev
+    env_file:
+      - ./.env
     environment:
       NEXT_PUBLIC_API_URL: "http://localhost:8000"
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:-}
+      REACT_APP_STRIPE_PUBLISHABLE_KEY: ${REACT_APP_STRIPE_PUBLISHABLE_KEY:-}
       API_INTERNAL_URL: "http://backend:8000"
     volumes:
       - ./frontend:/app

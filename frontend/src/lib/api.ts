@@ -25,8 +25,8 @@ export interface Course {
   type: "hybrid" | "online" | "offline";
   price: number;
   is_active: boolean;
-  stripe_product_id?: number | null;
-  stripe_price_id?: number | null;
+  stripe_product_id?: string | null;
+  stripe_price_id?: string | null;
   tags: Tag[];
   audience?: "adults" | "kids";
   monthly_installment_price?: number;
@@ -343,4 +343,28 @@ export async function submitEventRequest(data: { name: string; email: string; ph
   }
 
   return await res.json();
+}
+
+export async function createCheckoutSession(productSlug: string, customerEmail?: string): Promise<{ sessionId: string }> {
+  const url = `${API_URL}/create-checkout-session/`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    body: JSON.stringify({
+      product_slug: productSlug,
+      ...(customerEmail ? { customer_email: customerEmail } : {}),
+    }),
+  });
+
+  const payload = await res.json().catch(() => null);
+
+  if (!res.ok || !payload?.sessionId) {
+    const detail = payload?.detail ? String(payload.detail) : 'Failed to create checkout session';
+    throw new Error(detail);
+  }
+
+  return { sessionId: String(payload.sessionId) };
 }

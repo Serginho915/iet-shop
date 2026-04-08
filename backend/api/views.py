@@ -1,9 +1,15 @@
+import logging
+
+import stripe
+from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ValidationError as DjangoValidationError
+from django.http import HttpResponse
 from django.db.models import Exists, OuterRef
 from django.middleware.csrf import get_token
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 from rest_framework import permissions, status, viewsets
 from rest_framework.exceptions import Throttled, ValidationError
@@ -48,11 +54,16 @@ from .serializers import (
     ChatSessionSerializer,
     ConsultationSerializer,
     CourseSerializer,
+    CreateCheckoutSessionSerializer,
     EventSerializer,
     EventRequestSerializer,
     PostSerializer,
     TagSerializer,
 )
+from .stripe_services import create_checkout_session, resolve_course_by_slug
+
+
+logger = logging.getLogger(__name__)
 
 
 class IsAdminOrReadOnly(permissions.BasePermission):
@@ -70,6 +81,85 @@ class IsSuperUser(permissions.BasePermission):
 class TestView(APIView):
     def get(self, request):
         return Response({"status": "ok"})
+
+
+class CreateCheckoutSessionView(APIView):
+    permission_classes = [permissions.AllowAny]
+    authentication_classes = []
+
+    def post(self, request):
+        serializer = CreateCheckoutSessionSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        if not settings.STRIPE_SECRET_KEY:
+            return Response(
+                {"detail": "Missing STRIPE_SECRET_KEY in backend environment."},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+        try:
+            course = resolve_course_by_slug(serializer.validated_data["product_slug"])
+        except Course.DoesNotExist:
+            return Response(
+                {"detail": "Course not found or inactive."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        try:
+            checkout_session = create_checkout_session(
+                course,
+                request,
+                customer_email=serializer.validated_data.get("customer_email"),
+            )
+        except stripe.error.StripeError as exc:
+            logger.exception("Stripe checkout session creation failed for course slug=%s", course.slug)
+            return Response(
+                {"detail": str(getattr(exc, "user_message", "Stripe request failed."))},
+                status=status.HTTP_502_BAD_GATEWAY,
+            )
+
+        return Response({"sessionId": checkout_session.id}, status=status.HTTP_200_OK)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class StripeWebhookView(APIView):
+    permission_classes = [permissions.AllowAny]
+    authentication_classes = []
+
+    def post(self, request):
+        payload = request.body
+        sig_header = request.META.get("HTTP_STRIPE_SIGNATURE", "")
+        webhook_secret = settings.STRIPE_WEBHOOK_SECRET
+
+        if not settings.STRIPE_SECRET_KEY:
+            logger.warning("Stripe webhook called without STRIPE_SECRET_KEY configured.")
+            return HttpResponse(status=500)
+
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+
+        try:
+            if webhook_secret:
+                event = stripe.Webhook.construct_event(payload, sig_header, webhook_secret)
+            else:
+                event = stripe.Event.construct_from(request.data, stripe.api_key)
+        except ValueError:
+            logger.warning("Invalid Stripe webhook payload.")
+            return HttpResponse(status=400)
+        except stripe.error.SignatureVerificationError:
+            logger.warning("Invalid Stripe webhook signature.")
+            return HttpResponse(status=400)
+
+        if event.get("type") == "checkout.session.completed":
+            session_obj = event["data"]["object"]
+            logger.info(
+                "Stripe payment completed: session_id=%s payment_status=%s amount_total=%s currency=%s",
+                session_obj.get("id"),
+                session_obj.get("payment_status"),
+                session_obj.get("amount_total"),
+                session_obj.get("currency"),
+            )
+
+        return HttpResponse(status=200)
 
 
 class ChatInitView(APIView):

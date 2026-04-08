@@ -14,25 +14,26 @@ It is fully decoupled from Medusa and works with any HTTP backend over REST.
 
 ### Environment variables
 
-All public frontend settings are configured via `.env.local` (for local development)  
-or via environment variables in your deployment environment.
+In this repository local Docker and local frontend development use the root `.env` file.  
+Use `.env.sample` as the template.
 
 - **`NEXT_PUBLIC_API_URL`** – base URL of the backend  
   - example for local development:  
     `NEXT_PUBLIC_API_URL=http://localhost:8000`
+- **`NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`** – Stripe publishable key for browser redirect to Checkout
+- **`REACT_APP_STRIPE_PUBLISHABLE_KEY`** – compatibility alias; if both are present, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` is preferred
 - **`NEXT_PUBLIC_API_PUBLISHABLE_KEY`** – optional public key; if present it will be sent as `x-publishable-api-key`
 - **`NEXT_PUBLIC_PRODUCTS_ENDPOINT`** – endpoint used to fetch the product list  
   - default: `/store/products`
 - **`NEXT_PUBLIC_IMAGE_HOSTNAMES`** – (optional) comma‑separated list of allowed remote image hostnames  
   - example: `cdn.myshop.com,images.myshop.io`
 
-Example `.env.local` file in the `frontend` root:
+Example root `.env` file:
 
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:8000
-NEXT_PUBLIC_PRODUCTS_ENDPOINT=/store/products
-# NEXT_PUBLIC_API_PUBLISHABLE_KEY=public-key-if-needed
-# NEXT_PUBLIC_IMAGE_HOSTNAMES=cdn.myshop.com
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_xxxxxxxxxxxxxxxxxxxxx
+REACT_APP_STRIPE_PUBLISHABLE_KEY=pk_test_xxxxxxxxxxxxxxxxxxxxx
 ```
 
 If `NEXT_PUBLIC_API_URL` is not set, the frontend falls back to `http://localhost:8000` in local mode.

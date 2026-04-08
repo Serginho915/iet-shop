@@ -11,7 +11,7 @@ interface AboutSectionProps {
 
 export const AboutSection = ({ course }: AboutSectionProps) => {
   const { lang } = useLanguage();
-  const t = translations[lang];
+  const t = translations[lang] ?? translations.bg;
   const renderHighlightedTitle = (text: string) => {
     const words = text.split(" ");
     if (words.length === 0) return null;

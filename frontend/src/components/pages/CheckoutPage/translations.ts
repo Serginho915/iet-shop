@@ -20,6 +20,7 @@ export type CheckoutTranslations = {
     errorEmail: string;
     errorPhone: string;
     errorPrivacy: string;
+    paymentError: string;
     successMessage: string;
     loadingLabel: string;
 };
@@ -45,6 +46,7 @@ export const translations: Record<Lang, CheckoutTranslations> = {
         errorEmail: "Please enter a valid email",
         errorPhone: "Please enter 7 digits after +359.",
         errorPrivacy: "You must agree to the privacy policy",
+        paymentError: "Unable to start payment. Please try again.",
         successMessage: "Your request has been successfully sent! We will contact you soon.",
         loadingLabel: "Loading course details...",
     },
@@ -68,6 +70,7 @@ export const translations: Record<Lang, CheckoutTranslations> = {
         errorEmail: "Моля, въведете валиден имейл.",
         errorPhone: "Моля, въведете 7 цифри след +359.",
         errorPrivacy: "Трябва да се съгласите с политиката.",
+        paymentError: "Не успяхме да стартираме плащането. Опитайте отново.",
         successMessage: "Вашата заявка е изпратена успешно! Ще се свържем с вас скоро.",
         loadingLabel: "Зареждане на детайли...",
     },

@@ -48,6 +48,11 @@ class BilingualSerializerMixin:
         }
 
 
+class CreateCheckoutSessionSerializer(serializers.Serializer):
+    product_slug = serializers.SlugField(max_length=255)
+    customer_email = serializers.EmailField(required=False)
+
+
 class TagSerializer(BilingualSerializerMixin, serializers.ModelSerializer):
     name = serializers.SerializerMethodField()
 

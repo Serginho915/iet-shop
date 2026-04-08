@@ -8,3 +8,7 @@ backend/core/__pycache__/
 backend/media/
 
 frontend/node_modules/
+
+.env
+.env.*
+!.env.sample

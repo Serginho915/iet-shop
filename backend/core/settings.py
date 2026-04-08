@@ -15,7 +15,23 @@ def env_list(name, default=None):
         return list(default or [])
     return [item.strip() for item in value.split(",") if item.strip()]
 
+
+def load_env_file(env_path):
+    if not env_path.exists():
+        return
+
+    for raw_line in env_path.read_text(encoding='utf-8').splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith('#') or '=' not in line:
+            continue
+
+        key, value = line.split('=', 1)
+        key = key.strip()
+        value = value.strip().strip('"').strip("'")
+        os.environ.setdefault(key, value)
+
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_env_file(BASE_DIR.parent / '.env')
 
 SECRET_KEY = 'django-insecure-&c3%)cp9*njkj@m2d@nue#38*q(_$!0ar&wq^xpr0t^=6t7hh0'
 
@@ -176,3 +192,8 @@ else:
 CHAT_MESSAGE_MAX_LENGTH = int(os.getenv('CHAT_MESSAGE_MAX_LENGTH', '2000'))
 CHAT_RATE_LIMIT_COUNT = int(os.getenv('CHAT_RATE_LIMIT_COUNT', '5'))
 CHAT_RATE_LIMIT_WINDOW_SECONDS = int(os.getenv('CHAT_RATE_LIMIT_WINDOW_SECONDS', '30'))
+
+# Stripe (test mode) configuration.
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
+STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY', '')
+STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET', '')

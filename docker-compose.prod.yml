@@ -5,6 +5,8 @@ services:
       target: prod
     container_name: django_backend
     restart: always
+    env_file:
+      - ./.env
     environment:
       DEBUG: ${DEBUG:-0}
       LOAD_FIXTURE_ON_STARTUP: ${LOAD_FIXTURE_ON_STARTUP:-1}
@@ -32,8 +34,12 @@ services:
       target: prod
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-https://haldaniko.com.ua}
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:-}
+        REACT_APP_STRIPE_PUBLISHABLE_KEY: ${REACT_APP_STRIPE_PUBLISHABLE_KEY:-}
     environment:
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-https://haldaniko.com.ua}
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:-}
+      REACT_APP_STRIPE_PUBLISHABLE_KEY: ${REACT_APP_STRIPE_PUBLISHABLE_KEY:-}
     container_name: frontend_prod
     restart: always
     ports:

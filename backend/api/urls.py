@@ -25,9 +25,11 @@ from .views import (
     ChatMessagesView,
     ConsultationViewSet,
     CourseViewSet,
+    CreateCheckoutSessionView,
     EventViewSet,
     EventRequestViewSet,
     PostViewSet,
+    StripeWebhookView,
     TagViewSet,
     TestView,
 )
@@ -64,6 +66,8 @@ admin_router.register('messages', AdminMessageViewSet, basename='admin-message')
 
 urlpatterns = [
     path('test/', TestView.as_view()),
+    path('create-checkout-session/', CreateCheckoutSessionView.as_view(), name='create-checkout-session'),
+    path('stripe/webhook/', StripeWebhookView.as_view(), name='stripe-webhook'),
     path('chat/init/', ChatInitView.as_view(), name='chat-init'),
     path('chat/messages/', ChatMessagesView.as_view(), name='chat-messages'),
     path('admin/auth/csrf/', AdminCSRFView.as_view(), name='admin-auth-csrf'),

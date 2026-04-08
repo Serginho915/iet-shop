@@ -1,4 +1,6 @@
 import json
+from types import SimpleNamespace
+from unittest.mock import patch
 
 from asgiref.sync import async_to_sync
 from channels.db import database_sync_to_async
@@ -445,3 +447,41 @@ class MediaSerializationTests(TestCase):
 
 		self.assertIsNotNone(course_item)
 		self.assertIsNone(course_item['image'])
+
+
+@override_settings(
+	STRIPE_SECRET_KEY='sk_test_123',
+)
+class StripeCheckoutSessionTests(TestCase):
+	def setUp(self):
+		self.course = Course.objects.create(
+			slug='fullstack-essentials',
+			title_en='Fullstack Essentials',
+			start='2026-05-15',
+			type='hybrid',
+			price=69000,
+			is_active=True,
+		)
+
+	@patch('api.views.create_checkout_session')
+	def test_create_checkout_session_returns_session_id(self, mocked_create_checkout_session):
+		mocked_create_checkout_session.return_value = SimpleNamespace(id='cs_test_123')
+
+		response = self.client.post(
+			reverse('create-checkout-session'),
+			data=json.dumps(
+				{
+					'product_slug': self.course.slug,
+					'customer_email': 'student@example.com',
+				}
+			),
+			content_type='application/json',
+		)
+
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.json(), {'sessionId': 'cs_test_123'})
+		mocked_create_checkout_session.assert_called_once_with(
+			self.course,
+			response.wsgi_request,
+			customer_email='student@example.com',
+		)

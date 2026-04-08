@@ -39,8 +39,8 @@ class Course(models.Model):
     monthly_installment_price = models.PositiveIntegerField(null=True, blank=True)
     visits_per_week = models.PositiveSmallIntegerField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
-    stripe_product_id = models.BigIntegerField(null=True, blank=True)
-    stripe_price_id = models.BigIntegerField(null=True, blank=True)
+    stripe_product_id = models.CharField(max_length=255, null=True, blank=True)
+    stripe_price_id = models.CharField(max_length=255, null=True, blank=True)
     tags = models.ManyToManyField(Tag, related_name="courses", blank=True)
     about_title_en = models.CharField(max_length=255, null=True, blank=True)
     about_title_bg = models.CharField(max_length=255, null=True, blank=True)
@@ -61,8 +61,8 @@ class Course(models.Model):
 class Order(models.Model):
     status = models.BooleanField(default=False)
     total_amount = models.PositiveIntegerField()
-    stripe_payment_intent_id = models.BigIntegerField(null=True, blank=True)
-    stripe_checkout_session_id = models.BigIntegerField(null=True, blank=True)
+    stripe_payment_intent_id = models.CharField(max_length=255, null=True, blank=True)
+    stripe_checkout_session_id = models.CharField(max_length=255, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     paid_at = models.DateTimeField(null=True, blank=True)
 

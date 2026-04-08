@@ -3,17 +3,17 @@
 import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { LocalizedLink as Link } from "@/components/ui/LocalizedLink/LocalizedLink";
 import styles from "./CheckoutPage.module.scss";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs/Breadcrumbs";
-import { Course, getCourseBySlug, submitConsultation } from "@/lib/api";
+import { Course, createCheckoutSession, getCourseBySlug } from "@/lib/api";
 import { useTranslate } from "@/lib/useTranslate";
 import { useCourse } from "@/lib/CourseContext";
-import { translations, type CheckoutTranslations } from "./translations";
+import { translations } from "./translations";
 import { LanguageDropdown } from "@/components/header/LanguageDropdown/LanguageDropdown";
 import { useFormLogic } from "@/lib/useFormLogic";
 import { Button } from "@/components/ui/Button/Button";
 import { Logo } from "@/components/header/Logo/Logo";
+import { getStripeClient } from "@/lib/stripe";
 
 interface CheckoutPageProps {
   slug: string;
@@ -31,6 +31,8 @@ export const CheckoutPage = ({ slug, course: initialCourse }: CheckoutPageProps)
   const [fetchedCourse, setFetchedCourse] = useState<Course | undefined>(undefined);
   const [isFetching, setIsFetching] = useState(false);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
+  const [isPaying, setIsPaying] = useState(false);
+  const [payError, setPayError] = useState<string | null>(null);
 
   const isSuccessParam = searchParams.get('success') === 'true';
 
@@ -68,8 +70,6 @@ export const CheckoutPage = ({ slug, course: initialCourse }: CheckoutPageProps)
     setField,
     handleSubmit: originalHandleSubmit,
     validateForm,
-    setFormData,
-    setErrors
   } = useFormLogic(course?.id || 0);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -81,10 +81,35 @@ export const CheckoutPage = ({ slug, course: initialCourse }: CheckoutPageProps)
 
   const showSuccess = isSuccess || isSuccessParam;
 
-  const handlePayNow = () => {
-    if (validateForm()) {
-      router.push(`/${lang}/#consultation`);
+  const handlePayNow = async () => {
+    const isValid = validateForm();
+    if (!isValid || !course?.slug) {
+      return;
     }
+
+    setPayError(null);
+    setIsPaying(true);
+
+    try {
+      const { sessionId } = await createCheckoutSession(course.slug, formData.email.trim() || undefined);
+      const stripe = await getStripeClient();
+
+      if (!stripe) {
+        throw new Error("Stripe SDK failed to initialize.");
+      }
+
+      const result = await stripe.redirectToCheckout({ sessionId });
+      if (result.error) {
+        throw new Error(result.error.message || "Stripe redirect failed.");
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : t.paymentError;
+      setPayError(message || t.paymentError);
+      setIsPaying(false);
+      return;
+    }
+
+    setIsPaying(false);
   };
 
   const courseTitle = useMemo(() => {
@@ -114,14 +139,18 @@ export const CheckoutPage = ({ slug, course: initialCourse }: CheckoutPageProps)
           year: "numeric",
         }
       );
-    } catch (e) {
+    } catch {
       return dateValue;
     }
   }, [course?.start, lang]);
 
+  const priceEur = useMemo(() => {
+    return ((course?.price ?? 0) / 100).toFixed(2);
+  }, [course?.price]);
+
   const priceBgn = useMemo(() => {
-    const price = course?.price ?? 0;
-    return (price * 1.6627).toFixed(2);
+    const price = (course?.price ?? 0) / 100;
+    return (price * 1.95583).toFixed(2);
   }, [course?.price]);
 
   return (
@@ -187,7 +216,7 @@ export const CheckoutPage = ({ slug, course: initialCourse }: CheckoutPageProps)
                       <span className={styles.infoLabel}>{t.priceLabel}</span>
                       <div className={styles.priceColumn}>
                         <span className={styles.priceValue}>
-                          {t.currency}{course?.price ?? 0}
+                          {t.currency}{priceEur}
                         </span>
                         <span className={styles.priceSub}>
                           {priceBgn} {t.currencyBgn}
@@ -272,15 +301,17 @@ export const CheckoutPage = ({ slug, course: initialCourse }: CheckoutPageProps)
                 </div>
 
                 {submitError && <div className={styles.errorText} style={{ textAlign: 'center', marginTop: '10px', fontSize: '14px' }}>{submitError}</div>}
+                {payError && <div className={styles.errorText} style={{ textAlign: 'center', marginTop: '10px', fontSize: '14px' }}>{payError}</div>}
 
                 <div className={styles.buttons}>
                   <Button
                     type="button"
                     className={styles.payButton}
-                    isLoading={isSubmitting}
+                    isLoading={isPaying}
                     variant="dark-outline"
                     size="custom"
                     onClick={handlePayNow}
+                    disabled={isPaying || isSubmitting || !course?.slug}
                   >
                     {t.payNowButton}
                   </Button>

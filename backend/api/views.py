@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError as DjangoValidationError
 from django.http import HttpResponse
 from django.db.models import Exists, OuterRef
 from django.middleware.csrf import get_token
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import csrf_exempt
@@ -151,6 +152,26 @@ class StripeWebhookView(APIView):
 
         if event.get("type") == "checkout.session.completed":
             session_obj = event["data"]["object"]
+
+            checkout_session_id = str(session_obj.get("id") or "").strip()
+            payment_intent = session_obj.get("payment_intent")
+            payment_intent_id = str(payment_intent or "").strip() or None
+            amount_total_minor = int(session_obj.get("amount_total") or 0)
+            amount_total = amount_total_minor // 100
+            is_paid = str(session_obj.get("payment_status") or "").lower() == "paid"
+
+            if checkout_session_id:
+                defaults = {
+                    "status": is_paid,
+                    "total_amount": amount_total,
+                    "stripe_payment_intent_id": payment_intent_id,
+                    "paid_at": timezone.now() if is_paid else None,
+                }
+                Order.objects.update_or_create(
+                    stripe_checkout_session_id=checkout_session_id,
+                    defaults=defaults,
+                )
+
             logger.info(
                 "Stripe payment completed: session_id=%s payment_status=%s amount_total=%s currency=%s",
                 session_obj.get("id"),

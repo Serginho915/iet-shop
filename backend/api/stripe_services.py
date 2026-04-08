@@ -38,8 +38,8 @@ def build_frontend_url(request, relative_path: str) -> str:
 
 
 def build_checkout_line_item(course: Course) -> dict:
-    # Course prices are stored in minor units already (for example 69000 = EUR 690.00).
-    unit_amount = int(course.price)
+    # Course prices are stored in EUR major units (for example 690 = EUR 690.00).
+    unit_amount = int(course.price * 100)
     course_name = (course.title_en or course.title_bg or course.slug).strip()
 
     price_data: dict = {

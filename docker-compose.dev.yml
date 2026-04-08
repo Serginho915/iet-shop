@@ -26,8 +26,7 @@ services:
       - ./.env
     environment:
       NEXT_PUBLIC_API_URL: "http://localhost:8000"
-      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:-}
-      REACT_APP_STRIPE_PUBLISHABLE_KEY: ${REACT_APP_STRIPE_PUBLISHABLE_KEY:-}
+      STRIPE_PUBLISHABLE_KEY: ${STRIPE_PUBLISHABLE_KEY:-}
       API_INTERNAL_URL: "http://backend:8000"
     volumes:
       - ./frontend:/app

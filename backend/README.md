@@ -22,7 +22,7 @@ python manage.py runserver
 Stripe Checkout (test mode)
 - Заполните корневой `.env` или используйте `.env.sample` как шаблон.
 - Используйте только `sk_test_...` и `pk_test_...` ключи из Stripe Dashboard.
-- Для локального checkout backend читает `STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY` и `STRIPE_WEBHOOK_SECRET` из корневого `.env`.
+- Для локального checkout backend читает `STRIPE_SECRET_KEY` и `STRIPE_WEBHOOK_SECRET` из корневого `.env`.
 - `price_id` задается у каждого курса отдельно через админку в полe `stripe_price_id`.
 - Пути возврата в Stripe заданы в коде как относительные: `/success` и `/cancel`.
 - Тестовая карта Stripe: `4242 4242 4242 4242`, любая будущая дата, любой CVC, любой ZIP.

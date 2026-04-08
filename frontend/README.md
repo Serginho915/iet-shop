@@ -14,14 +14,14 @@ It is fully decoupled from Medusa and works with any HTTP backend over REST.
 
 ### Environment variables
 
-In this repository local Docker and local frontend development use the root `.env` file.  
-Use `.env.sample` as the template.
+In this repository API base URL for Docker is fixed by compose files:
 
-- **`NEXT_PUBLIC_API_URL`** – base URL of the backend  
-  - example for local development:  
-    `NEXT_PUBLIC_API_URL=http://localhost:8000`
-- **`NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`** – Stripe publishable key for browser redirect to Checkout
-- **`REACT_APP_STRIPE_PUBLISHABLE_KEY`** – compatibility alias; if both are present, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` is preferred
+- `docker-compose.dev.yml` -> `NEXT_PUBLIC_API_URL=http://localhost:8000`
+- `docker-compose.prod.yml` -> `NEXT_PUBLIC_API_URL=https://obucheniya.com`
+
+Root `.env` is used for other variables (Stripe keys, etc.).
+
+- **`STRIPE_PUBLISHABLE_KEY`** – Stripe publishable key for browser redirect to Checkout
 - **`NEXT_PUBLIC_API_PUBLISHABLE_KEY`** – optional public key; if present it will be sent as `x-publishable-api-key`
 - **`NEXT_PUBLIC_PRODUCTS_ENDPOINT`** – endpoint used to fetch the product list  
   - default: `/store/products`
@@ -31,12 +31,8 @@ Use `.env.sample` as the template.
 Example root `.env` file:
 
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:8000
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_xxxxxxxxxxxxxxxxxxxxx
-REACT_APP_STRIPE_PUBLISHABLE_KEY=pk_test_xxxxxxxxxxxxxxxxxxxxx
+STRIPE_PUBLISHABLE_KEY=pk_test_xxxxxxxxxxxxxxxxxxxxx
 ```
-
-If `NEXT_PUBLIC_API_URL` is not set, the frontend falls back to `http://localhost:8000` in local mode.
 
 ---
 
@@ -94,7 +90,7 @@ cd frontend
 docker build -t iet-frontend .
 
 docker run --rm -p 3000:3000 \
-  -e NEXT_PUBLIC_API_URL=http://host.docker.internal:9000 \
+  -e NEXT_PUBLIC_API_URL=https://obucheniya.com \
   iet-frontend
 ```
 
